@@ -1,0 +1,371 @@
+package controladores;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import conexion.ConexionBDSQLServer;
+import modelos.OPersonaje;
+
+public class CPersonaje {
+    private static Connection conexion = null;
+    private static String sql;
+
+    /**
+     * Registra un nuevo personaje en la base de datos junto con sus estadísticas.
+     * @param personaje Objeto OPersonaje con los datos a registrar.
+     */
+    public void registrarPersonaje(OPersonaje personaje) {
+        PreparedStatement sentencia = null;
+        ResultSet rs = null;
+        int idGenerado = -1;
+        conexion = ConexionBDSQLServer.GetConexion(); // Obtener conexión a SQL Server
+
+        sql = "INSERT INTO Personajes (NombrePersonaje, Nivel, Id_Clase, Id_Subclase, Id_Raza, BonusCompetencia) " +
+              "VALUES (?, ?, ?, ?, ?, ?);";
+
+        try {
+            sentencia = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            sentencia.setString(1, personaje.getNombrePersonaje());
+            sentencia.setInt(2, personaje.getNivel());
+            sentencia.setInt(3, personaje.getId_Clase());
+            sentencia.setInt(4, personaje.getId_Subclase());
+            sentencia.setInt(5, personaje.getId_Raza());
+            sentencia.setInt(6, personaje.getBonusCompetencia());
+
+            if (sentencia.executeUpdate() > 0) {
+                rs = sentencia.getGeneratedKeys();
+                if (rs.next()) {
+                    idGenerado = rs.getInt(1);
+                }
+                
+                // Ahora insertamos las estadísticas del personaje
+                sql = "INSERT INTO EstadisticasPersonaje (Id_Personaje, Fuerza, Destreza, Constitucion, Inteligencia, Sabiduria, Carisma) " +
+                      "VALUES (?, ?, ?, ?, ?, ?, ?);";
+                sentencia = conexion.prepareStatement(sql);
+                sentencia.setInt(1, idGenerado);
+                sentencia.setInt(2, personaje.getFuerza());
+                sentencia.setInt(3, personaje.getDestreza());
+                sentencia.setInt(4, personaje.getConstitucion());
+                sentencia.setInt(5, personaje.getInteligencia());
+                sentencia.setInt(6, personaje.getSabiduria());
+                sentencia.setInt(7, personaje.getCarisma());
+
+                if (sentencia.executeUpdate() > 0) {
+                    JOptionPane.showMessageDialog(null, "Personaje registrado exitosamente", "Información",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error de SQL: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (sentencia != null) sentencia.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public OPersonaje obtenerPersonajePorId(int idPersonaje) {
+        OPersonaje personaje = null;
+
+        // Consulta SQL que hace JOIN entre las tablas Personajes y EstadisticasPersonaje
+        String sql = "SELECT p.Id_Personaje, p.NombrePersonaje, p.Nivel, p.Id_Clase, p.Id_Subclase, p.Id_Raza, p.BonusCompetencia, "
+                   + "e.Fuerza, e.Destreza, e.Constitucion, e.Inteligencia, e.Sabiduria, e.Carisma "
+                   + "FROM Personajes p "
+                   + "JOIN EstadisticasPersonaje e ON p.Id_Personaje = e.Id_Personaje "
+                   + "WHERE p.Id_Personaje = ?";
+
+        try (Connection conn = ConexionBDSQLServer.GetConexion();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Establecer el parámetro de búsqueda (id del personaje)
+            stmt.setInt(1, idPersonaje);
+
+            // Ejecutar la consulta y obtener el resultado
+            ResultSet rs = stmt.executeQuery();
+
+            // Verificar si existe un resultado
+            if (rs.next()) {
+                personaje = new OPersonaje();
+
+                // Asignar los valores obtenidos al objeto personaje
+                personaje.setId_Personaje(rs.getInt("Id_Personaje"));
+                personaje.setNombrePersonaje(rs.getString("NombrePersonaje"));
+                personaje.setNivel(rs.getInt("Nivel"));
+                personaje.setId_Clase(rs.getInt("Id_Clase"));
+                personaje.setId_Subclase(rs.getInt("Id_Subclase"));
+                personaje.setId_Raza(rs.getInt("Id_Raza"));
+                personaje.setBonusCompetencia(rs.getInt("BonusCompetencia"));
+
+                // Asignar las estadísticas del personaje
+                personaje.setFuerza(rs.getInt("Fuerza"));
+                personaje.setDestreza(rs.getInt("Destreza"));
+                personaje.setConstitucion(rs.getInt("Constitucion"));
+                personaje.setInteligencia(rs.getInt("Inteligencia"));
+                personaje.setSabiduria(rs.getInt("Sabiduria"));
+                personaje.setCarisma(rs.getInt("Carisma"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener datos del personaje", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return personaje;
+    }
+
+    /**
+     * Elimina un personaje de la base de datos junto con sus estadísticas.
+     * @param idPersonaje ID del personaje a eliminar.
+     */
+    public void borrarPersonaje(int idPersonaje) {
+        try {
+            Statement estatuto = ConexionBDSQLServer.GetConexion().createStatement();
+            estatuto.executeUpdate("DELETE FROM EstadisticasPersonaje WHERE Id_Personaje=" + idPersonaje);
+            estatuto.executeUpdate("DELETE FROM Personajes WHERE Id_Personaje=" + idPersonaje);
+            JOptionPane.showMessageDialog(null, "Personaje eliminado exitosamente", "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
+            estatuto.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar personaje", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Obtiene todos los personajes de la base de datos junto con sus estadísticas y los almacena en un TableModel.
+     * @param model Modelo de tabla a llenar con los datos.
+     */
+    public void buscarPersonajes(DefaultTableModel model) {
+        try {
+            Statement estatuto = ConexionBDSQLServer.GetConexion().createStatement();
+            ResultSet rs = estatuto.executeQuery("SELECT p.Id_Personaje, p.NombrePersonaje, p.Nivel, p.Id_Clase, p.Id_Subclase, p.Id_Raza, p.BonusCompetencia, " +
+                                                 "e.Fuerza, e.Destreza, e.Constitucion, e.Inteligencia, e.Sabiduria, e.Carisma " +
+                                                 "FROM Personajes p " +
+                                                 "JOIN EstadisticasPersonaje e ON p.Id_Personaje = e.Id_Personaje;");
+
+            while (rs.next()) {
+                Object[] fila = new Object[12]; // Ajustar según la cantidad de columnas
+                fila[0] = rs.getInt("Id_Personaje");
+                fila[1] = rs.getString("NombrePersonaje");
+                fila[2] = rs.getInt("Nivel");
+                fila[3] = rs.getInt("Id_Clase");
+                fila[4] = rs.getInt("Id_Subclase");
+                fila[5] = rs.getInt("Id_Raza");
+                fila[6] = rs.getInt("BonusCompetencia");
+                fila[7] = rs.getInt("Fuerza");
+                fila[8] = rs.getInt("Destreza");
+                fila[9] = rs.getInt("Constitucion");
+                fila[10] = rs.getInt("Inteligencia");
+                fila[11] = rs.getInt("Sabiduria");
+                fila[12] = rs.getInt("Carisma");
+
+                model.addRow(fila);
+            }
+            rs.close();
+            estatuto.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al consultar personajes", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void buscarPersonajesConTableModel(DefaultTableModel model) {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        try {
+            conexion = ConexionBDSQLServer.GetConexion(); // Obtener conexión a SQL Server
+
+            sql = """
+                SELECT P.NombrePersonaje, P.Nivel, C.NombreClase, SC.NombreSubclase, R.NombreRaza
+                FROM Personajes P
+                INNER JOIN Clases C ON C.Id_Clase = P.Id_Clase
+                INNER JOIN Subclases SC ON SC.Id_Subclase = P.Id_Subclase
+                INNER JOIN Razas R ON R.Id_Raza = P.Id_Raza
+                Order By Id_Personaje
+            """;
+
+            pst = conexion.prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            // Llenar el modelo con los datos obtenidos
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("NombrePersonaje"),
+                    rs.getInt("Nivel"),
+                    rs.getString("NombreClase"),
+                    rs.getString("NombreSubclase"),
+                    rs.getString("NombreRaza")
+                };
+                model.addRow(fila);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar personajes: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al buscar personajes", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pst != null) pst.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void eliminarPersonajePorNombre(String nombre) {
+        // Primero eliminamos las estadísticas asociadas al personaje
+        String sqlEstadisticas = "DELETE FROM EstadisticasPersonaje WHERE id_Personaje = (Select id_Personaje from Personajes Where NombrePersonaje = ?)";
+        
+        try  {
+            conexion = ConexionBDSQLServer.GetConexion();
+            // Eliminamos las estadísticas del personaje
+            try (PreparedStatement psEstadisticas = conexion.prepareStatement(sqlEstadisticas)) {
+                psEstadisticas.setString(1, nombre);  // Establecemos el nombre del personaje
+                int filasAfectadasEstadisticas = psEstadisticas.executeUpdate();
+                
+                if (filasAfectadasEstadisticas > 0) {
+                    System.out.println("Estadísticas del personaje eliminadas correctamente.");
+                } else {
+                    System.out.println("No se encontraron estadísticas para el personaje.");
+                }
+            }
+            
+            // Ahora eliminamos el personaje de la tabla Personajes
+            String sqlPersonaje = "DELETE FROM Personajes WHERE nombrePersonaje = ?";
+            try (PreparedStatement psPersonaje = conexion.prepareStatement(sqlPersonaje)) {
+                psPersonaje.setString(1, nombre);  // Establecemos el nombre del personaje
+                int filasAfectadasPersonaje = psPersonaje.executeUpdate();
+                
+                if (filasAfectadasPersonaje > 0) {
+                    System.out.println("Personaje eliminado correctamente.");
+                } else {
+                    System.out.println("No se encontró un personaje con ese nombre.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al eliminar personaje y sus estadísticas", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public ResultSet obtenerNombresPersonajes() {
+        ResultSet rs = null;
+        try {
+            conexion = ConexionBDSQLServer.GetConexion();
+            Statement stmt = conexion.createStatement();
+            rs = stmt.executeQuery("SELECT NombrePersonaje FROM Personajes Order By Id_Personaje");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener nombres de Personajes", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return rs;
+    }
+    
+    
+    public void actualizarPersonaje(OPersonaje personaje) {
+        PreparedStatement pst = null;
+        try {
+            conexion = ConexionBDSQLServer.GetConexion();
+            String sql = """
+                UPDATE Personajes SET
+                    NombrePersonaje = ?, Nivel = ?, Id_Clase = ?, Id_Subclase = ?, Id_Raza = ?, BonusCompetencia = ?
+                WHERE Id_Personaje = ?
+            """;
+            pst = conexion.prepareStatement(sql);
+            pst.setString(1, personaje.getNombrePersonaje());
+            pst.setInt(2, personaje.getNivel());
+            pst.setInt(3, personaje.getId_Clase());
+            pst.setInt(4, personaje.getId_Subclase());
+            pst.setInt(5, personaje.getId_Raza());
+            pst.setInt(6, personaje.getBonusCompetencia());
+            pst.setInt(7, personaje.getId_Personaje());
+            pst.executeUpdate();
+
+            // Actualizar estadísticas
+            sql = """
+                UPDATE EstadisticasPersonaje SET
+                    Fuerza = ?, Destreza = ?, Constitucion = ?, Inteligencia = ?, Sabiduria = ?, Carisma = ?
+                WHERE Id_Personaje = ?
+            """;
+            pst = conexion.prepareStatement(sql);
+            pst.setInt(1, personaje.getFuerza());
+            pst.setInt(2, personaje.getDestreza());
+            pst.setInt(3, personaje.getConstitucion());
+            pst.setInt(4, personaje.getInteligencia());
+            pst.setInt(5, personaje.getSabiduria());
+            pst.setInt(6, personaje.getCarisma());
+            pst.setInt(7, personaje.getId_Personaje());
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Personaje actualizado exitosamente");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pst != null) pst.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void eliminarPersonaje(int idPersonaje) {
+        PreparedStatement pst = null;
+        try {
+            conexion = ConexionBDSQLServer.GetConexion();
+            String sql = "DELETE FROM EstadisticasPersonaje WHERE Id_Personaje = ?";
+            pst = conexion.prepareStatement(sql);
+            pst.setInt(1, idPersonaje);
+            pst.executeUpdate();
+
+            sql = "DELETE FROM Personajes WHERE Id_Personaje = ?";
+            pst = conexion.prepareStatement(sql);
+            pst.setInt(1, idPersonaje);
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Personaje eliminado exitosamente");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pst != null) pst.close();
+                if (conexion != null) conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+	public int obtenerIdPersonaje(String nombrePersonaje) {
+		// TODO Auto-generated method stub
+        int idPersonaje = -1;
+        String sql = "SELECT Id_Personaje FROM Personajes WHERE NombrePersonaje = ?";
+
+        try (Connection conexion = ConexionBDSQLServer.GetConexion();
+             PreparedStatement sentencia = conexion.prepareStatement(sql)) {
+            
+            sentencia.setString(1, nombrePersonaje);
+            ResultSet rs = sentencia.executeQuery();
+            
+            if (rs.next()) {
+                idPersonaje = rs.getInt("Id_Personaje");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener ID de la Personaje", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return idPersonaje;
+	}
+    
+}
