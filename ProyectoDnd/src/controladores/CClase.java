@@ -1,4 +1,4 @@
-package controladores;
+ package controladores;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +16,15 @@ import modelos.OClase;
  */
 public class CClase {
 
-    /**
+    private static Connection conexion = null;
+	private static String sql;
+	/**
      * Registra una nueva clase en la base de datos.
      *
      * @param clase Objeto OClase con los datos a registrar.
      */
     public void registrarClase(OClase clase) {
-        String sql = "INSERT INTO Clases (NombreClase, DescripcionClase, TipoClase, DadoDaño) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Clases (NombreClase, DescripcionClase, TipoClase, DadoDano) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = ConexionBDSQLServer.GetConexion().prepareStatement(sql)) {
             ps.setString(1, clase.getNombreClase());
             ps.setString(2, clase.getDescripcionClase());
@@ -97,7 +99,7 @@ public class CClase {
                 fila[1] = rs.getString("NombreClase");
                 fila[2] = rs.getString("DescripcionClase");
                 fila[3] = rs.getString("TipoClase");
-                fila[4] = rs.getInt("DadoDaño");
+                fila[4] = rs.getInt("DadoDano");
 
                 model.addRow(fila);
             }
@@ -127,7 +129,7 @@ public class CClase {
                 clase.setNombreClase(rs.getString("NombreClase"));
                 clase.setDescripcionClase(rs.getString("DescripcionClase"));
                 clase.setTipoClase(rs.getString("TipoClase"));
-                clase.setDadoDano(rs.getInt("DadoDaño"));
+                clase.setDadoDano(rs.getInt("DadoDano"));
             }
 
         } catch (SQLException e) {
@@ -207,7 +209,7 @@ public class CClase {
      * @param clase Objeto OClase con los nuevos datos de la clase.
      */
     public void actualizarClase(OClase clase) {
-        String sql = "UPDATE Clases SET DescripcionClase = ?, TipoClase = ?, DadoDaño = ? WHERE NombreClase = ?";
+        String sql = "UPDATE Clases SET DescripcionClase = ?, TipoClase = ?, DadoDano = ? WHERE NombreClase = ?";
         try (PreparedStatement ps = ConexionBDSQLServer.GetConexion().prepareStatement(sql)) {
             ps.setString(1, clase.getDescripcionClase());
             ps.setString(2, clase.getTipoClase());
@@ -220,5 +222,61 @@ public class CClase {
             JOptionPane.showMessageDialog(null, "Error al actualizar clase", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+	public void buscarClasesConTableModel(DefaultTableModel model, int pagina, int registrosPorPagina) {
+
+		PreparedStatement pst = null;// Variable PreparedStatement
+		// Se genear una variables que optiene la conexi�n ala base de Datos
+		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
+		sql = "SELECT * FROM Clases ORDER BY Id_Clase OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+		try {
+
+			pst = conexion.prepareStatement(sql);
+			pst.setInt(1, (pagina - 1) * registrosPorPagina);
+			pst.setInt(2, registrosPorPagina);
+
+			ResultSet rs = pst.executeQuery();
+
+			model.setRowCount(0); // Limpiar tabla
+			while (rs.next()) {
+				Object[] fila = new Object[5];
+				for (int i = 0; i < 5; i++)
+					fila[i] = rs.getObject(i + 1);
+				model.addRow(fila);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static int contarPaginas(int registrosPorPagina) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// Variable PreparedStatement
+		// Se genear una variables que optiene la conexi�n ala base de Datos
+		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
+		sql = "SELECT count(id_Clase) as 'Conteo' FROM clases ";
+
+		int Conteo = 1;
+
+		try (Connection conexion = ConexionBDSQLServer.GetConexion();
+				PreparedStatement sentencia = conexion.prepareStatement(sql)) {
+
+			ResultSet rs = sentencia.executeQuery();
+
+			if (rs.next()) {
+				Conteo = rs.getInt("Conteo");
+				System.out.println(Conteo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al contar paginas", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		int paginas = (int) Math.ceil(1f * Conteo / registrosPorPagina);
+		System.out.println(paginas);
+		return paginas;
+	}
 }
 

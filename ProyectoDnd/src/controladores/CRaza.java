@@ -11,8 +11,9 @@ import conexion.ConexionBDSQLServer;
 import modelos.ORaza;
 
 /**
- * Clase controladora que gestiona las operaciones CRUD relacionadas con las razas en la base de datos.
- * Utiliza la clase ORaza como modelo de datos y se conecta mediante ConexionBDSQLServer.
+ * Clase controladora que gestiona las operaciones CRUD relacionadas con las
+ * razas en la base de datos. Utiliza la clase ORaza como modelo de datos y se
+ * conecta mediante ConexionBDSQLServer.
  */
 public class CRaza {
 	private static Connection conexion = null;
@@ -24,9 +25,9 @@ public class CRaza {
 	 * @param raza Objeto ORaza con los datos a registrar.
 	 */
 	public void registrarRaza(ORaza raza) {
-		String sqlRaza = "INSERT INTO Razas (NombreRaza, DescripcionRaza, TamañoRaza, VelocidadRaza) VALUES (?, ?, ?, ?)";
+		String sqlRaza = "INSERT INTO Razas (NombreRaza, DescripcionRaza, TamanoRaza, VelocidadRaza) VALUES (?, ?, ?, ?)";
 		String sqlEstadisticas = "INSERT INTO EstadisticasRaza (Id_Raza, Fuerza, Destreza, Constitucion, Inteligencia, Sabiduria, Carisma) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		
+
 		try (Connection conn = ConexionBDSQLServer.GetConexion()) {
 			try (PreparedStatement psRaza = conn.prepareStatement(sqlRaza, Statement.RETURN_GENERATED_KEYS)) {
 				psRaza.setString(1, raza.getNombreRaza());
@@ -67,63 +68,62 @@ public class CRaza {
 	 * @return Objeto ORaza con los datos encontrados o null si no se encontró.
 	 */
 	public ORaza obtenerRazaConEstadisticas(String nombreRaza) {
-	    ORaza raza = null;
-	    String sql = "SELECT * FROM Raza WHERE NombreRaza = ?";
-	    
-	    try (Connection conn = ConexionBDSQLServer.GetConexion();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        
-	        ps.setString(1, nombreRaza);
-	        ResultSet rs = ps.executeQuery();
-	        
-	        if (rs.next()) {
-	            raza = new ORaza();
-	            raza.setId_Raza(rs.getInt("id_Raza"));
-	            raza.setNombreRaza(rs.getString("NombreRaza"));
-	            raza.setDescripcionRaza(rs.getString("DescripcionRaza"));
-	            raza.setTamanoRaza(rs.getString("TamañoRaza"));
-	            raza.setVelocidadRaza(rs.getInt("VelocidadRaza"));
-	            raza.setFuerza(rs.getInt("Fuerza"));
-	            raza.setDestreza(rs.getInt("Destreza"));
-	            raza.setConstitucion(rs.getInt("Constitucion"));
-	            raza.setInteligencia(rs.getInt("Inteligencia"));
-	            raza.setSabiduria(rs.getInt("Sabiduria"));
-	            raza.setCarisma(rs.getInt("Carisma"));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        JOptionPane.showMessageDialog(null, "Error al obtener la raza", "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	    return raza;
+		ORaza raza = null;
+		String sql = "SELECT * FROM Raza WHERE NombreRaza = ?";
+
+		try (Connection conn = ConexionBDSQLServer.GetConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setString(1, nombreRaza);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				raza = new ORaza();
+				raza.setId_Raza(rs.getInt("id_Raza"));
+				raza.setNombreRaza(rs.getString("NombreRaza"));
+				raza.setDescripcionRaza(rs.getString("DescripcionRaza"));
+				raza.setTamanoRaza(rs.getString("TamanoRaza"));
+				raza.setVelocidadRaza(rs.getInt("VelocidadRaza"));
+				raza.setFuerza(rs.getInt("Fuerza"));
+				raza.setDestreza(rs.getInt("Destreza"));
+				raza.setConstitucion(rs.getInt("Constitucion"));
+				raza.setInteligencia(rs.getInt("Inteligencia"));
+				raza.setSabiduria(rs.getInt("Sabiduria"));
+				raza.setCarisma(rs.getInt("Carisma"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al obtener la raza", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return raza;
 	}
-	
+
 	/**
 	 * Elimina una raza y sus estadísticas asociadas de la base de datos.
 	 * 
 	 * @param nombreRaza Nombre de la raza a eliminar.
 	 */
 	public void borrarRaza(String nombreRaza) {
-	    String sqlRaza = "DELETE FROM Razas WHERE NombreRaza = ?";
-	    String sqlEstadisticas = "DELETE FROM EstadisticasRaza WHERE Id_Raza = (SELECT Id_Raza FROM Razas WHERE NombreRaza = ?)";
-	    try (Connection conn = ConexionBDSQLServer.GetConexion()) {
-	        try (PreparedStatement psEstadisticas = conn.prepareStatement(sqlEstadisticas)) {
-	            psEstadisticas.setString(1, nombreRaza);
-	            psEstadisticas.executeUpdate();
-	        }
+		String sqlRaza = "DELETE FROM Razas WHERE NombreRaza = ?";
+		String sqlEstadisticas = "DELETE FROM EstadisticasRaza WHERE Id_Raza = (SELECT Id_Raza FROM Razas WHERE NombreRaza = ?)";
+		try (Connection conn = ConexionBDSQLServer.GetConexion()) {
+			try (PreparedStatement psEstadisticas = conn.prepareStatement(sqlEstadisticas)) {
+				psEstadisticas.setString(1, nombreRaza);
+				psEstadisticas.executeUpdate();
+			}
 
-	        try (PreparedStatement psRaza = conn.prepareStatement(sqlRaza)) {
-	            psRaza.setString(1, nombreRaza);
-	            int rowsAffected = psRaza.executeUpdate();
-	            if (rowsAffected > 0) {
-	                JOptionPane.showMessageDialog(null, "Raza borrada correctamente.");
-	            } else {
-	                JOptionPane.showMessageDialog(null, "No se encontró la raza.", "Error", JOptionPane.ERROR_MESSAGE);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        JOptionPane.showMessageDialog(null, "Error al borrar la raza", "Error", JOptionPane.ERROR_MESSAGE);
-	    }
+			try (PreparedStatement psRaza = conn.prepareStatement(sqlRaza)) {
+				psRaza.setString(1, nombreRaza);
+				int rowsAffected = psRaza.executeUpdate();
+				if (rowsAffected > 0) {
+					JOptionPane.showMessageDialog(null, "Raza borrada correctamente.");
+				} else {
+					JOptionPane.showMessageDialog(null, "No se encontró la raza.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al borrar la raza", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class CRaza {
 	 * @param model Modelo de tabla para visualizar las razas.
 	 */
 	public void buscarRazasConTableModel(DefaultTableModel model) {
-		String sql = "SELECT r.Id_Raza, r.NombreRaza, r.DescripcionRaza, r.TamañoRaza, r.VelocidadRaza, "
+		String sql = "SELECT r.Id_Raza, r.NombreRaza, r.DescripcionRaza, r.TamanoRaza, r.VelocidadRaza, "
 				+ "e.Fuerza, e.Destreza, e.Constitucion, e.Inteligencia, e.Sabiduria, e.Carisma "
 				+ "FROM Razas r JOIN EstadisticasRaza e ON r.Id_Raza = e.Id_Raza";
 		try (Connection conn = ConexionBDSQLServer.GetConexion();
@@ -144,7 +144,7 @@ public class CRaza {
 				fila[0] = rs.getInt("Id_Raza");
 				fila[1] = rs.getString("NombreRaza");
 				fila[2] = rs.getString("DescripcionRaza");
-				fila[3] = rs.getString("TamañoRaza");
+				fila[3] = rs.getString("TamanoRaza");
 				fila[4] = rs.getInt("VelocidadRaza");
 				fila[5] = rs.getInt("Fuerza");
 				fila[6] = rs.getInt("Destreza");
@@ -207,7 +207,7 @@ public class CRaza {
 					raza = new ORaza();
 					raza.setNombreRaza(rsRaza.getString("NombreRaza"));
 					raza.setDescripcionRaza(rsRaza.getString("DescripcionRaza"));
-					raza.setTamanoRaza(rsRaza.getString("TamañoRaza"));
+					raza.setTamanoRaza(rsRaza.getString("TamanoRaza"));
 					raza.setVelocidadRaza(rsRaza.getInt("VelocidadRaza"));
 
 					try (PreparedStatement psEstadisticas = conn.prepareStatement(sqlEstadisticas)) {
@@ -238,33 +238,33 @@ public class CRaza {
 	 * @param raza Objeto ORaza con los datos actualizados.
 	 */
 	public void actualizarRaza(ORaza raza) {
-	    String sqlRaza = "UPDATE Razas SET DescripcionRaza = ?, TamañoRaza = ?, VelocidadRaza = ? WHERE NombreRaza = ?";
-	    String sqlEstadisticas = "UPDATE EstadisticasRaza SET Fuerza = ?, Destreza = ?, Constitucion = ?, Inteligencia = ?, Sabiduria = ?, Carisma = ? WHERE Id_Raza = ?";
-	    
-	    try {
-	        try (PreparedStatement psRaza = conexion.prepareStatement(sqlRaza)) {
-	            psRaza.setString(1, raza.getDescripcionRaza());
-	            psRaza.setString(2, raza.getTamanoRaza());
-	            psRaza.setInt(3, raza.getVelocidadRaza());
-	            psRaza.setString(4, raza.getNombreRaza());
-	            psRaza.executeUpdate();
-	        }
+		String sqlRaza = "UPDATE Razas SET DescripcionRaza = ?, TamanoRaza = ?, VelocidadRaza = ? WHERE NombreRaza = ?";
+		String sqlEstadisticas = "UPDATE EstadisticasRaza SET Fuerza = ?, Destreza = ?, Constitucion = ?, Inteligencia = ?, Sabiduria = ?, Carisma = ? WHERE Id_Raza = ?";
 
-	        try (PreparedStatement psEstadisticas = conexion.prepareStatement(sqlEstadisticas)) {
-	            psEstadisticas.setInt(1, raza.getFuerza());
-	            psEstadisticas.setInt(2, raza.getDestreza());
-	            psEstadisticas.setInt(3, raza.getConstitucion());
-	            psEstadisticas.setInt(4, raza.getInteligencia());
-	            psEstadisticas.setInt(5, raza.getSabiduria());
-	            psEstadisticas.setInt(6, raza.getCarisma());
-	            psEstadisticas.setInt(7, raza.getId_Raza());
-	            psEstadisticas.executeUpdate();
-	        }
-	        
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        JOptionPane.showMessageDialog(null, "Error al actualizar raza", "Error", JOptionPane.ERROR_MESSAGE);
-	    }
+		try {
+			try (PreparedStatement psRaza = conexion.prepareStatement(sqlRaza)) {
+				psRaza.setString(1, raza.getDescripcionRaza());
+				psRaza.setString(2, raza.getTamanoRaza());
+				psRaza.setInt(3, raza.getVelocidadRaza());
+				psRaza.setString(4, raza.getNombreRaza());
+				psRaza.executeUpdate();
+			}
+
+			try (PreparedStatement psEstadisticas = conexion.prepareStatement(sqlEstadisticas)) {
+				psEstadisticas.setInt(1, raza.getFuerza());
+				psEstadisticas.setInt(2, raza.getDestreza());
+				psEstadisticas.setInt(3, raza.getConstitucion());
+				psEstadisticas.setInt(4, raza.getInteligencia());
+				psEstadisticas.setInt(5, raza.getSabiduria());
+				psEstadisticas.setInt(6, raza.getCarisma());
+				psEstadisticas.setInt(7, raza.getId_Raza());
+				psEstadisticas.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al actualizar raza", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -280,7 +280,8 @@ public class CRaza {
 			rs = stmt.executeQuery("SELECT NombreRaza FROM Razas");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error al obtener nombres de razas", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error al obtener nombres de razas", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 		return rs;
 	}
@@ -304,8 +305,66 @@ public class CRaza {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error al obtener nombre de la raza", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error al obtener nombre de la raza", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 		return nombreRaza;
+	}
+
+	public void buscarRazasConTableModel(DefaultTableModel model, int pagina, int registrosPorPagina) {
+
+		PreparedStatement pst = null;// Variable PreparedStatement
+		// Se genear una variables que optiene la conexi�n ala base de Datos
+		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
+		sql = "SELECT * FROM Razas ORDER BY Id_Raza OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+		try {
+
+			pst = conexion.prepareStatement(sql);
+			pst.setInt(1, (pagina - 1) * registrosPorPagina);
+			pst.setInt(2, registrosPorPagina);
+
+			ResultSet rs = pst.executeQuery();
+
+			model.setRowCount(0); // Limpiar tabla
+			while (rs.next()) {
+				Object[] fila = new Object[6];
+				for (int i = 0; i < 6; i++)
+					fila[i] = rs.getObject(i + 1);
+				model.addRow(fila);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static int contarPaginas(int registrosPorPagina) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// Variable PreparedStatement
+		// Se genear una variables que optiene la conexi�n ala base de Datos
+		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
+		sql = "SELECT count(id_Raza) as 'Conteo' FROM Razas ";
+
+		int Conteo = 1;
+
+		try (Connection conexion = ConexionBDSQLServer.GetConexion();
+				PreparedStatement sentencia = conexion.prepareStatement(sql)) {
+
+			ResultSet rs = sentencia.executeQuery();
+
+			if (rs.next()) {
+				Conteo = rs.getInt("Conteo");
+				System.out.println(Conteo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al contar paginas", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		int paginas = (int) Math.ceil(1f * Conteo / registrosPorPagina);
+		System.out.println(paginas);
+		return paginas;
 	}
 }

@@ -168,4 +168,60 @@ public class CSubclase {
         }
         return rs;
     }
+	public void buscarSubclasesConTableModel(DefaultTableModel model, int pagina, int registrosPorPagina) {
+
+		PreparedStatement pst = null;// Variable PreparedStatement
+		// Se genear una variables que optiene la conexi�n ala base de Datos
+		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
+		sql = "SELECT * FROM Subclases ORDER BY Id_Subclase OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+		try {
+
+			pst = conexion.prepareStatement(sql);
+			pst.setInt(1, (pagina - 1) * registrosPorPagina);
+			pst.setInt(2, registrosPorPagina);
+
+			ResultSet rs = pst.executeQuery();
+
+			model.setRowCount(0); // Limpiar tabla
+			while (rs.next()) {
+				Object[] fila = new Object[4];
+				for (int i = 0; i < 4; i++)
+					fila[i] = rs.getObject(i + 1);
+				model.addRow(fila);
+			}
+			rs.close();
+			pst.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static int contarPaginas(int registrosPorPagina) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;// Variable PreparedStatement
+		// Se genear una variables que optiene la conexi�n ala base de Datos
+		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
+		sql = "SELECT count(id_Subclase) as 'Conteo' FROM Subclases ";
+
+		int Conteo = 1;
+
+		try (Connection conexion = ConexionBDSQLServer.GetConexion();
+				PreparedStatement sentencia = conexion.prepareStatement(sql)) {
+
+			ResultSet rs = sentencia.executeQuery();
+
+			if (rs.next()) {
+				Conteo = rs.getInt("Conteo");
+				System.out.println(Conteo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al contar paginas", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+		int paginas = (int) Math.ceil(1f * Conteo / registrosPorPagina);
+		System.out.println(paginas);
+		return paginas;
+	}
 }

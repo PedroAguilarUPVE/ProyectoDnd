@@ -164,7 +164,7 @@ public class EditarPersonaje extends JDialog {
 	private JLabel lblImagen;
 	private JPanel panelFuerza;
 	private JPanel panelConstitucion;
-	private JButton btnGuardar;
+	private JButton btnEditar;
 	private JComboBox comboBoxSubclase;
 	private JPanel contentPane;
 
@@ -191,8 +191,10 @@ public class EditarPersonaje extends JDialog {
 	 * @param modal  Clase boolean Indica el modo de sobreposicion de la ventana hija
 	 * @param Idioma Clase Locale Hereda el parametro tipo Locale de la clase padre, para la
 	 *               seleccion de idioma
+	 * @param idSeleccionado  
 	 */
-	public EditarPersonaje(Frame parent, boolean modal, Locale Idioma) { // Hoja De Personaje
+	public EditarPersonaje(Frame parent, boolean modal, Locale Idioma, int idSeleccionado) { // Hoja De Personaje
+		
 		super(parent, modal);// se inicializa el constructor super
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -776,10 +778,10 @@ public class EditarPersonaje extends JDialog {
 		lblImagen.setIcon(IconoImagen);
 		panelCreacion.add(lblImagen);
 
-		btnGuardar = new JButton(et.getString("Guardar"));
-		btnGuardar.setEnabled(false);
-		btnGuardar.setBounds(360, 125, 85, 21);
-		panelCreacion.add(btnGuardar);
+		btnEditar = new JButton(et.getString("Editar"));
+		btnEditar.setEnabled(false);
+		btnEditar.setBounds(360, 125, 85, 21);
+		panelCreacion.add(btnEditar);
 
 		scrollPersonajes = new JScrollPane();
 		tabbedPane.addTab(et.getString("ver_personajes"), null, scrollPersonajes, null);
@@ -790,39 +792,39 @@ public class EditarPersonaje extends JDialog {
 		// Botón para eliminar personaje
 
 
-		ManejadorBoton EscuchadorBotones = new ManejadorBoton();
+		ManejadorBoton EscuchadorBoton = new ManejadorBoton();
 
-		btnEliminar.addActionListener(EscuchadorBotones);
-		btnCalcular.addActionListener(EscuchadorBotones);
-		btnTirar.addActionListener(EscuchadorBotones);
-		rdbtnFue.addActionListener(EscuchadorBotones);
-		rdbtnDes.addActionListener(EscuchadorBotones);
-		rdbtnCon.addActionListener(EscuchadorBotones);
-		rdbtnInt.addActionListener(EscuchadorBotones);
-		rdbtnSab.addActionListener(EscuchadorBotones);
-		rdbtnCar.addActionListener(EscuchadorBotones);
-		btnGuardar.addActionListener(EscuchadorBotones);
+		btnEliminar.addActionListener(EscuchadorBoton);
+		btnEditar.addActionListener(EscuchadorBoton);
+		btnCalcular.addActionListener(EscuchadorBoton);
+		btnTirar.addActionListener(EscuchadorBoton);
+		rdbtnFue.addActionListener(EscuchadorBoton);
+		rdbtnDes.addActionListener(EscuchadorBoton);
+		rdbtnCon.addActionListener(EscuchadorBoton);
+		rdbtnInt.addActionListener(EscuchadorBoton);
+		rdbtnSab.addActionListener(EscuchadorBoton);
+		rdbtnCar.addActionListener(EscuchadorBoton);
 
-		rdbtnAcrobacias.addActionListener(EscuchadorBotones);
-		rdbtnAtletismo.addActionListener(EscuchadorBotones);
-		rdbtnArcano.addActionListener(EscuchadorBotones);
-		rdbtnEngaño.addActionListener(EscuchadorBotones);
-		rdbtnHistoria.addActionListener(EscuchadorBotones);
-		rdbtnInterpretacion.addActionListener(EscuchadorBotones);
+		rdbtnAcrobacias.addActionListener(EscuchadorBoton);
+		rdbtnAtletismo.addActionListener(EscuchadorBoton);
+		rdbtnArcano.addActionListener(EscuchadorBoton);
+		rdbtnEngaño.addActionListener(EscuchadorBoton);
+		rdbtnHistoria.addActionListener(EscuchadorBoton);
+		rdbtnInterpretacion.addActionListener(EscuchadorBoton);
 
-		rdbtnIntimidacion.addActionListener(EscuchadorBotones);
-		rdbtnInvestigacion.addActionListener(EscuchadorBotones);
-		rdbtnManos.addActionListener(EscuchadorBotones);
-		rdbtnMedicina.addActionListener(EscuchadorBotones);
-		rdbtnNaturaleza.addActionListener(EscuchadorBotones);
-		rdbtnPercepcion.addActionListener(EscuchadorBotones);
+		rdbtnIntimidacion.addActionListener(EscuchadorBoton);
+		rdbtnInvestigacion.addActionListener(EscuchadorBoton);
+		rdbtnManos.addActionListener(EscuchadorBoton);
+		rdbtnMedicina.addActionListener(EscuchadorBoton);
+		rdbtnNaturaleza.addActionListener(EscuchadorBoton);
+		rdbtnPercepcion.addActionListener(EscuchadorBoton);
 
-		rdbtnPerspicacia.addActionListener(EscuchadorBotones);
-		rdbtnPersuacion.addActionListener(EscuchadorBotones);
-		rdbtnReligion.addActionListener(EscuchadorBotones);
-		rdbtnSigilo.addActionListener(EscuchadorBotones);
-		rdbtnSupervivencia.addActionListener(EscuchadorBotones);
-		rdbtnTratoAnimal.addActionListener(EscuchadorBotones);
+		rdbtnPerspicacia.addActionListener(EscuchadorBoton);
+		rdbtnPersuacion.addActionListener(EscuchadorBoton);
+		rdbtnReligion.addActionListener(EscuchadorBoton);
+		rdbtnSigilo.addActionListener(EscuchadorBoton);
+		rdbtnSupervivencia.addActionListener(EscuchadorBoton);
+		rdbtnTratoAnimal.addActionListener(EscuchadorBoton);
 
 		ManejadorKey EscuchadorKey = new ManejadorKey();
 
@@ -856,7 +858,22 @@ public class EditarPersonaje extends JDialog {
 
 		cargarClasesEnComboBox();
 		cargarRazasEnComboBox();
+		
+		cambiarModo(idSeleccionado);
 
+	}
+
+
+
+	private void cambiarModo(int idSeleccionado) {
+		// TODO Auto-generated method stub
+		if (idSeleccionado == 0) {
+			
+		}
+		else {
+			cargarDatosPersonaje(idSeleccionado);
+		}
+		
 	}
 
 
@@ -871,7 +888,7 @@ public class EditarPersonaje extends JDialog {
 		// identificar que boton genera un evento
 
 		public void actionPerformed(ActionEvent EventoBotones) {
-			if (EventoBotones.getSource().equals(btnGuardar)) {
+			if (EventoBotones.getSource().equals(btnEditar)) {
 				ActualizarPersonaje();
 			} // fin btnGuardar
 
@@ -1015,10 +1032,11 @@ public class EditarPersonaje extends JDialog {
 	private class ManejadorItem implements ItemListener {
 	    public void itemStateChanged(ItemEvent EventoItem) {
 	        // Si el origen del evento es el comboBoxPersonaje
-	        if (EventoItem.getSource() == comboBoxPersonaje) {
-	                // También podemos cargar los datos del personaje
-	                cargarDatosPersonaje(comboBoxPersonaje.getSelectedItem().toString());
-	            }
+	        
+//	    	if (EventoItem.getSource() == comboBoxPersonaje) {
+//	                // También podemos cargar los datos del personaje
+//	                cargarDatosPersonaje(<comboBoxPersonaje.getSelectedItem().toString());
+//	            }
 	        
 	        
 	        // Si el origen del evento es el comboBoxClase
@@ -1063,9 +1081,9 @@ public class EditarPersonaje extends JDialog {
 	 * Metodo cargarDatosPersonaje Metodo para cargar los datos del personaje seleccionado
 	 * Llena los campos de los componentes correspondientes, con los datos de personaje obtenido de la base de datos
 	 */	
-	public void cargarDatosPersonaje(String nombrePersonajeSeleccionado) {
+	public void cargarDatosPersonaje(int idPersonajeSeleccionado) {
 	    // Obtener el ID del personaje basado en su nombre
-	    int idPersonajeSeleccionado = new CPersonaje().obtenerIdPersonaje(nombrePersonajeSeleccionado);
+	    //int idPersonajeSeleccionado = new CPersonaje().obtenerIdPersonaje(nombrePersonajeSeleccionado);
 
 	    // Si no se encontró el personaje, desactivar los ComboBoxes correspondientes
 	    if (idPersonajeSeleccionado == -1) {
@@ -1075,7 +1093,7 @@ public class EditarPersonaje extends JDialog {
             comboBoxClase.setEnabled(false);
             comboBoxRaza.setEnabled(false);
             comboBoxSubclase.setEnabled(false);
-            btnGuardar.setEnabled(false);
+            btnEditar.setEnabled(false);
             btnEliminar.setEnabled(false);
 
 	        return;
@@ -1109,7 +1127,7 @@ public class EditarPersonaje extends JDialog {
             comboBoxClase.setEnabled(true);
             comboBoxRaza.setEnabled(true);
             comboBoxSubclase.setEnabled(true);
-            btnGuardar.setEnabled(true);
+            btnEditar.setEnabled(true);
             btnEliminar.setEnabled(true);
 
 	    } catch (Exception ex) {

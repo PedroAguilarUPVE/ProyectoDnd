@@ -24,14 +24,16 @@ public class Menu extends JFrame {
 	private JButton btnCrearClases;
 	public CrearPersonaje Personaje;
 	public CrearClases Datos;
-
+	
 	private static Locale Idioma;
 	private static ResourceBundle et;
 	private JButton btnEditarPersonajes;
 	private JButton btnEditarClases;
 	public EditarPersonaje VerPersonaje;
 	public vistas.EditarClases VerDatos;
-
+	private JButton btnTablas;
+	public panelesJtable tablas;
+	
 	/**
 	 * Metodo main Se ejecuta al iniciar la clase. Invoca al contructor de la
 	 * ventana Menu
@@ -81,14 +83,19 @@ public class Menu extends JFrame {
 
 		btnEditarPersonajes = new JButton(et.getString("editarPersonajes"));
 		btnEditarPersonajes.setBounds(115, 136, 185, 21);
-		contentPane.add(btnEditarPersonajes);
+		//contentPane.add(btnEditarPersonajes);
 
 		btnEditarClases = new JButton(et.getString("editarClases"));
 		btnEditarClases.setBounds(115, 167, 185, 21);
 		contentPane.add(btnEditarClases);
+		
+		btnTablas = new JButton(et.getString("VerDatos"));
+		btnTablas.setBounds(115, 201, 185, 21);
+		contentPane.add(btnTablas);
 
 		ManejadorBoton EscuchadorBotones = new ManejadorBoton();
 
+		btnTablas.addActionListener(EscuchadorBotones);
 		btnPersonajes.addActionListener(EscuchadorBotones);
 		btnCrearClases.addActionListener(EscuchadorBotones);
 		btnEditarPersonajes.addActionListener(EscuchadorBotones);
@@ -103,7 +110,7 @@ public class Menu extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(btnPersonajes)) {
-				Personaje = new CrearPersonaje(Menu.this, true, Idioma);
+				Personaje = new CrearPersonaje(Menu.this, true, Idioma, 0);
 				Personaje.setVisible(true);
 			}
 			if (e.getSource().equals(btnCrearClases)) {
@@ -111,12 +118,16 @@ public class Menu extends JFrame {
 				Datos.setVisible(true);
 			}
 			if (e.getSource().equals(btnEditarPersonajes)) {
-				VerPersonaje = new EditarPersonaje(Menu.this, true, Idioma);
+				VerPersonaje = new EditarPersonaje(Menu.this, true, Idioma, 0);
 				VerPersonaje.setVisible(true);
 			}
 			if (e.getSource().equals(btnEditarClases)) {
 				VerDatos = new EditarClases(Menu.this, true, Idioma);
 				VerDatos.setVisible(true);
+			}
+			if (e.getSource().equals(btnTablas)) {
+				tablas = new panelesJtable(Menu.this, true, Idioma);
+				tablas.setVisible(true);
 			}
 		}
 	}

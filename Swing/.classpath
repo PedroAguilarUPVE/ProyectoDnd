@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="src/librerias/javax.xml.bind.jar"/>
+	<classpathentry kind="lib" path="src/librerias/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="src/librerias/JPlaceHolder.jar"/>
+	<classpathentry kind="lib" path="src/librerias/JPlaceHolderPassw.jar"/>
+	<classpathentry kind="lib" path="src/librerias/mssql-jdbc-9.2.0.jar"/>
+	<classpathentry kind="lib" path="src/librerias/swingx-all-1.6.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
