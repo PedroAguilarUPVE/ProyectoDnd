@@ -65,19 +65,19 @@ public class PanelEstadisticas extends JPanel {
 		lblModFue = new JLabel("0");
 		lblModFue.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModFue.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModFue.setBounds(10, 11, 45, 20);
+		lblModFue.setBounds(10, 5, 45, 20);
 		panelFuerza.add(lblModFue);
 
 		JLabel lblFue = new JLabel(et.getString("Fuerza"));
 		lblFue.setVerticalAlignment(SwingConstants.TOP);
 		lblFue.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFue.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblFue.setBounds(0, 59, 57, 14);
+		lblFue.setBounds(0, 40, 60, 14);
 		panelFuerza.add(lblFue);
 
 		spinnerFue = new JSpinner();
 		spinnerFue.setModel(new SpinnerNumberModel(10, 0, 20, 1));
-		spinnerFue.setBounds(10, 30, 47, 20);
+		spinnerFue.setBounds(5, 20, 40, 20);
 		panelFuerza.add(spinnerFue);
 
 		JPanel panelDestreza = new JPanel();
@@ -96,7 +96,7 @@ public class PanelEstadisticas extends JPanel {
 		lblDes.setVerticalAlignment(SwingConstants.TOP);
 		lblDes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDes.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblDes.setBounds(0, 59, 57, 14);
+		lblDes.setBounds(0, 59, 60, 14);
 		panelDestreza.add(lblDes);
 
 		spinnerDes = new JSpinner();
@@ -120,7 +120,7 @@ public class PanelEstadisticas extends JPanel {
 		lblCon.setVerticalAlignment(SwingConstants.TOP);
 		lblCon.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCon.setFont(new Font("Sylfaen", Font.PLAIN, 11));
-		lblCon.setBounds(0, 59, 63, 14);
+		lblCon.setBounds(0, 59, 60, 14);
 		panelConstitucion.add(lblCon);
 
 		spinnerCon = new JSpinner();
@@ -144,7 +144,7 @@ public class PanelEstadisticas extends JPanel {
 		lblInt.setVerticalAlignment(SwingConstants.TOP);
 		lblInt.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInt.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblInt.setBounds(0, 59, 63, 14);
+		lblInt.setBounds(0, 59, 60, 14);
 		panelInteligencia.add(lblInt);
 
 		spinnerInt = new JSpinner();
@@ -168,7 +168,7 @@ public class PanelEstadisticas extends JPanel {
 		lblSab.setVerticalAlignment(SwingConstants.TOP);
 		lblSab.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSab.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblSab.setBounds(0, 59, 57, 14);
+		lblSab.setBounds(0, 59, 60, 14);
 		panelSabiduria.add(lblSab);
 
 		spinnerSab = new JSpinner();
@@ -192,7 +192,7 @@ public class PanelEstadisticas extends JPanel {
 		lblCar.setVerticalAlignment(SwingConstants.TOP);
 		lblCar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCar.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblCar.setBounds(0, 59, 57, 14);
+		lblCar.setBounds(0, 59, 60, 14);
 		panelCarisma.add(lblCar);
 
 		spinnerCar = new JSpinner();

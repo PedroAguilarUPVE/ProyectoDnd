@@ -33,6 +33,8 @@ public class Menu extends JFrame {
 	public vistas.EditarClases VerDatos;
 	private JButton btnTablas;
 	public panelesJtable tablas;
+	private JButton btnCrearPartida;
+	public CrearPartida Partidas;
 	
 	/**
 	 * Metodo main Se ejecuta al iniciar la clase. Invoca al contructor de la
@@ -86,12 +88,16 @@ public class Menu extends JFrame {
 		//contentPane.add(btnEditarPersonajes);
 
 		btnEditarClases = new JButton(et.getString("editarClases"));
-		btnEditarClases.setBounds(115, 167, 185, 21);
+		btnEditarClases.setBounds(115, 136, 185, 21);
 		contentPane.add(btnEditarClases);
 		
 		btnTablas = new JButton(et.getString("VerDatos"));
-		btnTablas.setBounds(115, 201, 185, 21);
+		btnTablas.setBounds(115, 198, 185, 21);
 		contentPane.add(btnTablas);
+		
+		btnCrearPartida = new JButton((String) null);
+		btnCrearPartida.setBounds(115, 167, 185, 21);
+		contentPane.add(btnCrearPartida);
 
 		ManejadorBoton EscuchadorBotones = new ManejadorBoton();
 
@@ -100,6 +106,7 @@ public class Menu extends JFrame {
 		btnCrearClases.addActionListener(EscuchadorBotones);
 		btnEditarPersonajes.addActionListener(EscuchadorBotones);
 		btnEditarClases.addActionListener(EscuchadorBotones);
+		btnCrearPartida.addActionListener(EscuchadorBotones);
 	}
 
 	/**
@@ -128,6 +135,10 @@ public class Menu extends JFrame {
 			if (e.getSource().equals(btnTablas)) {
 				tablas = new panelesJtable(Menu.this, true, Idioma);
 				tablas.setVisible(true);
+			}
+			if (e.getSource().equals(btnCrearPartida)) {
+				Partidas = new CrearPartida(Menu.this, true, Idioma);
+				Partidas.setVisible(true);
 			}
 		}
 	}

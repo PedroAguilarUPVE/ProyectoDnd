@@ -302,16 +302,12 @@ public class panelesJtable extends JDialog {
 			if (e.getSource().equals(tablePersonajes.getSelectionModel())) {
 				if (!e.getValueIsAdjusting() && tablePersonajes.getSelectedRow() != -1) {
 					int fila = tablePersonajes.getSelectedRow(); // Obtiene la fila selecionada
-					// Guardar el id seleciona del registro
-					String nombreSeleccionado = tablePersonajes.getValueAt(fila, 1).toString();
+					String nombreSeleccionado = tablePersonajes.getValueAt(fila, 0).toString();
 					int idSeleccionado = 0 ;
-					idSeleccionado = CPersonaje.obtenerIdPersonaje(nombreSeleccionado);
-					//idSeleccionado = Integer.parseInt( tablePersonajes.getValueAt(fila, 0).toString() );
+					idSeleccionado = CPersonaje.obtenerIdPersonaje(nombreSeleccionado);	// Guardar el id seleciona del registro
 					System.out.println(nombreSeleccionado + idSeleccionado);
 					CrearPersonaje VerPersonaje = new CrearPersonaje(null, true, Idioma, idSeleccionado);
-					VerPersonaje.setVisible(true);
-					//VerPersonaje.cargarDatosPersonaje(idSeleccionado);
-
+					VerPersonaje.setVisible(true);	//VerPersonaje.cargarDatosPersonaje(idSeleccionado);
 				}
 			}
 			if (e.getSource().equals(tableClases.getSelectionModel())) {
@@ -328,13 +324,12 @@ public class panelesJtable extends JDialog {
 				return false;
 			}
 		};
-		model.addColumn("Id");
+		//model.addColumn("Id");
 		model.addColumn("Nombre");
 		model.addColumn("Nivel");
 		model.addColumn("Clase");
 		model.addColumn("Subclase");
 		model.addColumn("Raza");
-
 
 		CPersonaje miPersonaje = new CPersonaje();
 		miPersonaje.buscarPersonajesConTableModel(model, paginaActualPersonajes, registrosPorPagina);
