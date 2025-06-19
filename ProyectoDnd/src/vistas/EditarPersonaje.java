@@ -865,6 +865,12 @@ public class EditarPersonaje extends JDialog {
 
 
 
+	public EditarPersonaje(panelesJtable panelesJtable, boolean b, Locale idioma2) {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	private void cambiarModo(int idSeleccionado) {
 		// TODO Auto-generated method stub
 		if (idSeleccionado == 0) {
