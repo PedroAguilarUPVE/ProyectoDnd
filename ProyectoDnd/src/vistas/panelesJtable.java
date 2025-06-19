@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -22,6 +23,13 @@ import controladores.CClase;
 import controladores.CPersonaje;
 import controladores.CRaza;
 import controladores.CSubclase;
+import modelos.OClase;
+import modelos.ORaza;
+import vistas.EditarClases;
+
+
+
+
 
 public class panelesJtable extends JDialog {
 
@@ -57,6 +65,16 @@ public class panelesJtable extends JDialog {
 	private JButton btnUltSubclases;
 	private JTable tableSubclases;
 	private Locale Idioma;
+	private JButton btnEdiPerson;
+	private JButton btnEdiClases;
+	private JButton btnEdiSubClases;
+	private JButton btnEdiRazas;
+	public panelesJtable tablas;
+	
+	private OClase claseSeleccionada;
+	private ORaza razaSeleccionada;
+
+	
 
 	public panelesJtable(Frame parent, boolean modal, Locale idioma) {
 		super(parent, modal);
@@ -86,20 +104,24 @@ public class panelesJtable extends JDialog {
 		panelTabs.addTab("Clases", panelClases);
 
 		btnPriClases = new JButton("Primero");
-		btnPriClases.setBounds(154, 255, 89, 23);
+		btnPriClases.setBounds(101, 255, 89, 23);
 		panelClases.add(btnPriClases);
 
 		btnAntClases = new JButton("Anterior");
-		btnAntClases.setBounds(281, 255, 89, 23);
+		btnAntClases.setBounds(228, 255, 89, 23);
 		panelClases.add(btnAntClases);
 
 		btnSigClases = new JButton("Siguiente");
-		btnSigClases.setBounds(413, 255, 89, 23);
+		btnSigClases.setBounds(360, 255, 89, 23);
 		panelClases.add(btnSigClases);
 
 		btnUltClases = new JButton("Ultimo");
-		btnUltClases.setBounds(540, 255, 89, 23);
+		btnUltClases.setBounds(487, 255, 89, 23);
 		panelClases.add(btnUltClases);
+		
+		btnEdiClases = new JButton("Editar");
+		btnEdiClases.setBounds(609, 255, 89, 23);
+		panelClases.add(btnEdiClases);
 
 		buscarClasesConTableModel();
 
@@ -111,20 +133,24 @@ public class panelesJtable extends JDialog {
 		panelTabs.addTab("Subclases", panelSubclases);
 
 		btnPriSubclases = new JButton("Primero");
-		btnPriSubclases.setBounds(157, 251, 89, 23);
+		btnPriSubclases.setBounds(109, 252, 89, 23);
 		panelSubclases.add(btnPriSubclases);
 
 		btnAntSubclases = new JButton("Anterior");
-		btnAntSubclases.setBounds(284, 251, 89, 23);
+		btnAntSubclases.setBounds(236, 252, 89, 23);
 		panelSubclases.add(btnAntSubclases);
 
 		btnSigSubclases = new JButton("Siguiente");
-		btnSigSubclases.setBounds(416, 251, 89, 23);
+		btnSigSubclases.setBounds(368, 252, 89, 23);
 		panelSubclases.add(btnSigSubclases);
 
 		btnUltSubclases = new JButton("Ultimo");
-		btnUltSubclases.setBounds(543, 251, 89, 23);
+		btnUltSubclases.setBounds(495, 252, 89, 23);
 		panelSubclases.add(btnUltSubclases);
+		
+		btnEdiSubClases = new JButton("Editar");
+		btnEdiSubClases.setBounds(623, 252, 89, 23);
+		panelSubclases.add(btnEdiSubClases);
 
 		buscarSubclasesConTableModel();
 
@@ -137,20 +163,24 @@ public class panelesJtable extends JDialog {
 		panelTabs.addTab("Razas", panelRazas);
 
 		btnPriRazas = new JButton("Primero");
-		btnPriRazas.setBounds(157, 251, 89, 23);
+		btnPriRazas.setBounds(108, 251, 89, 23);
 		panelRazas.add(btnPriRazas);
 
 		btnAntRazas = new JButton("Anterior");
-		btnAntRazas.setBounds(284, 251, 89, 23);
+		btnAntRazas.setBounds(235, 251, 89, 23);
 		panelRazas.add(btnAntRazas);
 
 		btnSigRazas = new JButton("Siguiente");
-		btnSigRazas.setBounds(416, 251, 89, 23);
+		btnSigRazas.setBounds(367, 251, 89, 23);
 		panelRazas.add(btnSigRazas);
 
 		btnUltRazas = new JButton("Ultimo");
-		btnUltRazas.setBounds(543, 251, 89, 23);
+		btnUltRazas.setBounds(494, 251, 89, 23);
 		panelRazas.add(btnUltRazas);
+		
+		btnEdiRazas = new JButton("Editar");
+		btnEdiRazas.setBounds(620, 251, 89, 23);
+		panelRazas.add(btnEdiRazas);
 
 		buscarRazasConTableModel();
 
@@ -158,27 +188,31 @@ public class panelesJtable extends JDialog {
 		panelPersonajes = new JPanel(null);
 		panelTabs.addTab("Personajes", panelPersonajes);
 		tablePersonajes = new JTable();
-		panelPersonajes.add(tablePersonajes);
+		//panelPersonajes.add(tablePersonajes);
 		
 		miBarra = new JScrollPane();
 		miBarra.setBounds(10, 11, 786, 185);
 		panelPersonajes.add(miBarra);
 
 		btnPriPerson = new JButton("Primero");
-		btnPriPerson.setBounds(140, 250, 89, 23);
+		btnPriPerson.setBounds(77, 249, 89, 23);
 		panelPersonajes.add(btnPriPerson);
 
 		btnAntPerson = new JButton("Anterior");
-		btnAntPerson.setBounds(267, 250, 89, 23);
+		btnAntPerson.setBounds(204, 249, 89, 23);
 		panelPersonajes.add(btnAntPerson);
 
 		btnSigPerson = new JButton("Siguiente");
-		btnSigPerson.setBounds(399, 250, 89, 23);
+		btnSigPerson.setBounds(336, 249, 89, 23);
 		panelPersonajes.add(btnSigPerson);
 
 		btnUltPerson = new JButton("Ultimo");
-		btnUltPerson.setBounds(526, 250, 89, 23);
+		btnUltPerson.setBounds(463, 249, 89, 23);
 		panelPersonajes.add(btnUltPerson);
+		
+		btnEdiPerson = new JButton("Editar");
+		btnEdiPerson.setBounds(589, 249, 89, 23);
+		panelPersonajes.add(btnEdiPerson);
 
 		buscarPersonajesConTableModel();
 
@@ -200,6 +234,10 @@ public class panelesJtable extends JDialog {
 		btnSigSubclases.addActionListener(Escuchador);
 		btnPriSubclases.addActionListener(Escuchador);
 		btnUltSubclases.addActionListener(Escuchador);
+		btnEdiPerson.addActionListener(Escuchador);
+		btnEdiRazas.addActionListener(Escuchador);
+		btnEdiClases.addActionListener(Escuchador);
+		btnEdiSubClases.addActionListener(Escuchador);
 
 		ManejadorTabla ControladorTabla = new ManejadorTabla();
 		tablePersonajes.getSelectionModel().addListSelectionListener(ControladorTabla);
@@ -289,33 +327,86 @@ public class panelesJtable extends JDialog {
 				paginaActualSubclases = UltimaPaginaSubclase();
 				buscarSubclasesConTableModel();
 			}
+			if (e.getSource().equals(btnEdiPerson)) {
+			    editarPersonajeSeleccionado();
+			}
+			if (e.getSource() == btnEdiClases) {
+			    editarClaseSeleccionada();
+			}
+			if (e.getSource() == btnEdiRazas) {
+			    editarRazaSeleccionada();
+			}
+
 
 		}
 	}
+	private void editarPersonajeSeleccionado() {
+	    if (idSeleccionadoPersonaje != -1) {
+	        CrearPersonaje VerPersonaje = new CrearPersonaje(null, true, Idioma, idSeleccionadoPersonaje);
+	        VerPersonaje.setVisible(true);
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Selecciona un personaje antes de editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+	    }
+	}
+	private void editarClaseSeleccionada() {
+	    if (claseSeleccionada != null) {
+	        CrearClases editar = new CrearClases(null, true, Idioma, claseSeleccionada);
+	        editar.setVisible(true);
+	        buscarClasesConTableModel();
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Selecciona una clase para editar.", "Aviso",
+	                JOptionPane.WARNING_MESSAGE);
+	    }
+	}
+	private void editarRazaSeleccionada() {
+	    if (razaSeleccionada != null) {
+	    	CrearRazas editar = new CrearRazas(null, true, Idioma, razaSeleccionada);
+	        editar.setVisible(true);
+	        buscarRazasConTableModel();
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Selecciona una raza para editar.", "Aviso",
+	                JOptionPane.WARNING_MESSAGE);
+	    }
+	}
+
+
+	
+	private int idSeleccionadoPersonaje = -1; // Decláralo en tu clase principal (panelesJtable)
 
 	public class ManejadorTabla implements ListSelectionListener {
+	    @Override
+	    public void valueChanged(ListSelectionEvent e) {
+	        if (!e.getValueIsAdjusting()) {
+	            if (e.getSource().equals(tablePersonajes.getSelectionModel())) {
+	                int fila = tablePersonajes.getSelectedRow();
+	                if (fila != -1) {
+	                    idSeleccionadoPersonaje = Integer.parseInt(tablePersonajes.getValueAt(fila, 0).toString());
+	                    System.out.println("Personaje seleccionado ID: " + idSeleccionadoPersonaje);
+	                }
+	            }
 
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println();
-			if (e.getSource().equals(tablePersonajes.getSelectionModel())) {
-				if (!e.getValueIsAdjusting() && tablePersonajes.getSelectedRow() != -1) {
-					int fila = tablePersonajes.getSelectedRow(); // Obtiene la fila selecionada
-					String nombreSeleccionado = tablePersonajes.getValueAt(fila, 0).toString();
-					int idSeleccionado = 0 ;
-					idSeleccionado = CPersonaje.obtenerIdPersonaje(nombreSeleccionado);	// Guardar el id seleciona del registro
-					System.out.println(nombreSeleccionado + idSeleccionado);
-					CrearPersonaje VerPersonaje = new CrearPersonaje(null, true, Idioma, idSeleccionado);
-					VerPersonaje.setVisible(true);	//VerPersonaje.cargarDatosPersonaje(idSeleccionado);
-				}
-			}
-			if (e.getSource().equals(tableClases.getSelectionModel())) {
-				
-			}
-		}
+	            if (e.getSource().equals(tableClases.getSelectionModel())) {
+	                int fila = tableClases.getSelectedRow();
+	                if (fila != -1) {
+	                    String nombreClase = tableClases.getValueAt(fila, 1).toString(); // columna 1 = nombre clase
+	                    claseSeleccionada = new CClase().buscarClasePorNombre(nombreClase);
+	                    System.out.println("Clase seleccionada: " + claseSeleccionada.getNombreClase());
+	                }
+	            }
 
+	            if (e.getSource().equals(tableRazas.getSelectionModel())) {
+	                int fila = tableRazas.getSelectedRow();
+	                if (fila != -1) {
+	                    String nombreRaza = tableRazas.getValueAt(fila, 1).toString(); // columna 1 = nombre raza
+	                    razaSeleccionada = new CRaza().buscarRazaPorNombre(nombreRaza);
+	                    System.out.println("Raza seleccionada: " + razaSeleccionada.getNombreRaza());
+	                }
+	            }
+	        }
+	    }
 	}
+
+
 
 	// --- Métodos para cargar datos en tablas ---
 	private void buscarPersonajesConTableModel() {
@@ -422,5 +513,4 @@ public class panelesJtable extends JDialog {
 		paginas = CSubclase.contarPaginas(registrosPorPagina);
 		return paginas;
 	}
-
 }
