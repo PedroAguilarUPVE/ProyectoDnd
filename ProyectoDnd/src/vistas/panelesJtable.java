@@ -217,7 +217,7 @@ public class panelesJtable extends JDialog {
 		buscarPersonajesConTableModel();
 
 		// --- Escuchadores ---
-		manejadorbotones Escuchador = new manejadorbotones();
+		ManejadorBotones Escuchador = new ManejadorBotones();
 		btnAntPerson.addActionListener(Escuchador);
 		btnSigPerson.addActionListener(Escuchador);
 		btnPriPerson.addActionListener(Escuchador);
@@ -247,7 +247,7 @@ public class panelesJtable extends JDialog {
 
 	}
 
-	public class manejadorbotones implements ActionListener {
+	public class ManejadorBotones implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnAntPerson) {
@@ -350,7 +350,7 @@ public class panelesJtable extends JDialog {
 	}
 	private void editarClaseSeleccionada() {
 	    if (claseSeleccionada != null) {
-	        CrearClases editar = new CrearClases(null, true, Idioma, claseSeleccionada);
+	        CrearClases editar = new CrearClases(null, true, Idioma, claseSeleccionada.getIdClase());
 	        editar.setVisible(true);
 	        buscarClasesConTableModel();
 	    } else {
@@ -360,7 +360,7 @@ public class panelesJtable extends JDialog {
 	}
 	private void editarRazaSeleccionada() {
 	    if (razaSeleccionada != null) {
-	    	CrearRazas editar = new CrearRazas(null, true, Idioma, razaSeleccionada);
+	    	CrearRazas editar = new CrearRazas(null, true, Idioma, razaSeleccionada.getId_Raza());
 	        editar.setVisible(true);
 	        buscarRazasConTableModel();
 	    } else {
@@ -380,7 +380,7 @@ public class panelesJtable extends JDialog {
 	            if (e.getSource().equals(tablePersonajes.getSelectionModel())) {
 	                int fila = tablePersonajes.getSelectedRow();
 	                if (fila != -1) {
-	                    idSeleccionadoPersonaje = Integer.parseInt(tablePersonajes.getValueAt(fila, 0).toString());
+	                    idSeleccionadoPersonaje = CPersonaje.obtenerIdPersonaje(tablePersonajes.getValueAt(fila, 0).toString());
 	                    System.out.println("Personaje seleccionado ID: " + idSeleccionadoPersonaje);
 	                }
 	            }

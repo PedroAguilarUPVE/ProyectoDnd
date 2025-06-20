@@ -3,6 +3,8 @@ package vistas;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -19,6 +21,8 @@ public class CrearPartida extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private ResourceBundle et;
+	private JButton btnReporte;
+	private JButton btnCargarPer1;
 
 	/**
 	 * Launch the application.
@@ -61,12 +65,12 @@ public class CrearPartida extends JDialog {
 		panel.add(Personaje1);
 		
 		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(350, 210, 90, 20);
+		btnNewButton.setBounds(150, 210, 90, 20);
 		panel.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBounds(250, 210, 90, 20);
-		panel.add(btnNewButton_1);
+		btnCargarPer1 = new JButton("Cargar Personaje");
+		btnCargarPer1.setBounds(330, 210, 120, 20);
+		panel.add(btnCargarPer1);
 		Personaje1.setVisible(true);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -75,5 +79,26 @@ public class CrearPartida extends JDialog {
 		
 		JTextArea textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
+		
+		btnReporte = new JButton("Reporte");
+		btnReporte.setBounds(510, 730, 85, 21);
+		contentPanel.add(btnReporte);
+		
+		ManejadorBoton EscuchadorBoton = new ManejadorBoton();
+		btnCargarPer1.addActionListener(EscuchadorBoton);
+	}
+	
+	private class ManejadorBoton implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource().equals(btnCargarPer1)) {
+				tablaPersonajes AgregarPersonaje = new tablaPersonajes(CrearPartida.this,true);
+				AgregarPersonaje.setVisible(true);
+				
+			}
+			
+		}
+		
 	}
 }

@@ -62,8 +62,9 @@ public class CrearClases extends JDialog {
 	 * @param modal  Clase boolean Indica el modo de sobreposicion de la ventana hija
 	 * @param Idioma Clase Locale Hereda el parametro tipo Locale de la clase padre, para la
 	 *               seleccion de idioma
+	 * @param integer 
 	 */
-	public CrearClases(Frame parent, boolean modal, Locale Idioma) {
+	public CrearClases(Frame parent, boolean modal, Locale Idioma, Integer integer) {
 		super(parent, modal);
 		et = ResourceBundle.getBundle("properties/dic", Idioma);
 		setTitle(et.getString("crearClases"));

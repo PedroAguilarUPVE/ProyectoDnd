@@ -121,7 +121,7 @@ public class Menu extends JFrame {
 				Personaje.setVisible(true);
 			}
 			if (e.getSource().equals(btnCrearClases)) {
-				Datos = new CrearClases(Menu.this, true, Idioma);
+				Datos = new CrearClases(Menu.this, true, Idioma,0);
 				Datos.setVisible(true);
 			}
 			if (e.getSource().equals(btnEditarPersonajes)) {
@@ -132,6 +132,7 @@ public class Menu extends JFrame {
 				VerDatos = new EditarClases(Menu.this, true, Idioma);
 				VerDatos.setVisible(true);
 			}
+			
 			if (e.getSource().equals(btnTablas)) {
 				tablas = new panelesJtable(Menu.this, true, Idioma);
 				tablas.setVisible(true);
