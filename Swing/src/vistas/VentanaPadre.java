@@ -23,17 +23,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import app.bolivia.swing.JCTextField;
+
 public class VentanaPadre extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPanePrincipal;
-	private static JCTextField textNombre;
-	private static JCTextField textCorreo;
+	private static JTextField textNombre;
+	private static JTextField textCorreo;
 	private static JButton btnAbrir;
 	private static JButton btnCerrar;
 	private static JLabel lbtCorreo;
@@ -149,7 +150,7 @@ public class VentanaPadre extends JFrame {
 		lblNombre.setBounds(8, 35, 56, 16);
 		contentPanePrincipal.add(lblNombre);
 
-		textNombre = new JCTextField();
+		textNombre = new JTextField();
 		textNombre.setBounds(99, 32, 123, 22);
 		// Aqui se asigna el PlaseHolder al componente
 		textNombre.setPlaceholder("Nombre Empleado");
@@ -159,7 +160,7 @@ public class VentanaPadre extends JFrame {
 		lbtCorreo.setBounds(8, 93, 56, 16);
 		contentPanePrincipal.add(lbtCorreo);
 
-		textCorreo = new JCTextField();
+		textCorreo = new JTextField();
 		// Aqui se asigna el PlaseHolder al componente
 		textCorreo.setPlaceholder("Correo@Dominio.com");
 		textCorreo.setBounds(97, 90, 123, 22);

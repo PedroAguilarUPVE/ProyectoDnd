@@ -6,11 +6,35 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="src/librerias/javax.xml.bind.jar"/>
-	<classpathentry kind="lib" path="src/librerias/jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="src/librerias/JPlaceHolder.jar"/>
-	<classpathentry kind="lib" path="src/librerias/JPlaceHolderPassw.jar"/>
-	<classpathentry kind="lib" path="src/librerias/mssql-jdbc-9.2.0.jar"/>
-	<classpathentry kind="lib" path="src/librerias/swingx-all-1.6.4.jar"/>
+	<classpathentry kind="lib" path="src/librerias/javax.xml.bind.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/librerias/jcalendar-1.4.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/librerias/JPlaceHolder.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/librerias/JPlaceHolderPassw.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/librerias/mssql-jdbc-9.2.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/librerias/swingx-all-1.6.4.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

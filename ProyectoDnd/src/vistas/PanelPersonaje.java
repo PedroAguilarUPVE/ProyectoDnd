@@ -107,12 +107,14 @@ public class PanelPersonaje extends JPanel {
 	private JButton btnEliminar;
 	private JButton btnEditar;
 	private JPanel panel;
+	private JButton btnCargarPer;
+	private CrearPartida padre;
 
 	/**
 	 * Constructor de la ventana de creacion de personajes Se crea como ventana hija
 	 * de la ventana menu
 	 * 
-	 * @param parent         Clase Frame Indica el componente padre de de la ventana
+	 * @param padre         Clase Frame Indica el componente padre de de la ventana
 	 *                       CrearPersonaje
 	 * @param modal          Clase boolean Indica el modo de sobreposicion de la
 	 *                       ventana hija
@@ -120,7 +122,8 @@ public class PanelPersonaje extends JPanel {
 	 *                       clase padre, para la seleccion de idioma
 	 * @param idSeleccionado
 	 */
-	public PanelPersonaje(Frame parent, boolean modal, Locale Idioma, int idSeleccionado) {
+	public PanelPersonaje(CrearPartida padre, boolean modal, Locale Idioma, int idSeleccionado) {
+		this.padre = padre;
 		setBackground(new Color(169, 169, 169)); // Hoja De Personaje
 		// super(parent, modal);// se inicializa el constructor super
 		// setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -218,6 +221,10 @@ public class PanelPersonaje extends JPanel {
 		add(panelTiradas);
 		panelTiradas.setBackground(new Color(192, 192, 192));
 		panelTiradas.setLayout(null);
+		
+		btnCargarPer = new JButton("Cargar Personaje");
+		btnCargarPer.setBounds(310, 170, 85, 20);
+		add(btnCargarPer);
 
 		lblTiradaInt = new JLabel("0");
 		lblTiradaInt.setHorizontalAlignment(SwingConstants.CENTER);
@@ -358,6 +365,8 @@ public class PanelPersonaje extends JPanel {
 		rdbtnInt.addActionListener(EscuchadorBoton);
 		rdbtnSab.addActionListener(EscuchadorBoton);
 		rdbtnCar.addActionListener(EscuchadorBoton);
+		btnCargarPer.addActionListener(EscuchadorBoton);
+		
 //		btnCalcular.addActionListener(EscuchadorBoton);
 		textExperiencia.addKeyListener(EscuchadorKey);
 		textExperiencia.addFocusListener(EscuchadorFocus);
@@ -418,14 +427,25 @@ public class PanelPersonaje extends JPanel {
 
 		// identificar que boton genera un evento
 
-		public void actionPerformed(ActionEvent EventoBotones) {
-			if (EventoBotones.getSource().equals(btnRegistrar)) {
+		public void actionPerformed(ActionEvent e) {
+			
+			if (e.getSource().equals(btnCargarPer)) {
+				OPersonaje Personaje1 = new OPersonaje();
+				tablaPersonajes AgregarPersonaje = new tablaPersonajes(null,true);
+				AgregarPersonaje.setVisible(true);
+				int idSeleccionado = AgregarPersonaje.idSeleccionadoPersonaje;
+				cargarDatosPersonaje(idSeleccionado);
+				
+			}
+			
+			if (e.getSource().equals(btnRegistrar)) {
 				RegistarPersonaje();
 			} // fin btnGuardar
-			if (EventoBotones.getSource().equals(btnEditar)) {
+			
+			if (e.getSource().equals(btnEditar)) {
 				EditarPersonaje();
 			} // fin btnGuardar
-			if (EventoBotones.getSource() == btnEliminar) {
+			if (e.getSource() == btnEliminar) {
 				eliminarPersonaje();
 			}
 //
@@ -436,7 +456,7 @@ public class PanelPersonaje extends JPanel {
 //				System.out.println("Tirar d" + (int) spinnerLados.getValue());
 //				lblTirada.setText(String.valueOf(Dados((int) spinnerLados.getValue())));
 //			}
-			if (EventoBotones.getSource() == btnRandom) {
+			if (e.getSource() == btnRandom) {
 				Estadisticas.spinnerFue.setValue(Stats());
 				Estadisticas.spinnerDes.setValue(Stats());
 				Estadisticas.spinnerCon.setValue(Stats());
@@ -445,11 +465,11 @@ public class PanelPersonaje extends JPanel {
 				Estadisticas.spinnerCar.setValue(Stats());
 				CalcularModificadores();
 			}
-			if (EventoBotones.getSource() == rdbtnFue || EventoBotones.getSource() == rdbtnDes // Seleccionar tiradas de
+			if (e.getSource() == rdbtnFue || e.getSource() == rdbtnDes // Seleccionar tiradas de
 																								// salvacion
-					|| EventoBotones.getSource() == rdbtnCon || EventoBotones.getSource() == rdbtnInt
-					|| EventoBotones.getSource() == rdbtnSab || EventoBotones.getSource() == rdbtnCar) {
-				if (!((AbstractButton) EventoBotones.getSource()).isSelected()) {
+					|| e.getSource() == rdbtnCon || e.getSource() == rdbtnInt
+					|| e.getSource() == rdbtnSab || e.getSource() == rdbtnCar) {
+				if (!((AbstractButton) e.getSource()).isSelected()) {
 					TiradasSeleccionadas -= 1;
 				} else if (TiradasSeleccionadas >= 2) {
 					/*
@@ -457,7 +477,7 @@ public class PanelPersonaje extends JPanel {
 					 * "Solo se pueden escoger 2 tiradas de salvacion", "Error",
 					 * JOptionPane.ERROR_MESSAGE);
 					 */
-					((AbstractButton) EventoBotones.getSource()).setSelected(false);
+					((AbstractButton) e.getSource()).setSelected(false);
 				} else {
 					TiradasSeleccionadas += 1;
 				}
@@ -998,7 +1018,9 @@ public class PanelPersonaje extends JPanel {
 			comboBoxSubclase.setEnabled(true);
 			btnEditar.setEnabled(true);
 			btnEliminar.setEnabled(true);
-
+			
+			padre.AgregarMensaje("Personaje: " + textNombre.getName()+ ", se ha unido a la partida");
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error al cargar los datos del personaje", "Error",

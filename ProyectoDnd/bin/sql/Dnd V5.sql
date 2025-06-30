@@ -28,7 +28,7 @@ Create Table Subclases (
 Create Table Razas (
 	Id_Raza INT PRIMARY KEY Identity,
 	NombreRaza NVARCHAR(50) NOT NULL UNIQUE,
-	Variante Varchar(50) Null,
+	--ZVariante Varchar(50) Null,
 	DescripcionRaza Text,
 	TamanoRaza Varchar(10) Check (TamanoRaza in ('Pequeno','Mediano','Grande','Enorme')) Default 'Mediano',
 	VelocidadRaza int Default (30) ,
@@ -99,11 +99,12 @@ CREATE TABLE AtributosRaza (
 --	Id_Arma INT,
 --)
 
-
-Create Table Personajes(
+Create Table Personajes (
 	Id_Personaje Int PRIMARY KEY Identity,
 	NombrePersonaje Varchar(30) Not Null UNIQUE,
 	Nivel Int Default(1) Not Null,
+	VidaTotal int not null check (VidaTotal > 0),
+	VidaActual int Default (VidaTotal) ,
 	Id_Clase Int Default(8) Not Null,
 	Id_Subclase Int ,
 	Id_Raza int Default(1) Not Null,
@@ -137,6 +138,10 @@ Create Table PersonajesPartida(
 Create Table Enemigos (
 	Id_Enemigo int Primary Key Identity,
 	Nombre Varchar(100) Not Null Unique,
+	Tipo Varchar(100),
+	Descripcion Varchar (200),
+	VidaMax int,
+	VidaAct int
 
 )
 

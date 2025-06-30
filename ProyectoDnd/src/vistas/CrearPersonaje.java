@@ -4,6 +4,7 @@ package vistas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -137,8 +138,9 @@ public class CrearPersonaje extends JDialog {
 
 		// Idioma = new Locale("en","US"); //Ahora en ingles americano
 
-		//System.out.println(Idioma.getDisplayName()); // Mostrar el nombre del idioma obtenido
-		//System.out.println("====================");
+		// System.out.println(Idioma.getDisplayName()); // Mostrar el nombre del idioma
+		// obtenido
+		// System.out.println("====================");
 
 		// Obtener los recursos desde el archivo <properties/dic>
 		// en funci�n del idioma <locale>
@@ -154,7 +156,6 @@ public class CrearPersonaje extends JDialog {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.setBounds(10, 10, 480, 520);
 		contentPane.add(tabbedPane);
-
 
 		JPanel panelCreacion = new JPanel();
 		panelCreacion.setLayout(null);
@@ -354,7 +355,8 @@ public class CrearPersonaje extends JDialog {
 		panelTirarDados.add(lblLados);
 
 		spinnerLados = new JSpinner();
-		spinnerLados.setModel(new SpinnerNumberModel(Integer.valueOf(20), Integer.valueOf(1), null, Integer.valueOf(1)));
+		spinnerLados
+				.setModel(new SpinnerNumberModel(Integer.valueOf(20), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinnerLados.setBounds(70, 20, 60, 20);
 		panelTirarDados.add(spinnerLados);
 
@@ -374,7 +376,6 @@ public class CrearPersonaje extends JDialog {
 		lblTirada.setBounds(40, 50, 45, 13);
 		panelTirarDados.add(lblTirada);
 
-
 		ImageIcon IconoImagen = new ImageIcon("src/imagenes/DndIcon.png");
 		lblImagen = new JLabel("Logo");
 		lblImagen.setBounds(150, 370, 300, 120);
@@ -389,7 +390,7 @@ public class CrearPersonaje extends JDialog {
 		ManejadorKey EscuchadorKey = new ManejadorKey();
 		ManejadorFocus EscuchadorFocus = new ManejadorFocus();
 		buscarPersonajesConTableModel();
-		
+
 		btnRandom.addActionListener(EscuchadorBoton);
 		btnCalcular.addActionListener(EscuchadorBoton);
 		btnTirar.addActionListener(EscuchadorBoton);
@@ -410,10 +411,9 @@ public class CrearPersonaje extends JDialog {
 		textExperiencia.addKeyListener(EscuchadorKey);
 		textExperiencia.addFocusListener(EscuchadorFocus);
 
-
 		cargarClasesEnComboBox();
 		cargarRazasEnComboBox();
-		
+
 		comboBoxClase.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (comboBoxClase.getSelectedIndex() != -1) {
@@ -426,11 +426,8 @@ public class CrearPersonaje extends JDialog {
 			}
 		});
 
-
-
-
 		tablePersonajes.getSelectionModel().addListSelectionListener(new ManejadorTabla());
-		
+
 		seleccionarModo(idSeleccionado);
 
 	}
@@ -449,7 +446,8 @@ public class CrearPersonaje extends JDialog {
 		btnRegistrar.setEnabled(nuevoPersonaje);
 		btnRegistrar.setVisible(nuevoPersonaje);
 
-		if (!nuevoPersonaje) cargarDatosPersonaje(idSeleccionado);
+		if (!nuevoPersonaje)
+			cargarDatosPersonaje(idSeleccionado);
 	}
 
 	// Fin Hoja de Personaje
@@ -1012,7 +1010,7 @@ public class CrearPersonaje extends JDialog {
 		// CPersonaje().obtenerIdPersonaje(nombrePersonajeSeleccionado);
 
 		// Si no se encontró el personaje, desactivar los ComboBoxes correspondientes
-		
+
 		// Obtener los detalles del personaje desde la base de datos
 		try {
 			OPersonaje personaje = CPersonaje.obtenerPersonajePorId(idPersonajeSeleccionado);
