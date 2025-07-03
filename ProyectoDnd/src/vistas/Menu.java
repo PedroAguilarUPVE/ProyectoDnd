@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JRadioButton;
 
 /**
  * Clase Menu es la ventana principal a ejecutarse al iniciar el proyecto
@@ -23,19 +25,21 @@ public class Menu extends JFrame {
 	private JButton btnPersonajes;
 	private JButton btnCrearClases;
 	public CrearPersonaje Personaje;
-	public CrearClases Datos;
-	
-	private static Locale Idioma;
-	private static ResourceBundle et;
-	private JButton btnEditarPersonajes;
-	private JButton btnEditarClases;
-	public EditarPersonaje VerPersonaje;
-	public vistas.EditarClases VerDatos;
+	public CrearClases Clases;
+
+	private Locale Idioma;
+	private ResourceBundle et;
 	private JButton btnTablas;
-	public panelesJtable tablas;
+	public panelesJtables tablas;
 	private JButton btnCrearPartida;
 	public CrearPartida Partidas;
-	
+	private JButton btnCrearRazas;
+	private JButton btnCrearSubclases;
+	private JRadioButton rdbtnIngles;
+	private JRadioButton rdbtnEspanol;
+	private ButtonGroup grupoIdioma = new ButtonGroup();
+	private JLabel lblIdioma;
+
 	/**
 	 * Metodo main Se ejecuta al iniciar la clase. Invoca al contructor de la
 	 * ventana Menu
@@ -76,37 +80,54 @@ public class Menu extends JFrame {
 		contentPane.add(lblTituloMenu);
 
 		btnPersonajes = new JButton(et.getString("hojaPersonaje"));
-		btnPersonajes.setBounds(115, 74, 185, 21);
+		btnPersonajes.setBounds(115, 74, 185, 20);
 		contentPane.add(btnPersonajes);
 
+		btnCrearRazas = new JButton(et.getString("crearRazas"));
+		btnCrearRazas.setBounds(10, 105, 185, 20);
+		contentPane.add(btnCrearRazas);
+
 		btnCrearClases = new JButton(et.getString("crearClases"));
-		btnCrearClases.setBounds(115, 105, 185, 21);
+		btnCrearClases.setBounds(220, 105, 185, 20);
 		contentPane.add(btnCrearClases);
 
-		btnEditarPersonajes = new JButton(et.getString("editarPersonajes"));
-		btnEditarPersonajes.setBounds(115, 136, 185, 21);
-		//contentPane.add(btnEditarPersonajes);
+		btnCrearSubclases = new JButton(et.getString("crearSubclases"));
+		btnCrearSubclases.setBounds(115, 136, 185, 20);
+		contentPane.add(btnCrearSubclases);
 
-		btnEditarClases = new JButton(et.getString("editarClases"));
-		btnEditarClases.setBounds(115, 136, 185, 21);
-		contentPane.add(btnEditarClases);
-		
-		btnTablas = new JButton(et.getString("VerDatos"));
-		btnTablas.setBounds(115, 198, 185, 21);
+		btnTablas = new JButton(et.getString("VerTablas"));
+		btnTablas.setBounds(115, 198, 185, 20);
 		contentPane.add(btnTablas);
-		
-		btnCrearPartida = new JButton((String) null);
-		btnCrearPartida.setBounds(115, 167, 185, 21);
+
+		btnCrearPartida = new JButton(et.getString("CrearPartida"));
+		btnCrearPartida.setBounds(115, 167, 185, 20);
 		contentPane.add(btnCrearPartida);
+
+		rdbtnEspanol = new JRadioButton(et.getString("Espanol"));
+		rdbtnEspanol.setBounds(120, 240, 120, 20);
+		contentPane.add(rdbtnEspanol);
+		grupoIdioma.add(rdbtnEspanol);
+
+		rdbtnIngles = new JRadioButton(et.getString("Ingles"));
+		rdbtnIngles.setBounds(260, 240, 120, 20);
+		contentPane.add(rdbtnIngles);
+		grupoIdioma.add(rdbtnIngles);
+
+		lblIdioma = new JLabel(et.getString("Idioma"));
+		lblIdioma.setBounds(20, 240, 80, 20);
+		contentPane.add(lblIdioma);
 
 		ManejadorBoton EscuchadorBotones = new ManejadorBoton();
 
 		btnTablas.addActionListener(EscuchadorBotones);
 		btnPersonajes.addActionListener(EscuchadorBotones);
 		btnCrearClases.addActionListener(EscuchadorBotones);
-		btnEditarPersonajes.addActionListener(EscuchadorBotones);
-		btnEditarClases.addActionListener(EscuchadorBotones);
+		btnCrearRazas.addActionListener(EscuchadorBotones);
+		btnCrearSubclases.addActionListener(EscuchadorBotones);
 		btnCrearPartida.addActionListener(EscuchadorBotones);
+		rdbtnEspanol.addActionListener(EscuchadorBotones);
+		rdbtnIngles.addActionListener(EscuchadorBotones);
+
 	}
 
 	/**
@@ -117,30 +138,56 @@ public class Menu extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(btnPersonajes)) {
-				Personaje = new CrearPersonaje(Menu.this, true, Idioma, 0);
+				CrearPersonaje Personaje = new CrearPersonaje(Menu.this, true, Idioma, 0);
 				Personaje.setVisible(true);
 			}
 			if (e.getSource().equals(btnCrearClases)) {
-				Datos = new CrearClases(Menu.this, true, Idioma,0);
-				Datos.setVisible(true);
+				CrearClases Clases = new CrearClases(Menu.this, true, Idioma, 0);
+				Clases.setVisible(true);
 			}
-			if (e.getSource().equals(btnEditarPersonajes)) {
-				VerPersonaje = new EditarPersonaje(Menu.this, true, Idioma, 0);
-				VerPersonaje.setVisible(true);
+			if (e.getSource().equals(btnCrearRazas)) {
+				CrearRazas Razas = new CrearRazas(Menu.this, true, Idioma, 0);
+				Razas.setVisible(true);
 			}
-			if (e.getSource().equals(btnEditarClases)) {
-				VerDatos = new EditarClases(Menu.this, true, Idioma);
-				VerDatos.setVisible(true);
+			if (e.getSource().equals(btnCrearSubclases)) {
+				CrearSubclases Subclases = new CrearSubclases(Menu.this, true, Idioma, 0);
+				Subclases.setVisible(true);
 			}
-			
+
 			if (e.getSource().equals(btnTablas)) {
-				tablas = new panelesJtable(Menu.this, true, Idioma);
+				tablas = new panelesJtables(Menu.this, true, Idioma);
 				tablas.setVisible(true);
 			}
 			if (e.getSource().equals(btnCrearPartida)) {
 				Partidas = new CrearPartida(Menu.this, true, Idioma);
 				Partidas.setVisible(true);
 			}
+
+			if (e.getSource().equals(rdbtnIngles)) {
+				Idioma = new Locale("en", "US");
+				ActualizarMenu(Idioma);
+			}
+			if (e.getSource().equals(rdbtnEspanol)) {
+				Idioma = new Locale("es", "MX");
+				ActualizarMenu(Idioma);
+			}
 		}
+	}
+
+	public void ActualizarMenu(Locale idioma) {
+
+		et = ResourceBundle.getBundle("properties/dic", idioma);
+		// TODO Auto-generated method stub
+		lblTituloMenu.setText(et.getString("tituloMenu"));
+		btnPersonajes.setText(et.getString("hojaPersonaje"));
+		btnCrearRazas.setText(et.getString("crearRazas"));
+		btnCrearClases.setText(et.getString("crearClases"));
+		btnCrearSubclases.setText(et.getString("crearSubclases"));
+		btnTablas.setText(et.getString("VerTablas"));
+		btnCrearPartida.setText(et.getString("CrearPartida"));
+		rdbtnEspanol.setText(et.getString("Espanol"));
+		rdbtnIngles.setText(et.getString("Ingles"));
+		lblIdioma.setText(et.getString("Idioma"));
+
 	}
 }

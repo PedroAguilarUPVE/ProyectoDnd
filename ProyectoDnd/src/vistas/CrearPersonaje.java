@@ -61,8 +61,6 @@ public class CrearPersonaje extends JDialog {
 	private JLabel lblRaza;
 	private JLabel lblTransfondo;
 	private JTextField textTransfondo;
-	private JLabel lblExperiencia;
-	private JTextField textExperiencia;
 	private JLabel lblTiradaDes;
 	private JLabel lblTiradaCon;
 	private JLabel lblTiradaCar;
@@ -92,7 +90,6 @@ public class CrearPersonaje extends JDialog {
 	private JRadioButton rdbtnSab;
 	private JRadioButton rdbtnCar;
 
-	private JTextField textNivel;
 	private JComboBox<String> comboBoxRaza;
 	private JComboBox<String> comboBoxClase;
 	private PlaceHolder Etiquetas;
@@ -114,6 +111,7 @@ public class CrearPersonaje extends JDialog {
 	private JButton btnRegistrar;
 	private JButton btnEliminar;
 	private JButton btnEditar;
+	private JSpinner spinnerNivel;
 
 	/**
 	 * Constructor de la ventana de creacion de personajes Se crea como ventana hija
@@ -174,6 +172,7 @@ public class CrearPersonaje extends JDialog {
 
 		textNombre = new JTextField();
 		textNombre.setBounds(10, 37, 120, 20);
+
 		Etiquetas = new PlaceHolder(textNombre, et.getString("Nombre"));
 		panelCreacion.add(textNombre);
 		textNombre.setColumns(10);
@@ -184,6 +183,7 @@ public class CrearPersonaje extends JDialog {
 		panelCreacion.add(lblJugador);
 
 		textJugador = new JTextField();
+		
 		Etiquetas = new PlaceHolder(textJugador, et.getString("Jugador"));
 		textJugador.setColumns(10);
 		textJugador.setBounds(312, 37, 120, 20);
@@ -203,16 +203,6 @@ public class CrearPersonaje extends JDialog {
 		lblTransfondo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTransfondo.setBounds(10, 103, 125, 14);
 		panelCreacion.add(lblTransfondo);
-
-		lblExperiencia = new JLabel(et.getString("Experiencia"));
-		lblExperiencia.setHorizontalAlignment(SwingConstants.CENTER);
-		lblExperiencia.setBounds(312, 103, 55, 14);
-		panelCreacion.add(lblExperiencia);
-
-		textExperiencia = new JTextField();
-		textExperiencia.setColumns(10);
-		textExperiencia.setBounds(312, 84, 55, 20);
-		panelCreacion.add(textExperiencia);
 
 		comboBoxClase = new JComboBox();
 		comboBoxClase.setBounds(160, 37, 120, 20);
@@ -323,12 +313,6 @@ public class CrearPersonaje extends JDialog {
 		btnCalcular.setBounds(10, 125, 85, 20);
 		panelCreacion.add(btnCalcular);
 
-		textNivel = new JTextField();
-		textNivel.setEditable(false);
-		textNivel.setColumns(10);
-		textNivel.setBounds(377, 84, 55, 20);
-		panelCreacion.add(textNivel);
-
 		JLabel lblNivel = new JLabel(et.getString("Nivel"));
 		lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNivel.setBounds(377, 104, 55, 14);
@@ -385,10 +369,15 @@ public class CrearPersonaje extends JDialog {
 		btnRegistrar = new JButton(et.getString("Guardar"));
 		btnRegistrar.setBounds(370, 125, 85, 21);
 		panelCreacion.add(btnRegistrar);
+		
+		spinnerNivel = new JSpinner();
+		spinnerNivel.setModel(new SpinnerNumberModel(1, 1, 20, 1));
+		spinnerNivel.setBounds(360, 84, 80, 20);
+		panelCreacion.add(spinnerNivel);
 
 		ManejadorBoton EscuchadorBoton = new ManejadorBoton();
 		ManejadorKey EscuchadorKey = new ManejadorKey();
-		ManejadorFocus EscuchadorFocus = new ManejadorFocus();
+		//ManejadorFocus EscuchadorFocus = new ManejadorFocus();
 		buscarPersonajesConTableModel();
 
 		btnRandom.addActionListener(EscuchadorBoton);
@@ -408,8 +397,6 @@ public class CrearPersonaje extends JDialog {
 		textNombre.addKeyListener(EscuchadorKey);
 		// textTransfondo.addKeyListener(EscuchadorKey);
 		textJugador.addKeyListener(EscuchadorKey);
-		textExperiencia.addKeyListener(EscuchadorKey);
-		textExperiencia.addFocusListener(EscuchadorFocus);
 
 		cargarClasesEnComboBox();
 		cargarRazasEnComboBox();
@@ -432,6 +419,12 @@ public class CrearPersonaje extends JDialog {
 
 	}
 
+	/**
+	 * Metodo SeleccionarModo Habilita o desabilita los botones de registrar, editar y eliminar, dependiendo del id ingresado
+	 * Si el idSeleccionado es 0, es modo registrar, y se desabilitan editar y eliminar
+	 * En caso contrario se permitira editar y eliminar, pero no guardar registros nuevos
+	 * @param idSeleccionado 
+	 */
 	private void seleccionarModo(int idSeleccionado) {
 		// TODO Auto-generated method stub
 		boolean nuevoPersonaje = idSeleccionado == 0;
@@ -487,8 +480,7 @@ public class CrearPersonaje extends JDialog {
 				Estadisticas.spinnerCar.setValue(Stats());
 				CalcularModificadores();
 			}
-			if (EventoBotones.getSource() == rdbtnFue || EventoBotones.getSource() == rdbtnDes // Seleccionar tiradas de
-																								// salvacion
+			if (EventoBotones.getSource() == rdbtnFue || EventoBotones.getSource() == rdbtnDes // Seleccionar tiradas de salvacion
 					|| EventoBotones.getSource() == rdbtnCon || EventoBotones.getSource() == rdbtnInt
 					|| EventoBotones.getSource() == rdbtnSab || EventoBotones.getSource() == rdbtnCar) {
 				if (!((AbstractButton) EventoBotones.getSource()).isSelected()) {
@@ -520,6 +512,10 @@ public class CrearPersonaje extends JDialog {
 
 		public void keyTyped(KeyEvent EventKey) {
 
+			if (EventKey.getSource() == textNombre && textNombre.getText().length() >= 30) {
+				EventKey.consume();
+			}
+			
 			if (EventKey.getSource() == textJugador || EventKey.getSource() == textTransfondo) {
 				if (!Character.isLetter(EventKey.getKeyChar()) && EventKey.getKeyChar() != KeyEvent.VK_SPACE
 						&& EventKey.getKeyChar() != KeyEvent.VK_BACK_SPACE
@@ -527,7 +523,7 @@ public class CrearPersonaje extends JDialog {
 					EventKey.consume();
 				}
 			}
-			if (EventKey.getSource() == textExperiencia) {
+			if (EventKey.getSource() == spinnerNivel) {
 				if (!Character.isDigit(EventKey.getKeyChar()) && EventKey.getKeyChar() != KeyEvent.VK_SPACE
 						&& EventKey.getKeyChar() != KeyEvent.VK_BACK_SPACE
 						&& EventKey.getKeyChar() != KeyEvent.VK_DELETE) {
@@ -548,20 +544,16 @@ public class CrearPersonaje extends JDialog {
 		}
 	} // Fin Manejador Key
 
+	
+	/*
 	private class ManejadorFocus implements FocusListener {
 
 		@Override
 		public void focusGained(FocusEvent EventoFocus) {
 		}
 
-		@Override
-		public void focusLost(FocusEvent EventoFocus) {
-			if (EventoFocus.getSource() == textExperiencia) {
-				textNivel.setText(String.valueOf((Integer.parseInt(textExperiencia.getText())) / 1000));
-			}
-		}
 
-	}
+	}*/
 
 	public class ManejadorTabla implements ListSelectionListener {
 
@@ -589,66 +581,13 @@ public class CrearPersonaje extends JDialog {
 	 */
 	public void RegistarPersonaje() {
 
-		// Validación de campos vacíos
-		if (textNombre.getText().isEmpty() || textNombre.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El nombre del personaje no puede estar vacío", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return; // No continuar con la ejecución si el campo está vacío
-		}
-
-		if (textJugador.getText().isEmpty() || textJugador.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El nombre del jugador no puede estar vacío", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return; // No continuar con la ejecución si el campo está vacío
-		}
-
-		if (textExperiencia.getText().isEmpty() || textExperiencia.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "La experiencia no puede estar vacía", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return; // No continuar con la ejecución si el campo está vacío
-		}
-
-		if (textNivel.getText().isEmpty() || textNivel.getText().isBlank()) {
-			JOptionPane.showMessageDialog(null, "El nivel no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
-			return; // No continuar con la ejecución si el campo está vacío
-		}
-
 		new CPersonaje();
+		if (!validarCampos()) {
+			JOptionPane.showMessageDialog(null, "No se pudo crear el personaje", "Error", JOptionPane.ERROR_MESSAGE);			
+			return;
+		}
 		try {
 			OPersonaje miPersonaje = crearPersonaje();
-
-			miPersonaje.setNombrePersonaje(textNombre.getText());
-
-			// Obtener el ID de la clase seleccionada
-			String claseSeleccionada = (String) comboBoxClase.getSelectedItem();
-			miPersonaje.setId_Clase(new CClase().obtenerIdClase(claseSeleccionada));
-
-			// Obtener el ID de la raza seleccionada
-			String razaSeleccionada = (String) comboBoxRaza.getSelectedItem();
-			miPersonaje.setId_Raza(new CRaza().obtenerIdRazaPorNombre(razaSeleccionada));
-
-			// Obtener el ID de la subclase seleccionada (si hay)
-			String subclaseSeleccionada = (String) comboBoxSubclase.getSelectedItem();
-			if (!subclaseSeleccionada.equals("Subclase")) {
-				miPersonaje.setId_Subclase(new CSubclase().obtenerIdSubclasePorNombre(subclaseSeleccionada));
-			} else {
-				miPersonaje.setId_Subclase(-1); // No tiene subclase
-			}
-
-			miPersonaje.setNivel(Integer.parseInt(textNivel.getText()));
-			miPersonaje.setBonusCompetencia(2); // Se puede ajustar según nivel
-			miPersonaje.setId_EstadisticasPersonaje(1); // Definir correctamente
-
-			// Asignar estadísticas desde los panelEstadisticas
-			OEstadisticas estadisticas = Estadisticas.getEstadisticas();
-
-			miPersonaje.setFuerza(estadisticas.getFuerza());
-			miPersonaje.setDestreza(estadisticas.getDestreza());
-			miPersonaje.setConstitucion(estadisticas.getConstitucion());
-			miPersonaje.setInteligencia(estadisticas.getInteligencia());
-			miPersonaje.setSabiduria(estadisticas.getSabiduria());
-			miPersonaje.setCarisma(estadisticas.getCarisma());
-
 			// Registrar el personaje
 			CPersonaje.registrarPersonaje(miPersonaje);
 		} catch (Exception ex) {
@@ -695,16 +634,6 @@ public class CrearPersonaje extends JDialog {
 	 */
 	public void EditarPersonaje() {
 		String nombrePersonajeSeleccionado = textNombre.getText();// comboBoxPersonaje.getSelectedItem().toString();
-		if (textNombre.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "El nombre del personaje no puede estar vacío", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		if (textNivel.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "El nivel no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
 
 		int idPersonaje = new CPersonaje().obtenerIdPersonaje(nombrePersonajeSeleccionado);
 		if (idPersonaje == -1) {
@@ -712,40 +641,18 @@ public class CrearPersonaje extends JDialog {
 			return;
 		}
 
+		if (!validarCampos()){
+			JOptionPane.showMessageDialog(null, "No se pudo editar el personaje", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+			
+		
 		try {
-			OPersonaje miPersonaje = new OPersonaje();
-			miPersonaje.setId_Personaje(idPersonaje);
-			miPersonaje.setNombrePersonaje(textNombre.getText());
-
-			String claseSeleccionada = (String) comboBoxClase.getSelectedItem();
-			miPersonaje.setId_Clase(new CClase().obtenerIdClase(claseSeleccionada));
-
-			String razaSeleccionada = (String) comboBoxRaza.getSelectedItem();
-			miPersonaje.setId_Raza(new CRaza().obtenerIdRazaPorNombre(razaSeleccionada));
-
-			String subclaseSeleccionada = (String) comboBoxSubclase.getSelectedItem();
-			if (!subclaseSeleccionada.equals("Subclase")) {
-				miPersonaje.setId_Subclase(new CSubclase().obtenerIdSubclasePorNombre(subclaseSeleccionada));
-			} else {
-				miPersonaje.setId_Subclase(-1);
-			}
-
-			miPersonaje.setNivel(Integer.parseInt(textNivel.getText()));
-			miPersonaje.setBonusCompetencia(2); // Ajusta si tienes lógica para esto
-
-			OEstadisticas estadisticas = Estadisticas.getEstadisticas();
-
-			miPersonaje.setFuerza(estadisticas.getFuerza());
-			miPersonaje.setDestreza(estadisticas.getDestreza());
-			miPersonaje.setConstitucion(estadisticas.getConstitucion());
-			miPersonaje.setInteligencia(estadisticas.getInteligencia());
-			miPersonaje.setSabiduria(estadisticas.getSabiduria());
-			miPersonaje.setCarisma(estadisticas.getCarisma());
-
+			OPersonaje miPersonaje = crearPersonaje();
 			new CPersonaje().actualizarPersonaje(miPersonaje); // Este método debe hacer UPDATE en la base
 
-			JOptionPane.showMessageDialog(null, "Personaje actualizado correctamente", "Éxito",
-					JOptionPane.INFORMATION_MESSAGE);
+			//JOptionPane.showMessageDialog(null, "Personaje actualizado correctamente", "Éxito",
+			//		JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Error al actualizar personaje", "Error", JOptionPane.ERROR_MESSAGE);
@@ -766,16 +673,14 @@ public class CrearPersonaje extends JDialog {
 		int min = Lados;
 		int dados[] = new int[Tirar];
 		for (int x = 0; x < Tirar; x++) {
-			dados[x] = ((int) (JdkMath.random() * 6)) + 1;
+			dados[x] = Dados(6);
 			if (dados[x] < min) {
 				min = dados[x];
 			}
 			Suma += dados[x];
 		}
 		Suma -= min;
-
 		return Suma;
-
 	}
 
 	/**
@@ -861,8 +766,10 @@ public class CrearPersonaje extends JDialog {
 		ResultSet rs = cClase.obtenerNombresClases();
 
 		try {
+			comboBoxClase.removeAllItems();
+			comboBoxClase.addItem("Clase"); 
 			while (rs.next()) {
-				comboBoxClase.addItem(rs.getString("NombreClase"));
+				comboBoxClase.addItem(rs.getString("Nombre"));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -883,6 +790,7 @@ public class CrearPersonaje extends JDialog {
 		try {
 			// Limpiar el combo box antes de agregar los elementos
 			comboBoxRaza.removeAllItems();
+			comboBoxRaza.addItem("Raza"); 
 
 			// Agregar los nombres de las razas al combo box
 			while (rs.next()) {
@@ -905,22 +813,19 @@ public class CrearPersonaje extends JDialog {
 	 *                                cuyas subclases se buscaran
 	 */
 	private void cargarSubclasesEnComboBox(String nombreClaseSeleccionada) {
-		int idClaseSeleccionada = new CClase().obtenerIdClase(nombreClaseSeleccionada);
+		int idClaseSeleccionada = new CClase().obtenerIdClasePorNombre(nombreClaseSeleccionada);
 
 		if (idClaseSeleccionada == -1) {
 			comboBoxSubclase.setEnabled(false);
 			return;
 		}
-
 		try {
 			comboBoxSubclase.removeAllItems();
 			comboBoxSubclase.addItem("Subclase"); // Placeholder
-
 			ResultSet rs = new CSubclase().obtenerNombresSubclases(idClaseSeleccionada);
 			while (rs.next()) {
-				comboBoxSubclase.addItem(rs.getString("NombreSubclase"));
+				comboBoxSubclase.addItem(rs.getString("Nombre"));
 			}
-
 			comboBoxSubclase.setEnabled(comboBoxSubclase.getItemCount() > 1); // Habilitar si hay subclases
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -967,35 +872,70 @@ public class CrearPersonaje extends JDialog {
 	private OPersonaje crearPersonaje() {
 		OPersonaje miPersonaje = new OPersonaje();
 		OEstadisticas estadisticas = Estadisticas.getEstadisticas();
+		
 		miPersonaje.setFuerza(estadisticas.getFuerza());
 		miPersonaje.setDestreza(estadisticas.getDestreza());
 		miPersonaje.setConstitucion(estadisticas.getConstitucion());
 		miPersonaje.setInteligencia(estadisticas.getInteligencia());
 		miPersonaje.setSabiduria(estadisticas.getSabiduria());
 		miPersonaje.setCarisma(estadisticas.getSabiduria());
+		
+		//miPersonaje.setId_Personaje(idPersonaje);
 		miPersonaje.setNombrePersonaje(textNombre.getText());
 
 		// Obtener el ID de la clase seleccionada
-		String claseSeleccionada = (String) comboBoxClase.getSelectedItem();
-		miPersonaje.setId_Clase(new CClase().obtenerIdClase(claseSeleccionada));
-
+		String claseSeleccionada = comboBoxClase.getSelectedItem().toString();
+		if (!claseSeleccionada.equals("Clase")) {
+			miPersonaje.setId_Clase(new CClase().obtenerIdClasePorNombre(claseSeleccionada));
+		} else {
+			miPersonaje.setId_Clase(-1); // No tiene subclase
+		}
+		
 		// Obtener el ID de la raza seleccionada
-		String razaSeleccionada = (String) comboBoxRaza.getSelectedItem();
-		miPersonaje.setId_Raza(new CRaza().obtenerIdRazaPorNombre(razaSeleccionada));
+		String razaSeleccionada = comboBoxRaza.getSelectedItem().toString();
+		if (!razaSeleccionada.equals("Raza")) {
+			miPersonaje.setId_Raza(new CRaza().obtenerIdRazaPorNombre(razaSeleccionada));
+		} else {
+			miPersonaje.setId_Raza(-1); // No tiene subclase
+		}
 
 		// Obtener el ID de la subclase seleccionada (si hay)
-		String subclaseSeleccionada = (String) comboBoxSubclase.getSelectedItem();
+		String subclaseSeleccionada =comboBoxSubclase.getSelectedItem().toString();
 		if (!subclaseSeleccionada.equals("Subclase")) {
 			miPersonaje.setId_Subclase(new CSubclase().obtenerIdSubclasePorNombre(subclaseSeleccionada));
 		} else {
 			miPersonaje.setId_Subclase(-1); // No tiene subclase
 		}
 
-		miPersonaje.setNivel(Integer.parseInt(textNivel.getText()));
+		miPersonaje.setNivel((int) spinnerNivel.getValue());
 		miPersonaje.setBonusCompetencia(2); // Se puede ajustar según nivel
 		miPersonaje.setId_EstadisticasPersonaje(1); // Definir correctamente
 
 		return miPersonaje;
+
+	}
+	
+	public boolean validarCampos() {
+		boolean completo = true;
+		// Validación de campos vacíos
+		if (textNombre.getText().isEmpty() || textNombre.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El nombre del personaje no puede estar vacío", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		if (textNombre.getText().length() > 30) {
+			JOptionPane.showMessageDialog(null, "El nombre del personaje es demasiado largo. Maximo 30 caracteres", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+
+		if (textJugador.getText().isEmpty() || textJugador.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El nombre del jugador no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+
+		
+		return true;
 
 	}
 
@@ -1008,16 +948,12 @@ public class CrearPersonaje extends JDialog {
 		// Obtener el ID del personaje basado en su nombre
 		// int idPersonajeSeleccionado = new
 		// CPersonaje().obtenerIdPersonaje(nombrePersonajeSeleccionado);
-
-		// Si no se encontró el personaje, desactivar los ComboBoxes correspondientes
-
-		// Obtener los detalles del personaje desde la base de datos
 		try {
 			OPersonaje personaje = CPersonaje.obtenerPersonajePorId(idPersonajeSeleccionado);
 
 			// Rellenar los campos con los datos del personaje
 			textNombre.setText(personaje.getNombrePersonaje());
-			textNivel.setText(String.valueOf(personaje.getNivel()));
+			spinnerNivel.setValue(personaje.getNivel());
 
 			// Rellenar los JComboBox con los nombres correspondientes
 			comboBoxClase.setSelectedItem(new CClase().obtenerNombreClasePorId(personaje.getId_Clase()));
@@ -1042,10 +978,11 @@ public class CrearPersonaje extends JDialog {
 			btnEditar.setEnabled(true);
 			btnEliminar.setEnabled(true);
 
+			CalcularModificadores();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error al cargar los datos del personaje", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error al cargar los datos del personaje", "Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

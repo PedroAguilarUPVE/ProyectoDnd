@@ -25,13 +25,9 @@ import controladores.CRaza;
 import controladores.CSubclase;
 import modelos.OClase;
 import modelos.ORaza;
-import vistas.EditarClases;
+import modelos.OSubclase;
 
-
-
-
-
-public class panelesJtable extends JDialog {
+public class panelesJtables extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel panelContenido;
@@ -67,16 +63,20 @@ public class panelesJtable extends JDialog {
 	private Locale Idioma;
 	private JButton btnEdiPerson;
 	private JButton btnEdiClases;
-	private JButton btnEdiSubClases;
+	private JButton btnEdiSubclases;
 	private JButton btnEdiRazas;
-	public panelesJtable tablas;
+	public panelesJtables tablas;
+
+	private int idPersonaje = -1; 
+	private int idClase= -1; 
+	private int idRaza = -1; 
+	private int idSubclase = -1; 
 	
 	private OClase claseSeleccionada;
+	private OSubclase subclaseSeleccionada;
 	private ORaza razaSeleccionada;
 
-	
-
-	public panelesJtable(Frame parent, boolean modal, Locale idioma) {
+	public panelesJtables(Frame parent, boolean modal, Locale idioma) {
 		super(parent, modal);
 
 		Idioma = idioma;
@@ -118,7 +118,7 @@ public class panelesJtable extends JDialog {
 		btnUltClases = new JButton("Ultimo");
 		btnUltClases.setBounds(487, 255, 89, 23);
 		panelClases.add(btnUltClases);
-		
+
 		btnEdiClases = new JButton("Editar");
 		btnEdiClases.setBounds(609, 255, 89, 23);
 		panelClases.add(btnEdiClases);
@@ -147,10 +147,10 @@ public class panelesJtable extends JDialog {
 		btnUltSubclases = new JButton("Ultimo");
 		btnUltSubclases.setBounds(495, 252, 89, 23);
 		panelSubclases.add(btnUltSubclases);
-		
-		btnEdiSubClases = new JButton("Editar");
-		btnEdiSubClases.setBounds(623, 252, 89, 23);
-		panelSubclases.add(btnEdiSubClases);
+
+		btnEdiSubclases = new JButton("Editar");
+		btnEdiSubclases.setBounds(623, 252, 89, 23);
+		panelSubclases.add(btnEdiSubclases);
 
 		buscarSubclasesConTableModel();
 
@@ -177,7 +177,7 @@ public class panelesJtable extends JDialog {
 		btnUltRazas = new JButton("Ultimo");
 		btnUltRazas.setBounds(494, 251, 89, 23);
 		panelRazas.add(btnUltRazas);
-		
+
 		btnEdiRazas = new JButton("Editar");
 		btnEdiRazas.setBounds(620, 251, 89, 23);
 		panelRazas.add(btnEdiRazas);
@@ -188,8 +188,8 @@ public class panelesJtable extends JDialog {
 		panelPersonajes = new JPanel(null);
 		panelTabs.addTab("Personajes", panelPersonajes);
 		tablePersonajes = new JTable();
-		//panelPersonajes.add(tablePersonajes);
-		
+		// panelPersonajes.add(tablePersonajes);
+
 		miBarra = new JScrollPane();
 		miBarra.setBounds(10, 11, 786, 185);
 		panelPersonajes.add(miBarra);
@@ -209,7 +209,7 @@ public class panelesJtable extends JDialog {
 		btnUltPerson = new JButton("Ultimo");
 		btnUltPerson.setBounds(463, 249, 89, 23);
 		panelPersonajes.add(btnUltPerson);
-		
+
 		btnEdiPerson = new JButton("Editar");
 		btnEdiPerson.setBounds(589, 249, 89, 23);
 		panelPersonajes.add(btnEdiPerson);
@@ -237,7 +237,7 @@ public class panelesJtable extends JDialog {
 		btnEdiPerson.addActionListener(Escuchador);
 		btnEdiRazas.addActionListener(Escuchador);
 		btnEdiClases.addActionListener(Escuchador);
-		btnEdiSubClases.addActionListener(Escuchador);
+		btnEdiSubclases.addActionListener(Escuchador);
 
 		ManejadorTabla ControladorTabla = new ManejadorTabla();
 		tablePersonajes.getSelectionModel().addListSelectionListener(ControladorTabla);
@@ -328,85 +328,121 @@ public class panelesJtable extends JDialog {
 				buscarSubclasesConTableModel();
 			}
 			if (e.getSource().equals(btnEdiPerson)) {
-			    editarPersonajeSeleccionado();
+				editarPersonajeSeleccionado();
 			}
 			if (e.getSource() == btnEdiClases) {
-			    editarClaseSeleccionada();
+				editarClaseSeleccionada();
+			}
+			if (e.getSource() == btnEdiSubclases) {
+				editarSubclaseSeleccionada();
 			}
 			if (e.getSource() == btnEdiRazas) {
-			    editarRazaSeleccionada();
+				editarRazaSeleccionada();
 			}
-
 
 		}
 	}
+
 	private void editarPersonajeSeleccionado() {
-	    if (idSeleccionadoPersonaje != -1) {
-	        CrearPersonaje VerPersonaje = new CrearPersonaje(null, true, Idioma, idSeleccionadoPersonaje);
-	        VerPersonaje.setVisible(true);
-	    } else {
-	        JOptionPane.showMessageDialog(this, "Selecciona un personaje antes de editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-	    }
-	}
-	private void editarClaseSeleccionada() {
-	    if (claseSeleccionada != null) {
-	        CrearClases editar = new CrearClases(null, true, Idioma, claseSeleccionada.getIdClase());
-	        editar.setVisible(true);
-	        buscarClasesConTableModel();
-	    } else {
-	        JOptionPane.showMessageDialog(this, "Selecciona una clase para editar.", "Aviso",
-	                JOptionPane.WARNING_MESSAGE);
-	    }
-	}
-	private void editarRazaSeleccionada() {
-	    if (razaSeleccionada != null) {
-	    	CrearRazas editar = new CrearRazas(null, true, Idioma, razaSeleccionada.getId_Raza());
-	        editar.setVisible(true);
-	        buscarRazasConTableModel();
-	    } else {
-	        JOptionPane.showMessageDialog(this, "Selecciona una raza para editar.", "Aviso",
-	                JOptionPane.WARNING_MESSAGE);
-	    }
+		if (idPersonaje != -1) {
+			CrearPersonaje VerPersonaje = new CrearPersonaje(null, true, Idioma, idPersonaje);
+			VerPersonaje.setVisible(true);
+			buscarPersonajesConTableModel();
+		} else {
+			JOptionPane.showMessageDialog(this, "Selecciona un personaje antes de editar.", "Advertencia",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		buscarPersonajesConTableModel();
 	}
 
+	private void editarClaseSeleccionada() {
+		if (idClase != -1) {
+			CrearClases VerClase = new CrearClases(null, true, Idioma, idClase);
+			VerClase.setVisible(true);
+			buscarClasesConTableModel();
+		} else {
+			JOptionPane.showMessageDialog(this, "Selecciona una clase para editar.", "Aviso",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		buscarClasesConTableModel();
+	}
+
+	private void editarSubclaseSeleccionada() {
+		if (idSubclase != -1) {
+			System.out.println(idSubclase);
+			CrearSubclases VerSubclase = new CrearSubclases(null, true, Idioma, idSubclase);
+			VerSubclase.setVisible(true);
+			buscarSubclasesConTableModel();
+		} else {
+			JOptionPane.showMessageDialog(this, "Selecciona una subclase para editar.", "Aviso",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		buscarSubclasesConTableModel();
+	}
 
 	
-	private int idSeleccionadoPersonaje = -1; // Decláralo en tu clase principal (panelesJtable)
-
-	public class ManejadorTabla implements ListSelectionListener {
-	    @Override
-	    public void valueChanged(ListSelectionEvent e) {
-	        if (!e.getValueIsAdjusting()) {
-	            if (e.getSource().equals(tablePersonajes.getSelectionModel())) {
-	                int fila = tablePersonajes.getSelectedRow();
-	                if (fila != -1) {
-	                    idSeleccionadoPersonaje = CPersonaje.obtenerIdPersonaje(tablePersonajes.getValueAt(fila, 0).toString());
-	                    System.out.println("Personaje seleccionado ID: " + idSeleccionadoPersonaje);
-	                }
-	            }
-
-	            if (e.getSource().equals(tableClases.getSelectionModel())) {
-	                int fila = tableClases.getSelectedRow();
-	                if (fila != -1) {
-	                    String nombreClase = tableClases.getValueAt(fila, 1).toString(); // columna 1 = nombre clase
-	                    claseSeleccionada = new CClase().buscarClasePorNombre(nombreClase);
-	                    System.out.println("Clase seleccionada: " + claseSeleccionada.getNombreClase());
-	                }
-	            }
-
-	            if (e.getSource().equals(tableRazas.getSelectionModel())) {
-	                int fila = tableRazas.getSelectedRow();
-	                if (fila != -1) {
-	                    String nombreRaza = tableRazas.getValueAt(fila, 1).toString(); // columna 1 = nombre raza
-	                    razaSeleccionada = new CRaza().buscarRazaPorNombre(nombreRaza);
-	                    System.out.println("Raza seleccionada: " + razaSeleccionada.getNombreRaza());
-	                }
-	            }
-	        }
-	    }
+	private void editarRazaSeleccionada() {
+		if (idRaza!= -1) {
+			CrearRazas VerRaza = new CrearRazas(null, true, Idioma, idRaza);
+			VerRaza.setVisible(true);
+			buscarRazasConTableModel();
+		} else {
+			JOptionPane.showMessageDialog(this, "Selecciona una raza para editar.", "Aviso",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		buscarRazasConTableModel();
 	}
+	
 
+	
+	public class ManejadorTabla implements ListSelectionListener {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {
+				if (e.getSource().equals(tablePersonajes.getSelectionModel())) {
+					int fila = tablePersonajes.getSelectedRow();
+					if (fila != -1) {
+						idPersonaje = CPersonaje.obtenerIdPersonaje(tablePersonajes.getValueAt(fila, 0).toString());
+						System.out.println("Personaje seleccionado ID: " + idPersonaje);
+					}
+				}
 
+				if (e.getSource().equals(tableClases.getSelectionModel())) {
+					int fila = tableClases.getSelectedRow();
+					if (fila != -1) {
+						String nombreClase = tableClases.getValueAt(fila, 1).toString(); // columna 1 = nombre clase
+						idClase = CClase.obtenerIdClasePorNombre(nombreClase);
+						claseSeleccionada = CClase.obtenerClasePorId(idClase);
+						System.out.println("Clase seleccionada: " + claseSeleccionada.getNombre());
+						System.out.println("Clase seleccionada: " + claseSeleccionada.getDescripcion());
+					}
+				}
+				
+				if (e.getSource().equals(tableSubclases.getSelectionModel())) {
+					int fila = tableSubclases.getSelectedRow();
+					if (fila != -1) {
+						String nombreSubclase = tableSubclases.getValueAt(fila, 0).toString(); // columna 1 = nombre clase
+//						System.out.println("Clase seleccionada: " + claseSeleccionada.getNombre());
+						idSubclase =  (int) tableSubclases.getValueAt(fila, 0);
+						subclaseSeleccionada = CSubclase.buscarSubclasePorId(idSubclase);
+//						System.out.println("Clase seleccionada: " + claseSeleccionada.getDescripcion());
+					}
+				}
+				
+
+				if (e.getSource().equals(tableRazas.getSelectionModel())) {
+					int fila = tableRazas.getSelectedRow();
+					if (fila != -1) {
+						String nombreRaza = tableRazas.getValueAt(fila, 1).toString(); // columna 1 = nombre Raza
+						idRaza = CRaza.obtenerIdRazaPorNombre(nombreRaza);
+						idRaza = (int) tableRazas.getValueAt(fila,0); 
+						razaSeleccionada = CRaza.obtenerRazaPorId(idRaza);
+						System.out.println("Raza seleccionada: "+ idRaza +" "+ razaSeleccionada.getNombre() );
+					}
+				}
+			}
+		}
+	}
 
 	// --- Métodos para cargar datos en tablas ---
 	private void buscarPersonajesConTableModel() {
@@ -415,7 +451,7 @@ public class panelesJtable extends JDialog {
 				return false;
 			}
 		};
-		//model.addColumn("Id");
+		// model.addColumn("Id");
 		model.addColumn("Nombre");
 		model.addColumn("Nivel");
 		model.addColumn("Clase");

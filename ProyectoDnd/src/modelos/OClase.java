@@ -8,9 +8,9 @@ public class OClase {
 	
 
 	private Integer idClase;
-	private String nombreClase;
-	private String descripcionClase;
-	private String tipoClase;
+	private String nombre;
+	private String descripcion;
+	private String tipo;
 	private Integer DadoDano;
 	/**
 	 * @return the idClase
@@ -27,38 +27,38 @@ public class OClase {
 	/**
 	 * @return the nombreClase
 	 */
-	public String getNombreClase() {
-		return nombreClase;
+	public String getNombre() {
+		return nombre;
 	}
 	/**
 	 * @param nombreClase the nombreClase to set
 	 */
-	public void setNombreClase(String nombreClase) {
-		this.nombreClase = nombreClase;
+	public void setNombre(String nombreClase) {
+		this.nombre = nombreClase;
 	}
 	/**
 	 * @return the descripcionClase
 	 */
-	public String getDescripcionClase() {
-		return descripcionClase;
+	public String getDescripcion() {
+		return descripcion;
 	}
 	/**
 	 * @param descripcionClase the descripcionClase to set
 	 */
-	public void setDescripcionClase(String descripcionClase) {
-		this.descripcionClase = descripcionClase;
+	public void setDescripcion(String descripcionClase) {
+		this.descripcion = descripcionClase;
 	}
 	/**
 	 * @return the tipoClase
 	 */
-	public String getTipoClase() {
-		return tipoClase;
+	public String getTipo() {
+		return tipo;
 	}
 	/**
 	 * @param tipoClase the tipoClase to set
 	 */
-	public void setTipoClase(String tipoClase) {
-		this.tipoClase = tipoClase;
+	public void setTipo(String tipoClase) {
+		this.tipo = tipoClase;
 	}
 	/**
 	 * @return the dadoDano

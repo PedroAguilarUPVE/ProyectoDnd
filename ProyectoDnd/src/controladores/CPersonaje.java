@@ -148,7 +148,7 @@ public class CPersonaje {
 	public void buscarPersonajes(DefaultTableModel model) {
 		try {
 			Statement estatuto = ConexionBDSQLServer.GetConexion().createStatement();
-			sql = "Select P.NombrePersonaje, P.Nivel, C.NombreClase, SC.NombreSubclase, R.NombreRaza "
+			sql = "Select P.NombrePersonaje, P.Nivel, C.Nombre, SC.Nombre, R.NombreRaza "
 					+ "From Personajes P "
 					+ "INNER JOIN Clases C On C.Id_Clase=P.Id_Clase "
 					+ "Inner Join Subclases SC On SC.Id_Subclase = P.Id_Subclase "
@@ -194,7 +194,7 @@ public class CPersonaje {
 		try {
 			conexion = ConexionBDSQLServer.GetConexion();
 			sql = """
-					    SELECT P.NombrePersonaje, P.Nivel, C.NombreClase, SC.NombreSubclase, R.NombreRaza
+					    SELECT P.NombrePersonaje, P.Nivel, C.Nombre, SC.Nombre, R.NombreRaza
 					    FROM Personajes P
 					    INNER JOIN Clases C ON C.Id_Clase = P.Id_Clase
 					    INNER JOIN Subclases SC ON SC.Id_Subclase = P.Id_Subclase
@@ -206,8 +206,8 @@ public class CPersonaje {
 			rs = pst.executeQuery();
 
 			while (rs.next()) {
-				Object[] fila = { rs.getString("NombrePersonaje"), rs.getInt("Nivel"), rs.getString("NombreClase"),
-						rs.getString("NombreSubclase"), rs.getString("NombreRaza") };
+				Object[] fila = { rs.getString("NombrePersonaje"), rs.getInt("Nivel"), rs.getString("Nombre"),
+						rs.getString("Nombre"), rs.getString("NombreRaza") };
 				model.addRow(fila);
 			}
 		} catch (SQLException e) {
@@ -365,7 +365,7 @@ public class CPersonaje {
 		PreparedStatement pst = null;// Variable PreparedStatement
 		// Se genear una variables que optiene la conexi�n ala base de Datos
 		conexion = ConexionBDSQLServer.GetConexion(); // sqlserver
-		sql = "Select P.NombrePersonaje, P.Nivel, C.NombreClase, SC.NombreSubclase, R.NombreRaza "
+		sql = "Select P.NombrePersonaje, P.Nivel, C.Nombre, SC.Nombre, R.NombreRaza "
 				+ "From Personajes P "
 				+ "INNER JOIN Clases C On C.Id_Clase=P.Id_Clase "
 				+ "Inner Join Subclases SC On SC.Id_Subclase = P.Id_Subclase "

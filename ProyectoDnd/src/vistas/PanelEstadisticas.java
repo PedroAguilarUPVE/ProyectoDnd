@@ -65,38 +65,38 @@ public class PanelEstadisticas extends JPanel {
 		lblModFue = new JLabel("0");
 		lblModFue.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModFue.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModFue.setBounds(10, 5, 45, 20);
+		lblModFue.setBounds(10, 10, 45, 20);
 		panelFuerza.add(lblModFue);
 
 		JLabel lblFue = new JLabel(et.getString("Fuerza"));
 		lblFue.setVerticalAlignment(SwingConstants.TOP);
 		lblFue.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFue.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblFue.setBounds(0, 40, 60, 14);
+		lblFue.setBounds(0, 60, 60, 14);
 		panelFuerza.add(lblFue);
 
 		spinnerFue = new JSpinner();
 		spinnerFue.setModel(new SpinnerNumberModel(10, 0, 20, 1));
-		spinnerFue.setBounds(5, 20, 40, 20);
+		spinnerFue.setBounds(10, 30, 40, 20);
 		panelFuerza.add(spinnerFue);
 
 		JPanel panelDestreza = new JPanel();
 		panelDestreza.setLayout(null);
 		panelDestreza.setBackground(Color.LIGHT_GRAY);
-		panelDestreza.setBounds(70, 0, 60, 75);
+		panelDestreza.setBounds(65, 0, 60, 75);
 		add(panelDestreza);
 
 		lblModDes = new JLabel("0");
 		lblModDes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModDes.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModDes.setBounds(10, 11, 43, 20);
+		lblModDes.setBounds(10, 10, 45, 20);
 		panelDestreza.add(lblModDes);
 
 		JLabel lblDes = new JLabel(et.getString("Destreza"));
 		lblDes.setVerticalAlignment(SwingConstants.TOP);
 		lblDes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDes.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblDes.setBounds(0, 59, 60, 14);
+		lblDes.setBounds(0, 60, 60, 14);
 		panelDestreza.add(lblDes);
 
 		spinnerDes = new JSpinner();
@@ -107,20 +107,20 @@ public class PanelEstadisticas extends JPanel {
 		JPanel panelConstitucion = new JPanel();
 		panelConstitucion.setLayout(null);
 		panelConstitucion.setBackground(Color.LIGHT_GRAY);
-		panelConstitucion.setBounds(140, 0, 60, 75);
+		panelConstitucion.setBounds(130, 0, 60, 75);
 		add(panelConstitucion);
 
 		lblModCon = new JLabel("0");
 		lblModCon.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModCon.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModCon.setBounds(10, 11, 43, 20);
+		lblModCon.setBounds(10, 10, 45, 20);
 		panelConstitucion.add(lblModCon);
 
 		JLabel lblCon = new JLabel(et.getString("Constitucion"));
 		lblCon.setVerticalAlignment(SwingConstants.TOP);
 		lblCon.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCon.setFont(new Font("Sylfaen", Font.PLAIN, 11));
-		lblCon.setBounds(0, 59, 60, 14);
+		lblCon.setBounds(0, 60, 60, 14);
 		panelConstitucion.add(lblCon);
 
 		spinnerCon = new JSpinner();
@@ -131,20 +131,20 @@ public class PanelEstadisticas extends JPanel {
 		JPanel panelInteligencia = new JPanel();
 		panelInteligencia.setLayout(null);
 		panelInteligencia.setBackground(Color.LIGHT_GRAY);
-		panelInteligencia.setBounds(210, 0, 60, 75);
+		panelInteligencia.setBounds(195, 0, 60, 75);
 		add(panelInteligencia);
 
 		lblModInt = new JLabel("0");
 		lblModInt.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModInt.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModInt.setBounds(10, 11, 47, 20);
+		lblModInt.setBounds(10, 10, 45, 20);
 		panelInteligencia.add(lblModInt);
 
 		JLabel lblInt = new JLabel(et.getString("Inteligencia"));
 		lblInt.setVerticalAlignment(SwingConstants.TOP);
 		lblInt.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInt.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblInt.setBounds(0, 59, 60, 14);
+		lblInt.setBounds(0, 60, 60, 14);
 		panelInteligencia.add(lblInt);
 
 		spinnerInt = new JSpinner();
@@ -155,20 +155,20 @@ public class PanelEstadisticas extends JPanel {
 		JPanel panelSabiduria = new JPanel();
 		panelSabiduria.setLayout(null);
 		panelSabiduria.setBackground(Color.LIGHT_GRAY);
-		panelSabiduria.setBounds(280, 0, 60, 75);
+		panelSabiduria.setBounds(260, 0, 60, 75);
 		add(panelSabiduria);
 
 		lblModSab = new JLabel("0");
 		lblModSab.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModSab.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModSab.setBounds(10, 11, 47, 20);
+		lblModSab.setBounds(10, 10, 45, 20);
 		panelSabiduria.add(lblModSab);
 
 		JLabel lblSab = new JLabel(et.getString("Sabiduria"));
 		lblSab.setVerticalAlignment(SwingConstants.TOP);
 		lblSab.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSab.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblSab.setBounds(0, 59, 60, 14);
+		lblSab.setBounds(0, 60, 60, 14);
 		panelSabiduria.add(lblSab);
 
 		spinnerSab = new JSpinner();
@@ -179,20 +179,20 @@ public class PanelEstadisticas extends JPanel {
 		JPanel panelCarisma = new JPanel();
 		panelCarisma.setLayout(null);
 		panelCarisma.setBackground(Color.LIGHT_GRAY);
-		panelCarisma.setBounds(350, 0, 60, 75);
+		panelCarisma.setBounds(325, 0, 60, 75);
 		add(panelCarisma);
 
 		lblModCar = new JLabel("0");
 		lblModCar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblModCar.setFont(new Font("Sylfaen", Font.PLAIN, 16));
-		lblModCar.setBounds(10, 11, 47, 20);
+		lblModCar.setBounds(10, 10, 45, 20);
 		panelCarisma.add(lblModCar);
 
 		JLabel lblCar = new JLabel(et.getString("Carisma"));
 		lblCar.setVerticalAlignment(SwingConstants.TOP);
 		lblCar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCar.setFont(new Font("Sylfaen", Font.PLAIN, 12));
-		lblCar.setBounds(0, 59, 60, 14);
+		lblCar.setBounds(0, 60, 60, 14);
 		panelCarisma.add(lblCar);
 
 		spinnerCar = new JSpinner();

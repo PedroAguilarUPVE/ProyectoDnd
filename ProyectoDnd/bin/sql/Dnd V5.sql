@@ -190,7 +190,6 @@ ADD CONSTRAINT FK_Raza_Estadisticas FOREIGN KEY (ID_Raza)
 REFERENCES Razas(Id_Raza);
 
 --				Llenar Datos
-
 --	Clases
 
 INSERT INTO Clases ( NombreClase, DescripcionClase, TipoClase, DadoDano) VALUES

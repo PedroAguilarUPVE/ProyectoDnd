@@ -121,39 +121,39 @@ public class PanelHabilidades extends JPanel {
 		add(lblAcrobacias);
 		lblAcrobacias.setHorizontalAlignment(SwingConstants.CENTER);
 
-		lblHabilidades = new JLabel(et.getString("habilidades"));
+		lblHabilidades = new JLabel(et.getString("Habilidades"));
 		lblHabilidades.setBounds(1, 5, 126, 13);
 		add(lblHabilidades);
 		lblHabilidades.setVerticalAlignment(SwingConstants.TOP);
 		lblHabilidades.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHabilidades.setFont(new Font("Sylfaen", Font.PLAIN, 14));
 
-		rdbtnAtletismo = new JRadioButton(et.getString("atletismo"));
+		rdbtnAtletismo = new JRadioButton(et.getString("Atletismo"));
 		rdbtnAtletismo.setBounds(7, 39, 79, 13);
 		add(rdbtnAtletismo);
 		rdbtnAtletismo.setFont(new Font("Tahoma", Font.PLAIN, 8));
 
-		rdbtnArcano = new JRadioButton(et.getString("arcano"));
+		rdbtnArcano = new JRadioButton(et.getString("Arcano"));
 		rdbtnArcano.setBounds(7, 54, 79, 13);
 		add(rdbtnArcano);
 		rdbtnArcano.setFont(new Font("Tahoma", Font.PLAIN, 8));
 
-		rdbtnInterpretacion = new JRadioButton(et.getString("interpretacion"));
+		rdbtnInterpretacion = new JRadioButton(et.getString("Interpretacion"));
 		rdbtnInterpretacion.setBounds(7, 99, 79, 13);
 		add(rdbtnInterpretacion);
 		rdbtnInterpretacion.setFont(new Font("Tahoma", Font.PLAIN, 8));
 
-		rdbtnHistoria = new JRadioButton(et.getString("historia"));
+		rdbtnHistoria = new JRadioButton(et.getString("Historia"));
 		rdbtnHistoria.setBounds(7, 84, 79, 13);
 		add(rdbtnHistoria);
 		rdbtnHistoria.setFont(new Font("Tahoma", Font.PLAIN, 8));
 
-		rdbtnEngano = new JRadioButton(et.getString("engano"));
+		rdbtnEngano = new JRadioButton(et.getString("Engano"));
 		rdbtnEngano.setBounds(7, 69, 79, 13);
 		add(rdbtnEngano);
 		rdbtnEngano.setFont(new Font("Tahoma", Font.PLAIN, 8));
 
-		rdbtnAcrobacias = new JRadioButton(et.getString("acrobacias"));
+		rdbtnAcrobacias = new JRadioButton(et.getString("Acrobacias"));
 		rdbtnAcrobacias.setBounds(7, 24, 79, 13);
 		add(rdbtnAcrobacias);
 		rdbtnAcrobacias.setFont(new Font("Tahoma", Font.PLAIN, 8));

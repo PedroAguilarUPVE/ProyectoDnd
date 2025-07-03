@@ -23,10 +23,11 @@ public class CrearPartida extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private ResourceBundle et;
 	private JButton btnReporte;
-	private JButton btnCargarPer;
 	private int idPersonaje;
-	private PanelPersonaje panelPersonaje1;
 	public JTextArea textArea;
+	private PanelPersonaje panelPersonaje1;
+	private PanelPersonaje panelPersonaje2;
+	private PanelPersonaje panelPersonaje3;
 
 	/**
 	 * Launch the application.
@@ -59,23 +60,6 @@ public class CrearPartida extends JDialog {
 		lblNewLabel.setBounds(180, 10, 120, 20);
 		contentPanel.add(lblNewLabel);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 40, 460, 240);
-		contentPanel.add(panel);
-		panel.setLayout(null);
-		
-		panelPersonaje1 = new PanelPersonaje(CrearPartida.this,true,Idioma,5);
-		panelPersonaje1.setBounds(0, 0, 460, 200);
-		panel.add(panelPersonaje1);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(150, 210, 90, 20);
-		panel.add(btnNewButton);
-		
-		btnCargarPer = new JButton("Cargar Personaje");
-		btnCargarPer.setBounds(330, 210, 120, 20);
-		panel.add(btnCargarPer);
-		panelPersonaje1.setVisible(true);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(500, 40, 500, 680);
@@ -83,14 +67,29 @@ public class CrearPartida extends JDialog {
 		
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
+		textArea.setText("");
 		
 		btnReporte = new JButton("Reporte");
 		btnReporte.setBounds(510, 730, 85, 21);
 		contentPanel.add(btnReporte);
 		
-		ManejadorBoton EscuchadorBoton = new ManejadorBoton();
-		btnCargarPer.addActionListener(EscuchadorBoton);
+		panelPersonaje1 = new PanelPersonaje(CrearPartida.this,true,Idioma,0);
+		panelPersonaje1.setBounds(10, 40, 460, 200);
+		contentPanel.add(panelPersonaje1);
+		panelPersonaje1.setVisible(true);
 		
+		panelPersonaje2 = new PanelPersonaje(CrearPartida.this,true,Idioma,0);
+		panelPersonaje2.setBounds(10, 260, 460, 200);
+		contentPanel.add(panelPersonaje2);
+		panelPersonaje2.setVisible(true);
+		
+		panelPersonaje3 = new PanelPersonaje(CrearPartida.this,true,Idioma,0);
+		panelPersonaje3.setBounds(10, 480, 460, 200);
+		contentPanel.add(panelPersonaje3);
+		panelPersonaje3.setVisible(true);
+		
+
+
 		///
 		//tablaPersonajes Ventana = new tablaPersonajes(CrearPartida.this, true);
 		//Ventana.setVisible(true);
@@ -101,22 +100,7 @@ public class CrearPartida extends JDialog {
 		///
 	}
 	
-	private class ManejadorBoton implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource().equals(btnCargarPer)) {
-				OPersonaje Personaje1 = new OPersonaje();
-				tablaPersonajes AgregarPersonaje = new tablaPersonajes(CrearPartida.this,true);
-				AgregarPersonaje.setVisible(true);
-				int idSeleccionado = AgregarPersonaje.idSeleccionadoPersonaje;
-				panelPersonaje1.cargarDatosPersonaje(idSeleccionado);
-				textArea.setText(textArea.getText()+"Comentario \n");
-			}
-		}
-	}
-	
 	public void AgregarMensaje(String Cadena) {
-		textArea.setText(textArea.getText()+"\n"+Cadena);
+		textArea.setText(textArea.getText()+Cadena+"\n");
 	}
 }

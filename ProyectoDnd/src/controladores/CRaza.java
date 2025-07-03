@@ -30,10 +30,10 @@ public class CRaza {
 
 		try (Connection conn = ConexionBDSQLServer.GetConexion()) {
 			try (PreparedStatement psRaza = conn.prepareStatement(sqlRaza, Statement.RETURN_GENERATED_KEYS)) {
-				psRaza.setString(1, raza.getNombreRaza());
-				psRaza.setString(2, raza.getDescripcionRaza());
-				psRaza.setString(3, raza.getTamanoRaza());
-				psRaza.setInt(4, raza.getVelocidadRaza());
+				psRaza.setString(1, raza.getNombre());
+				psRaza.setString(2, raza.getDescripcion());
+				psRaza.setString(3, raza.getTamano());
+				psRaza.setInt(4, raza.getVelocidad());
 				psRaza.executeUpdate();
 
 				ResultSet rs = psRaza.getGeneratedKeys();
@@ -79,10 +79,10 @@ public class CRaza {
 			if (rs.next()) {
 				raza = new ORaza();
 				raza.setId_Raza(rs.getInt("id_Raza"));
-				raza.setNombreRaza(rs.getString("NombreRaza"));
-				raza.setDescripcionRaza(rs.getString("DescripcionRaza"));
-				raza.setTamanoRaza(rs.getString("TamanoRaza"));
-				raza.setVelocidadRaza(rs.getInt("VelocidadRaza"));
+				raza.setNombre(rs.getString("NombreRaza"));
+				raza.setDescripcion(rs.getString("DescripcionRaza"));
+				raza.setTamano(rs.getString("TamanoRaza"));
+				raza.setVelocidad(rs.getInt("VelocidadRaza"));
 				raza.setFuerza(rs.getInt("Fuerza"));
 				raza.setDestreza(rs.getInt("Destreza"));
 				raza.setConstitucion(rs.getInt("Constitucion"));
@@ -96,7 +96,6 @@ public class CRaza {
 		}
 		return raza;
 	}
-
 	/**
 	 * Elimina una raza y sus estadísticas asociadas de la base de datos.
 	 * 
@@ -167,7 +166,7 @@ public class CRaza {
 	 * @param nombreRaza Nombre de la raza.
 	 * @return ID correspondiente o -1 si no se encuentra.
 	 */
-	public int obtenerIdRazaPorNombre(String nombreRaza) {
+	public static int obtenerIdRazaPorNombre(String nombreRaza) {
 		int idRaza = -1;
 		String sql = "SELECT Id_Raza FROM Razas WHERE NombreRaza = ?";
 
@@ -187,13 +186,14 @@ public class CRaza {
 		return idRaza;
 	}
 
+	
 	/**
 	 * Busca una raza y sus estadísticas asociadas a partir del nombre.
 	 * 
 	 * @param nombreRaza Nombre de la raza.
 	 * @return Objeto ORaza si se encuentra; null en caso contrario.
 	 */
-	public ORaza buscarRazaPorNombre(String nombreRaza) {
+	public static ORaza obtenerRazaPorNombre(String nombreRaza) {
 		ORaza raza = null;
 		String sqlRaza = "SELECT * FROM Razas WHERE NombreRaza = ?";
 		String sqlEstadisticas = "SELECT * FROM EstadisticasRaza WHERE Id_Raza = (SELECT Id_Raza FROM Razas WHERE NombreRaza = ?)";
@@ -205,10 +205,10 @@ public class CRaza {
 
 				if (rsRaza.next()) {
 					raza = new ORaza();
-					raza.setNombreRaza(rsRaza.getString("NombreRaza"));
-					raza.setDescripcionRaza(rsRaza.getString("DescripcionRaza"));
-					raza.setTamanoRaza(rsRaza.getString("TamanoRaza"));
-					raza.setVelocidadRaza(rsRaza.getInt("VelocidadRaza"));
+					raza.setNombre(rsRaza.getString("NombreRaza"));
+					raza.setDescripcion(rsRaza.getString("DescripcionRaza"));
+					raza.setTamano(rsRaza.getString("TamanoRaza"));
+					raza.setVelocidad(rsRaza.getInt("VelocidadRaza"));
 
 					try (PreparedStatement psEstadisticas = conn.prepareStatement(sqlEstadisticas)) {
 						psEstadisticas.setString(1, nombreRaza);
@@ -243,10 +243,10 @@ public class CRaza {
 
 		try {
 			try (PreparedStatement psRaza = conexion.prepareStatement(sqlRaza)) {
-				psRaza.setString(1, raza.getDescripcionRaza());
-				psRaza.setString(2, raza.getTamanoRaza());
-				psRaza.setInt(3, raza.getVelocidadRaza());
-				psRaza.setString(4, raza.getNombreRaza());
+				psRaza.setString(1, raza.getDescripcion());
+				psRaza.setString(2, raza.getTamano());
+				psRaza.setInt(3, raza.getVelocidad());
+				psRaza.setString(4, raza.getNombre());
 				psRaza.executeUpdate();
 			}
 
@@ -292,7 +292,7 @@ public class CRaza {
 	 * @param idRaza Identificador de la raza.
 	 * @return Nombre de la raza si existe; cadena vacía en caso contrario.
 	 */
-	public String obtenerNombreRazaPorId(int idRaza) {
+	public static String obtenerNombreRazaPorId(int idRaza) {
 		String nombreRaza = "";
 		String sql = "SELECT NombreRaza FROM Razas WHERE Id_Raza = ?";
 
@@ -310,6 +310,12 @@ public class CRaza {
 		}
 		return nombreRaza;
 	}
+	
+
+    public static ORaza obtenerRazaPorId(int idRaza) {
+    	ORaza Raza = obtenerRazaPorNombre(obtenerNombreRazaPorId(idRaza));
+    	return Raza;
+    }
 
 	public void buscarRazasConTableModel(DefaultTableModel model, int pagina, int registrosPorPagina) {
 
@@ -320,6 +326,8 @@ public class CRaza {
 
 		try {
 
+			int C = 5;
+			
 			pst = conexion.prepareStatement(sql);
 			pst.setInt(1, (pagina - 1) * registrosPorPagina);
 			pst.setInt(2, registrosPorPagina);
@@ -328,8 +336,8 @@ public class CRaza {
 
 			model.setRowCount(0); // Limpiar tabla
 			while (rs.next()) {
-				Object[] fila = new Object[6];
-				for (int i = 0; i < 6; i++)
+				Object[] fila = new Object[C];
+				for (int i = 0; i < C; i++)
 					fila[i] = rs.getObject(i + 1);
 				model.addRow(fila);
 			}
@@ -367,4 +375,5 @@ public class CRaza {
 		System.out.println(paginas);
 		return paginas;
 	}
+	
 }

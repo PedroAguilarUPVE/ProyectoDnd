@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -24,47 +25,36 @@ import modelos.OClase;
 import modelos.ORaza;
 
 /**
- * Clase crear clases. Maneja la creacion de clases y razas y su insercion en la base de datos
+ * Clase crear clases. Maneja la creacion de clases y razas y su insercion en la
+ * base de datos
  */
 public class CrearClases extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel panelContenido;
-
-	private JTextField campoDescripcionRaza;
-	private JTextField campoDescripcionClase;
-	private JTextField campoClase;
-	private JTextField campoRaza;
-
-	private JButton botonGuardarRaza;
-	private JButton botonGuardarClase;
-
-	private JComboBox comboBoxTamano;
-	private JComboBox comboBoxTipoClase;
-
-	private JSpinner spinnerVelocidad;
-	private JSpinner spinnerDaño;
-
-	private JSpinner spinnerFuerza;
-	private JSpinner spinnerDestreza;
-	private JSpinner spinnerConstitucion;
-	private JSpinner spinnerInteligencia;
-	private JSpinner spinnerSabiduria;
-	private JSpinner spinnerCarisma;
+	private JTextField textDescripcion;
+	private JTextField textNombre;
+	private JButton btnRegistrar;
+	private JComboBox comboBoxTipo;
+	private JSpinner spinnerDano;
 
 	private ResourceBundle et;
+	private JButton btnEditar;
+	private JButton btnEliminar;
 
 	/**
-	 * Constructor de la ventana de creacion de clases y razas
-	 * Se crea como hija de la ventana menu
+	 * Constructor de la ventana de creacion de clases y razas Se crea como hija de
+	 * la ventana menu
 	 * 
-	 * @param parent Clase Frame Indica el componente padre de de la ventana CrearClases
-	 * @param modal  Clase boolean Indica el modo de sobreposicion de la ventana hija
-	 * @param Idioma Clase Locale Hereda el parametro tipo Locale de la clase padre, para la
-	 *               seleccion de idioma
-	 * @param integer 
+	 * @param parent  Clase Frame Indica el componente padre de de la ventana
+	 *                CrearClases
+	 * @param modal   Clase boolean Indica el modo de sobreposicion de la ventana
+	 *                hija
+	 * @param Idioma  Clase Locale Hereda el parametro tipo Locale de la clase
+	 *                padre, para la seleccion de idioma
+	 * @param integer
 	 */
-	public CrearClases(Frame parent, boolean modal, Locale Idioma, Integer integer) {
+	public CrearClases(Frame parent, boolean modal, Locale Idioma, Integer IdClase) {
 		super(parent, modal);
 		et = ResourceBundle.getBundle("properties/dic", Idioma);
 		setTitle(et.getString("crearClases"));
@@ -76,175 +66,106 @@ public class CrearClases extends JDialog {
 		setContentPane(panelContenido);
 		panelContenido.setLayout(null);
 
-		JTabbedPane panelPestanas = new JTabbedPane(JTabbedPane.TOP);
-		panelPestanas.setBounds(10, 10, 416, 343);
-		panelContenido.add(panelPestanas);
-
 		// Panel CLASE
 		JPanel panelClase = new JPanel();
+		panelClase.setBounds(10, 10, 410, 250);
+		panelContenido.add(panelClase);
 		panelClase.setLayout(null);
-		panelPestanas.addTab(et.getString("clase"), null, panelClase, null);
 
-		JLabel etiquetaNombreClase = new JLabel(et.getString("etiqueta.nombreClase"));
-		etiquetaNombreClase.setBounds(10, 19, 140, 16);
-		panelClase.add(etiquetaNombreClase);
+		JLabel etiquetaNombre = new JLabel(et.getString("nombreClase"));
+		etiquetaNombre.setBounds(10, 19, 140, 16);
+		panelClase.add(etiquetaNombre);
 
-		campoClase = new JTextField();
-		campoClase.setBounds(170, 10, 231, 30);
-		panelClase.add(campoClase);
+		textNombre = new JTextField();
+		textNombre.setBounds(170, 10, 231, 30);
+		panelClase.add(textNombre);
 
-		JLabel etiquetaDescripcionClase = new JLabel(et.getString("etiqueta.descripcionClase"));
+		JLabel etiquetaDescripcionClase = new JLabel(et.getString("descripcionClase"));
 		etiquetaDescripcionClase.setBounds(10, 50, 150, 16);
 		panelClase.add(etiquetaDescripcionClase);
 
-		campoDescripcionClase = new JTextField();
-		campoDescripcionClase.setBounds(170, 50, 231, 35);
-		panelClase.add(campoDescripcionClase);
+		textDescripcion = new JTextField();
+		textDescripcion.setBounds(170, 50, 231, 35);
+		panelClase.add(textDescripcion);
 
-		JLabel etiquetaTipoClase = new JLabel(et.getString("etiqueta.tipoClase"));
+		JLabel etiquetaTipoClase = new JLabel(et.getString("tipoClase"));
 		etiquetaTipoClase.setBounds(10, 105, 116, 16);
 		panelClase.add(etiquetaTipoClase);
 
-		comboBoxTipoClase = new JComboBox();
-		comboBoxTipoClase.setBounds(170, 103, 231, 21);
-		comboBoxTipoClase.addItem("Marcial");
-		comboBoxTipoClase.addItem("Magica");
-		comboBoxTipoClase.addItem("Mixta");
-		panelClase.add(comboBoxTipoClase);
 
-		JLabel etiquetaDadoDanio = new JLabel(et.getString("etiqueta.dadoDanio"));
+		comboBoxTipo = new JComboBox();
+		comboBoxTipo.setBounds(170, 103, 231, 21);
+		comboBoxTipo.addItem("Marcial");
+		comboBoxTipo.addItem("Magica");
+		comboBoxTipo.addItem("Mixta");
+		panelClase.add(comboBoxTipo);
+
+		JLabel etiquetaDadoDanio = new JLabel(et.getString("dadoDano"));
 		etiquetaDadoDanio.setBounds(10, 141, 116, 16);
 		panelClase.add(etiquetaDadoDanio);
 
-		spinnerDaño = new JSpinner();
-		spinnerDaño.setBounds(170, 140, 63, 20);
-		panelClase.add(spinnerDaño);
+		spinnerDano = new JSpinner();
+		spinnerDano.setBounds(170, 140, 63, 20);
+		panelClase.add(spinnerDano);
 
-		botonGuardarClase = new JButton(et.getString("boton.guardarClase"));
-		botonGuardarClase.setBounds(135, 195, 153, 21);
-		panelClase.add(botonGuardarClase);
 
-		// Panel RAZA
-		JPanel panelRaza = new JPanel();
-		panelRaza.setLayout(null);
-		panelPestanas.addTab(et.getString("raza"), null, panelRaza, null);
+		btnRegistrar = new JButton(et.getString("guardarClase"));
+		btnRegistrar.setBounds(135, 180, 120, 20);
+		panelClase.add(btnRegistrar);
 
-		JLabel etiquetaNombreRaza = new JLabel(et.getString("etiqueta.nombreRaza"));
-		etiquetaNombreRaza.setBounds(10, 19, 140, 16);
-		panelRaza.add(etiquetaNombreRaza);
+		btnEditar = new JButton(et.getString("guardarClase"));
+		btnEditar.setBounds(265, 180, 120, 20);
+		panelClase.add(btnEditar);
 
-		campoRaza = new JTextField();
-		campoRaza.setBounds(170, 10, 231, 30);
-		panelRaza.add(campoRaza);
-
-		JLabel etiquetaDescripcionRaza = new JLabel(et.getString("etiqueta.descripcionRaza"));
-		etiquetaDescripcionRaza.setBounds(10, 76, 140, 16);
-		panelRaza.add(etiquetaDescripcionRaza);
-
-		campoDescripcionRaza = new JTextField();
-		campoDescripcionRaza.setBounds(170, 76, 231, 35);
-		panelRaza.add(campoDescripcionRaza);
-
-		JLabel etiquetaTamaño = new JLabel(et.getString("etiqueta.tamano"));
-		etiquetaTamaño.setBounds(10, 131, 140, 16);
-		panelRaza.add(etiquetaTamaño);
-
-		comboBoxTamano = new JComboBox();
-		comboBoxTamano.setBounds(170, 129, 231, 21);
-		comboBoxTamano.addItem("Pequeño");
-		comboBoxTamano.addItem("Mediano");
-		comboBoxTamano.addItem("Grande");
-		comboBoxTamano.addItem("Enorme");
-		panelRaza.add(comboBoxTamano);
-
-		JLabel etiquetaVelocidad = new JLabel(et.getString("etiqueta.velocidad"));
-		etiquetaVelocidad.setBounds(10, 167, 116, 16);
-		panelRaza.add(etiquetaVelocidad);
-
-		spinnerVelocidad = new JSpinner();
-		spinnerVelocidad.setBounds(170, 166, 63, 20);
-		panelRaza.add(spinnerVelocidad);
-
-		// Estadísticas
-		JLabel etiquetaFuerza = new JLabel(et.getString("etiqueta.fuerza"));
-		etiquetaFuerza.setBounds(10, 200, 80, 16);
-		panelRaza.add(etiquetaFuerza);
-		spinnerFuerza = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
-		spinnerFuerza.setBounds(80, 200, 50, 20);
-		panelRaza.add(spinnerFuerza);
-
-		JLabel etiquetaDestreza = new JLabel(et.getString("etiqueta.destreza"));
-		etiquetaDestreza.setBounds(140, 200, 80, 16);
-		panelRaza.add(etiquetaDestreza);
-		spinnerDestreza = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
-		spinnerDestreza.setBounds(210, 200, 50, 20);
-		panelRaza.add(spinnerDestreza);
-
-		JLabel etiquetaConstitucion = new JLabel(et.getString("etiqueta.constitucion"));
-		etiquetaConstitucion.setBounds(270, 200, 80, 16);
-		panelRaza.add(etiquetaConstitucion);
-		spinnerConstitucion = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
-		spinnerConstitucion.setBounds(360, 200, 50, 20);
-		panelRaza.add(spinnerConstitucion);
-
-		JLabel etiquetaInteligencia = new JLabel(et.getString("etiqueta.inteligencia"));
-		etiquetaInteligencia.setBounds(10, 225, 80, 16);
-		panelRaza.add(etiquetaInteligencia);
-		spinnerInteligencia = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
-		spinnerInteligencia.setBounds(80, 225, 50, 20);
-		panelRaza.add(spinnerInteligencia);
-
-		JLabel etiquetaSabiduria = new JLabel(et.getString("etiqueta.sabiduria"));
-		etiquetaSabiduria.setBounds(140, 225, 80, 16);
-		panelRaza.add(etiquetaSabiduria);
-		spinnerSabiduria = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
-		spinnerSabiduria.setBounds(210, 225, 50, 20);
-		panelRaza.add(spinnerSabiduria);
-
-		JLabel etiquetaCarisma = new JLabel(et.getString("etiqueta.carisma"));
-		etiquetaCarisma.setBounds(270, 225, 80, 16);
-		panelRaza.add(etiquetaCarisma);
-		spinnerCarisma = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
-		spinnerCarisma.setBounds(360, 225, 50, 20);
-		panelRaza.add(spinnerCarisma);
-
-		botonGuardarRaza = new JButton(et.getString("boton.guardarRaza"));
-		botonGuardarRaza.setBounds(134, 272, 153, 21);
-		panelRaza.add(botonGuardarRaza);
-
+		btnEliminar = new JButton(et.getString("BorrarClase"));
+		btnEliminar.setBounds(10, 180, 120, 20); // Ajusta la posición según necesites
+		panelClase.add(btnEliminar);
+		
 		ManejadorBoton manejador = new ManejadorBoton();
-		botonGuardarClase.addActionListener(manejador);
-		botonGuardarRaza.addActionListener(manejador);
+		// botonGuardarRaza.addActionListener(manejador);		
+
+		btnRegistrar.addActionListener(manejador);
+		btnEditar.addActionListener(manejador);
+		btnEliminar.addActionListener(manejador);
+		
+		seleccionarModo(IdClase);
 	}
 
 	/**
-	 * Crear la clase ManejadorBoton implementando ActionListener para llevar control de los botones
-	 * Controla los eventos al precionar cada boton
+	 * Crear la clase ManejadorBoton implementando ActionListener para llevar
+	 * control de los botones Controla los eventos al precionar cada boton
 	 */
 	private class ManejadorBoton implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource().equals(botonGuardarClase)) {
+			if (e.getSource().equals(btnRegistrar)) {
 				CrearClase();
 			}
-			if (e.getSource().equals(botonGuardarRaza)) {
-				CrearRaza();
+			// Si el origen del evento es btnBorrarClase, se ejecuta borrarClase
+			if (e.getSource() == btnEliminar) {
+				eliminarClase();
 			}
+			if (e.getSource() == btnEditar) {
+				editarClase();
+			}
+			/*
+			 * if (e.getSource().equals(botonGuardarRaza)) { CrearRaza(); }
+			 */
 		}
 	}
 
 	/**
-	 * Metodo CrearClase() Obtiene los datos de clase ingresados por el usuario
-	 * y los ingresa a la Clases de la base de datos 
-	 * No requiere parametros ni retorna valores de salida
+	 * Metodo CrearClase() Obtiene los datos de clase ingresados por el usuario y
+	 * los ingresa a la Clases de la base de datos No requiere parametros ni retorna
+	 * valores de salida
 	 */
 	public void CrearClase() {
 		try {
 			OClase nuevaClase = new OClase();
-			nuevaClase.setNombreClase(campoClase.getText());
-			nuevaClase.setDescripcionClase(campoDescripcionClase.getText());
-			nuevaClase.setTipoClase((String) comboBoxTipoClase.getSelectedItem());
-			nuevaClase.setDadoDano((Integer) spinnerDaño.getValue());
+			nuevaClase.setNombre(textNombre.getText());
+			nuevaClase.setDescripcion(textDescripcion.getText());
+			nuevaClase.setTipo((String) comboBoxTipo.getSelectedItem());
+			nuevaClase.setDadoDano((Integer) spinnerDano.getValue());
 
 			new CClase().registrarClase(nuevaClase);
 			JOptionPane.showMessageDialog(null, et.getString("mensaje.exito.clase"));
@@ -256,30 +177,100 @@ public class CrearClases extends JDialog {
 	}
 
 	/**
-	 * Metodo CrearRaza() Obtiene los datos de clase ingresados por el usuario 
-	 * y los ingresa a la Razas de la base de datos 
-	 * No requiere parametros ni retorna valores de salida
+	 * Metodo eliminarClase Implemetado para eliminar de la base de datos la clase
+	 * seleccionada Implementa el metodo del mismo nombre en el controlador CClase
 	 */
-	public void CrearRaza() {
+	private void eliminarClase() {
 		try {
-			ORaza nuevaRaza = new ORaza();
-			nuevaRaza.setNombreRaza(campoRaza.getText());
-			nuevaRaza.setDescripcionRaza(campoDescripcionRaza.getText());
-			nuevaRaza.setTamanoRaza((String) comboBoxTamano.getSelectedItem());
-			nuevaRaza.setVelocidadRaza((Integer) spinnerVelocidad.getValue());
+			String nombre = textNombre.getText();
+			if (nombre == null) {
+				JOptionPane.showMessageDialog(this, "Seleccione una clase para borrar.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
-			nuevaRaza.setFuerza((Integer) spinnerFuerza.getValue());
-			nuevaRaza.setDestreza((Integer) spinnerDestreza.getValue());
-			nuevaRaza.setConstitucion((Integer) spinnerConstitucion.getValue());
-			nuevaRaza.setInteligencia((Integer) spinnerInteligencia.getValue());
-			nuevaRaza.setSabiduria((Integer) spinnerSabiduria.getValue());
-			nuevaRaza.setCarisma((Integer) spinnerCarisma.getValue());
+			int confirm = JOptionPane.showConfirmDialog(this,
+					"¿Está seguro de que desea borrar la clase " + nombre + "?", "Confirmar",
+					JOptionPane.YES_NO_OPTION);
+			if (confirm == JOptionPane.YES_OPTION) {
+				new CClase().borrarClase(nombre); // Llamamos al método del controlador
 
-			new CRaza().registrarRaza(nuevaRaza);
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.exito.raza"));
+			}
 		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Error al borrar la clase", "Error", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.error.raza"), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+	/**
+	 * Metodo actualizarClase actualiza los datos de la clase seleccionada, dentro
+	 * de la base de datos
+	 */
+	private void editarClase() {
+		try {
+			// Obtener el nombre de la clase seleccionada
+			String nombre = textNombre.getText();
+			if (nombre == null)
+				return;
+
+			// Buscar la clase por nombre
+			OClase clase = new CClase().buscarClasePorNombre(nombre);
+			if (clase != null) {
+				// Establecer los nuevos valores
+				clase.setDescripcion(textDescripcion.getText());
+				clase.setTipo((String) comboBoxTipo.getSelectedItem());
+				clase.setDadoDano((int) spinnerDano.getValue());
+
+				// Actualizar la clase en la base de datos
+				CClase.actualizarClase(clase);
+				JOptionPane.showMessageDialog(this, "Clase actualizada correctamente.");
+
+			} else {
+				JOptionPane.showMessageDialog(this, "Clase no encontrada", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Error al actualizar clase", "Error", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
+		}
+	}
+
+
+	/**
+	 * Metodo SeleccionarModo Habilita o desabilita los botones de registrar, editar y eliminar, dependiendo del id ingresado
+	 * Si el idSeleccionado es 0, es modo registrar, y se desabilitan editar y eliminar
+	 * En caso contrario se permitira editar y eliminar, pero no guardar registros nuevos
+	 * @param idSeleccionado 
+	 */
+	private void seleccionarModo(int idSeleccionado) {
+		// TODO Auto-generated method stub
+		boolean nuevoClase = idSeleccionado == 0;
+		textNombre.setEnabled(nuevoClase);
+		btnEditar.setEnabled(!nuevoClase);
+		btnEditar.setVisible(!nuevoClase);
+		btnEliminar.setEnabled(!nuevoClase);
+		btnEliminar.setVisible(!nuevoClase);
+		btnRegistrar.setEnabled(nuevoClase);
+		btnRegistrar.setVisible(nuevoClase);
+
+		if (!nuevoClase) {
+			cargarDatosClase(idSeleccionado);
+		}
+	}
+
+	/**
+	 * Metodo cargarClaseSeleccionada Carga los datos de la clase seleccionado Llena
+	 * los campos de los componentes correspondientes, con los datos de clase
+	 * obtenidos de la base de datos
+	 */
+	private void cargarDatosClase(int idClase) {
+		OClase clase = CClase.obtenerClasePorId(idClase);
+		if (clase != null) {
+			textNombre.setText(clase.getNombre());
+			textDescripcion.setText(clase.getDescripcion());
+			comboBoxTipo.setSelectedItem(clase.getTipo());
+			spinnerDano.setValue(clase.getDadoDano());
+
+		}
+	}
+
 }

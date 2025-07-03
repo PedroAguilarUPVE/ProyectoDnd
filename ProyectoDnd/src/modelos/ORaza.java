@@ -9,9 +9,9 @@ package modelos;
 public class ORaza {
 
 	int id_Raza;
-	String NombreRaza;
-	String DescripcionRaza;
-	String TamanoRaza;
+	String Nombre;
+	String Descripcion;
+	String Tamano;
 	int VelocidadRaza;
 	int id_EstadisticasRaza;
 	int Fuerza;
@@ -35,49 +35,49 @@ public class ORaza {
 	/**
 	 * @return the nombreRaza
 	 */
-	public String getNombreRaza() {
-		return NombreRaza;
+	public String getNombre() {
+		return Nombre;
 	}
 	/**
 	 * @param nombreRaza the nombreRaza to set
 	 */
-	public void setNombreRaza(String nombreRaza) {
-		NombreRaza = nombreRaza;
+	public void setNombre(String nombreRaza) {
+		Nombre = nombreRaza;
 	}
 	/**
 	 * @return the descripcionRaza
 	 */
-	public String getDescripcionRaza() {
-		return DescripcionRaza;
+	public String getDescripcion() {
+		return Descripcion;
 	}
 	/**
 	 * @param descripcionRaza the descripcionRaza to set
 	 */
-	public void setDescripcionRaza(String descripcionRaza) {
-		DescripcionRaza = descripcionRaza;
+	public void setDescripcion(String descripcionRaza) {
+		Descripcion = descripcionRaza;
 	}
 	/**
 	 * @return the tamanoRaza
 	 */
-	public String getTamanoRaza() {
-		return TamanoRaza;
+	public String getTamano() {
+		return Tamano;
 	}
 	/**
-	 * @param tamanoRaza the tamanoRaza to set
+	 * @param tamano the tamanoRaza to set
 	 */
-	public void setTamanoRaza(String tamanoRaza) {
-		TamanoRaza = tamanoRaza;
+	public void setTamano(String tamano) {
+		Tamano = tamano;
 	}
 	/**
 	 * @return the velocidadRaza
 	 */
-	public int getVelocidadRaza() {
+	public int getVelocidad() {
 		return VelocidadRaza;
 	}
 	/**
 	 * @param velocidadRaza the velocidadRaza to set
 	 */
-	public void setVelocidadRaza(int velocidadRaza) {
+	public void setVelocidad(int velocidadRaza) {
 		VelocidadRaza = velocidadRaza;
 	}
 	/**

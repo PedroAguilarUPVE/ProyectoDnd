@@ -131,84 +131,84 @@ public class PanelPersonaje extends JPanel {
 		System.out.println(idSeleccionado);
 		et = ResourceBundle.getBundle("properties/dic", Idioma);
 
-		setBounds(100, 100, 510, 580);
+		setBounds(100, 100, 425, 580);
 		
 		setLayout(null);
 
 		textNombre = new JTextField();
-		textNombre.setBounds(15, 10, 120, 20);
+		textNombre.setBounds(10, 10, 120, 20);
 		add(textNombre);
 		Etiquetas = new PlaceHolder(textNombre, et.getString("Nombre"));
 		textNombre.setColumns(10);
 
 		comboBoxClase = new JComboBox();
-		comboBoxClase.setBounds(145, 10, 120, 20);
+		comboBoxClase.setBounds(140, 10, 120, 20);
 		add(comboBoxClase);
 
 		comboBoxSubclase = new JComboBox();
-		comboBoxSubclase.setBounds(15, 45, 120, 20);
+		comboBoxSubclase.setBounds(10, 45, 120, 20);
 		add(comboBoxSubclase);
 		comboBoxSubclase.addItem("Subclase");
 		comboBoxSubclase.setEnabled(false); // Desactivar inicialmente
 
 		JLabel lblNombre = new JLabel(et.getString("Nombre"));
-		lblNombre.setBounds(15, 30, 120, 14);
+		lblNombre.setBounds(10, 30, 120, 14);
 		add(lblNombre);
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblTransfondo = new JLabel(et.getString("Transfondo"));
-		lblTransfondo.setBounds(15, 65, 120, 14);
+		lblTransfondo.setBounds(10, 65, 120, 14);
 		add(lblTransfondo);
 		lblTransfondo.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblRaza = new JLabel(et.getString("Raza"));
-		lblRaza.setBounds(145, 65, 120, 14);
+		lblRaza.setBounds(140, 65, 120, 14);
 		add(lblRaza);
 		lblRaza.setHorizontalAlignment(SwingConstants.CENTER);
 
 		comboBoxRaza = new JComboBox();
-		comboBoxRaza.setBounds(145, 45, 120, 20);
+		comboBoxRaza.setBounds(140, 45, 120, 20);
 		add(comboBoxRaza);
 
 		JLabel lblClase = new JLabel(et.getString("Clase"));
-		lblClase.setBounds(145, 30, 120, 14);
+		lblClase.setBounds(140, 30, 120, 14);
 		add(lblClase);
 		lblClase.setHorizontalAlignment(SwingConstants.CENTER);
 
 		textJugador = new JTextField();
-		textJugador.setBounds(275, 10, 120, 20);
+		textJugador.setBounds(270, 10, 120, 20);
 		add(textJugador);
 		Etiquetas = new PlaceHolder(textJugador, et.getString("Jugador"));
 		textJugador.setColumns(10);
 
 		JLabel lblJugador = new JLabel(et.getString("Jugador"));
-		lblJugador.setBounds(275, 29, 112, 14);
+		lblJugador.setBounds(270, 29, 112, 14);
 		add(lblJugador);
 		lblJugador.setHorizontalAlignment(SwingConstants.CENTER);
 
 		textExperiencia = new JTextField();
-		textExperiencia.setBounds(275, 45, 55, 20);
+		textExperiencia.setBounds(270, 45, 55, 20);
 		add(textExperiencia);
 		textExperiencia.setColumns(10);
 
 		lblExperiencia = new JLabel(et.getString("Experiencia"));
-		lblExperiencia.setBounds(275, 65, 55, 14);
+		lblExperiencia.setBounds(270, 65, 55, 14);
 		add(lblExperiencia);
 		lblExperiencia.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNivel = new JLabel(et.getString("Nivel"));
-		lblNivel.setBounds(340, 65, 55, 14);
+		lblNivel.setBounds(335, 65, 55, 14);
 		add(lblNivel);
 		lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		textNivel = new JTextField();
-		textNivel.setBounds(340, 45, 55, 20);
+		textNivel.setBounds(335, 45, 55, 20);
 		add(textNivel);
 		textNivel.setEditable(false);
 		textNivel.setColumns(10);
 
 		Estadisticas = new PanelEstadisticas(Idioma);
-		Estadisticas.setBounds(15, 85, 410, 75);
+		Estadisticas.setBounds(5, 85, 390, 75);
 		add(Estadisticas);
 
 //		btnCalcular = new JButton(et.getString("CalcularModificadores"));
@@ -217,13 +217,13 @@ public class PanelPersonaje extends JPanel {
 //		btnCalcular.setFont(new Font("Tahoma", Font.PLAIN, 8));
 
 		JPanel panelTiradas = new JPanel();
-		panelTiradas.setBounds(15, 240, 130, 120);
+		panelTiradas.setBounds(5, 240, 130, 120);
 		add(panelTiradas);
 		panelTiradas.setBackground(new Color(192, 192, 192));
 		panelTiradas.setLayout(null);
 		
 		btnCargarPer = new JButton("Cargar Personaje");
-		btnCargarPer.setBounds(310, 170, 85, 20);
+		btnCargarPer.setBounds(270, 170, 120, 20);
 		add(btnCargarPer);
 
 		lblTiradaInt = new JLabel("0");
@@ -288,21 +288,21 @@ public class PanelPersonaje extends JPanel {
 		panelTiradas.add(rdbtnFue);
 
 		btnRandom = new JButton(et.getString("Random"));
-		btnRandom.setBounds(100, 216, 85, 20);
+		btnRandom.setBounds(5, 200, 85, 20);
 		add(btnRandom);
 
 		Habilidades = new PanelHabilidades(Idioma);
-		Habilidades.setBounds(155, 240, 300, 120);
+		Habilidades.setBounds(5, 370, 300, 120);
 		add(Habilidades);
 		Habilidades.setBackground(Color.LIGHT_GRAY);
 
 		btnEliminar = new JButton(et.getString("Eliminar"));
-		btnEliminar.setBounds(190, 216, 85, 21);
+		btnEliminar.setBounds(95, 200, 85, 21);
 		add(btnEliminar);
 		btnEliminar.setEnabled(false);
 
 		btnEditar = new JButton(et.getString("Editar"));
-		btnEditar.setBounds(280, 216, 85, 21);
+		btnEditar.setBounds(185, 200, 85, 21);
 		add(btnEditar);
 		btnEditar.setEnabled(false);
 
@@ -348,7 +348,7 @@ public class PanelPersonaje extends JPanel {
 		// panelCreacion.add(lblImagen);
 
 		btnRegistrar = new JButton(et.getString("Guardar"));
-		btnRegistrar.setBounds(370, 216, 85, 21);
+		btnRegistrar.setBounds(275, 200, 85, 21);
 		add(btnRegistrar);
 
 		ManejadorBoton EscuchadorBoton = new ManejadorBoton();
@@ -433,7 +433,7 @@ public class PanelPersonaje extends JPanel {
 				OPersonaje Personaje1 = new OPersonaje();
 				tablaPersonajes AgregarPersonaje = new tablaPersonajes(null,true);
 				AgregarPersonaje.setVisible(true);
-				int idSeleccionado = AgregarPersonaje.idSeleccionadoPersonaje;
+				int idSeleccionado = AgregarPersonaje.idPersonaje;
 				cargarDatosPersonaje(idSeleccionado);
 				
 			}
@@ -599,7 +599,7 @@ public class PanelPersonaje extends JPanel {
 
 			// Obtener el ID de la clase seleccionada
 			String claseSeleccionada = (String) comboBoxClase.getSelectedItem();
-			miPersonaje.setId_Clase(new CClase().obtenerIdClase(claseSeleccionada));
+			miPersonaje.setId_Clase(new CClase().obtenerIdClasePorNombre(claseSeleccionada));
 
 			// Obtener el ID de la raza seleccionada
 			String razaSeleccionada = (String) comboBoxRaza.getSelectedItem();
@@ -696,7 +696,7 @@ public class PanelPersonaje extends JPanel {
 			miPersonaje.setNombrePersonaje(textNombre.getText());
 
 			String claseSeleccionada = (String) comboBoxClase.getSelectedItem();
-			miPersonaje.setId_Clase(new CClase().obtenerIdClase(claseSeleccionada));
+			miPersonaje.setId_Clase(new CClase().obtenerIdClasePorNombre(claseSeleccionada));
 
 			String razaSeleccionada = (String) comboBoxRaza.getSelectedItem();
 			miPersonaje.setId_Raza(new CRaza().obtenerIdRazaPorNombre(razaSeleccionada));
@@ -840,7 +840,7 @@ public class PanelPersonaje extends JPanel {
 
 		try {
 			while (rs.next()) {
-				comboBoxClase.addItem(rs.getString("NombreClase"));
+				comboBoxClase.addItem(rs.getString("Nombre"));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -883,7 +883,7 @@ public class PanelPersonaje extends JPanel {
 	 *                                cuyas subclases se buscaran
 	 */
 	private void cargarSubclasesEnComboBox(String nombreClaseSeleccionada) {
-		int idClaseSeleccionada = new CClase().obtenerIdClase(nombreClaseSeleccionada);
+		int idClaseSeleccionada = new CClase().obtenerIdClasePorNombre(nombreClaseSeleccionada);
 
 		if (idClaseSeleccionada == -1) {
 			comboBoxSubclase.setEnabled(false);
@@ -896,7 +896,7 @@ public class PanelPersonaje extends JPanel {
 
 			ResultSet rs = new CSubclase().obtenerNombresSubclases(idClaseSeleccionada);
 			while (rs.next()) {
-				comboBoxSubclase.addItem(rs.getString("NombreSubclase"));
+				comboBoxSubclase.addItem(rs.getString("Nombre"));
 			}
 
 			comboBoxSubclase.setEnabled(comboBoxSubclase.getItemCount() > 1); // Habilitar si hay subclases
@@ -954,7 +954,7 @@ public class PanelPersonaje extends JPanel {
 
 		// Obtener el ID de la clase seleccionada
 		String claseSeleccionada = (String) comboBoxClase.getSelectedItem();
-		miPersonaje.setId_Clase(new CClase().obtenerIdClase(claseSeleccionada));
+		miPersonaje.setId_Clase(new CClase().obtenerIdClasePorNombre(claseSeleccionada));
 
 		// Obtener el ID de la raza seleccionada
 		String razaSeleccionada = (String) comboBoxRaza.getSelectedItem();
@@ -1019,7 +1019,7 @@ public class PanelPersonaje extends JPanel {
 			btnEditar.setEnabled(true);
 			btnEliminar.setEnabled(true);
 			
-			padre.AgregarMensaje("Personaje: " + textNombre.getName()+ ", se ha unido a la partida");
+			padre.AgregarMensaje("Personaje: " + textNombre.getText()+ ", se ha unido a la partida");
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();

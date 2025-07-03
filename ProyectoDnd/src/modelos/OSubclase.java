@@ -8,8 +8,8 @@ package modelos;
 public class OSubclase {
     private int id_Subclase;
     private int id_Clase;
-    private String nombreSubclase;
-    private String descripcionSubclase;
+    private String nombre;
+    private String descripcion;
 	/**
 	 * @return the id_Subclase
 	 */
@@ -37,26 +37,26 @@ public class OSubclase {
 	/**
 	 * @return the nombreSubclase
 	 */
-	public String getNombreSubclase() {
-		return nombreSubclase;
+	public String getNombre() {
+		return nombre;
 	}
 	/**
 	 * @param nombreSubclase the nombreSubclase to set
 	 */
-	public void setNombreSubclase(String nombreSubclase) {
-		this.nombreSubclase = nombreSubclase;
+	public void setNombre(String nombreSubclase) {
+		this.nombre = nombreSubclase;
 	}
 	/**
 	 * @return the descripcionSubclase
 	 */
-	public String getDescripcionSubclase() {
-		return descripcionSubclase;
+	public String getDescripcion() {
+		return descripcion;
 	}
 	/**
 	 * @param descripcionSubclase the descripcionSubclase to set
 	 */
-	public void setDescripcionSubclase(String descripcionSubclase) {
-		this.descripcionSubclase = descripcionSubclase;
+	public void setDescripcion(String descripcionSubclase) {
+		this.descripcion = descripcionSubclase;
 	}
 
     

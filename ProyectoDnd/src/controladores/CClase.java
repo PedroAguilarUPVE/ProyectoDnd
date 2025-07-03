@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import conexion.ConexionBDSQLServer;
 import modelos.OClase;
+import modelos.ORaza;
 
 /**
  * Controlador para gestionar operaciones relacionadas con la entidad Clase
@@ -24,11 +25,11 @@ public class CClase {
      * @param clase Objeto OClase con los datos a registrar.
      */
     public void registrarClase(OClase clase) {
-        String sql = "INSERT INTO Clases (NombreClase, DescripcionClase, TipoClase, DadoDano) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Clases (Nombre, Descripcion, Tipo, DadoDano) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = ConexionBDSQLServer.GetConexion().prepareStatement(sql)) {
-            ps.setString(1, clase.getNombreClase());
-            ps.setString(2, clase.getDescripcionClase());
-            ps.setString(3, clase.getTipoClase());
+            ps.setString(1, clase.getNombre());
+            ps.setString(2, clase.getDescripcion());
+            ps.setString(3, clase.getTipo());
             ps.setInt(4, clase.getDadoDano());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -40,12 +41,12 @@ public class CClase {
     /**
      * Elimina una clase de la base de datos por su nombre.
      *
-     * @param nombreClase Nombre de la clase a eliminar.
+     * @param Nombre Nombre de la clase a eliminar.
      */
-    public void borrarClase(String nombreClase) {
-        String sql = "DELETE FROM Clases WHERE NombreClase = ?";
+    public void borrarClase(String Nombre) {
+        String sql = "DELETE FROM Clases WHERE Nombre = ?";
         try (PreparedStatement ps = ConexionBDSQLServer.GetConexion().prepareStatement(sql)) {
-            ps.setString(1, nombreClase);
+            ps.setString(1, Nombre);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(null, "Clase borrada correctamente.");
@@ -64,16 +65,16 @@ public class CClase {
      * @param idClase ID de la clase.
      * @return Nombre de la clase, o cadena vacía si no se encuentra.
      */
-    public String obtenerNombreClasePorId(int idClase) {
+    public static String obtenerNombreClasePorId(int idClase) {
         String nombreClase = "";
-        String sql = "SELECT NombreClase FROM Clases WHERE Id_Clase = ?";
+        String sql = "SELECT Nombre FROM Clases WHERE Id_Clase = ?";
 
         try (Connection conn = ConexionBDSQLServer.GetConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idClase);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                nombreClase = rs.getString("NombreClase");
+                nombreClase = rs.getString("Nombre");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,6 +84,11 @@ public class CClase {
         return nombreClase;
     }
 
+    public static OClase obtenerClasePorId(int idClase) {
+    	OClase clase = buscarClasePorNombre(obtenerNombreClasePorId(idClase));
+    	return clase;
+    }
+    
     /**
      * Llena un modelo de tabla con todas las clases existentes en la base de datos.
      *
@@ -96,9 +102,9 @@ public class CClase {
             while (rs.next()) {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getInt("Id_Clase");
-                fila[1] = rs.getString("NombreClase");
-                fila[2] = rs.getString("DescripcionClase");
-                fila[3] = rs.getString("TipoClase");
+                fila[1] = rs.getString("Nombre");
+                fila[2] = rs.getString("Descripcion");
+                fila[3] = rs.getString("Tipo");
                 fila[4] = rs.getInt("DadoDano");
 
                 model.addRow(fila);
@@ -113,22 +119,22 @@ public class CClase {
     /**
      * Busca una clase por su nombre y devuelve un objeto OClase con sus datos.
      *
-     * @param nombreClase Nombre de la clase a buscar.
+     * @param Nombre Nombre de la clase a buscar.
      * @return Objeto OClase si se encuentra, o null si no existe.
      */
-    public OClase buscarClasePorNombre(String nombreClase) {
+    public static OClase buscarClasePorNombre(String Nombre) {
         OClase clase = null;
-        String sql = "SELECT * FROM Clases WHERE NombreClase = ?";
+        String sql = "SELECT * FROM Clases WHERE Nombre = ?";
         try (Connection conn = ConexionBDSQLServer.GetConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, nombreClase);
+            ps.setString(1, Nombre);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 clase = new OClase();
-                clase.setNombreClase(rs.getString("NombreClase"));
-                clase.setDescripcionClase(rs.getString("DescripcionClase"));
-                clase.setTipoClase(rs.getString("TipoClase"));
+                clase.setNombre(rs.getString("Nombre"));
+                clase.setDescripcion(rs.getString("Descripcion"));
+                clase.setTipo(rs.getString("Tipo"));
                 clase.setDadoDano(rs.getInt("DadoDano"));
             }
 
@@ -143,16 +149,16 @@ public class CClase {
     /**
      * Obtiene el ID de una clase dado su nombre.
      *
-     * @param nombreClase Nombre de la clase.
+     * @param Nombre Nombre de la clase.
      * @return ID de la clase, o -1 si no se encuentra.
      */
-    public static int obtenerIdClase(String nombreClase) {
+    public static int obtenerIdClasePorNombre(String Nombre) {
         int idClase = -1;
-        String sql = "SELECT Id_Clase FROM Clases WHERE NombreClase = ?";
+        String sql = "SELECT Id_Clase FROM Clases WHERE Nombre = ?";
 
         try (Connection conn = ConexionBDSQLServer.GetConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, nombreClase);
+            ps.setString(1, Nombre);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -173,7 +179,7 @@ public class CClase {
      */
     public ResultSet obtenerNombresClases() {
         ResultSet rs = null;
-        String sql = "SELECT NombreClase FROM Clases ORDER BY Id_Clase";
+        String sql = "SELECT Nombre FROM Clases ORDER BY Id_Clase";
         try {
             Connection conn = ConexionBDSQLServer.GetConexion();
             Statement stmt = conn.createStatement();
@@ -208,13 +214,13 @@ public class CClase {
      *
      * @param clase Objeto OClase con los nuevos datos de la clase.
      */
-    public void actualizarClase(OClase clase) {
-        String sql = "UPDATE Clases SET DescripcionClase = ?, TipoClase = ?, DadoDano = ? WHERE NombreClase = ?";
+    public static void actualizarClase(OClase clase) {
+        String sql = "UPDATE Clases SET Descripcion = ?, Tipo = ?, DadoDano = ? WHERE Nombre = ?";
         try (PreparedStatement ps = ConexionBDSQLServer.GetConexion().prepareStatement(sql)) {
-            ps.setString(1, clase.getDescripcionClase());
-            ps.setString(2, clase.getTipoClase());
+            ps.setString(1, clase.getDescripcion());
+            ps.setString(2, clase.getTipo());
             ps.setInt(3, clase.getDadoDano());
-            ps.setString(4, clase.getNombreClase());
+            ps.setString(4, clase.getNombre());
 
             ps.executeUpdate();
         } catch (SQLException e) {
