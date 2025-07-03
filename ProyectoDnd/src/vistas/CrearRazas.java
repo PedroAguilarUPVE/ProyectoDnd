@@ -35,7 +35,6 @@ public class CrearRazas extends JDialog {
 	private JTextField textNombre;
 	private JTextField textDescripcion;
 
-
 	private JComboBox comboBoxTamano;
 
 	private JSpinner spinnerVelocidad;
@@ -160,37 +159,37 @@ public class CrearRazas extends JDialog {
 		spinnerCarisma = new JSpinner(new SpinnerNumberModel(0, 0, 3, 1));
 		spinnerCarisma.setBounds(360, 225, 50, 20);
 		panelRaza.add(spinnerCarisma);
-		
-		btnRegistrar = new JButton(et.getString("guardarClase"));
+
+		btnRegistrar = new JButton(et.getString("guardar"));
 		btnRegistrar.setBounds(135, 260, 120, 20);
 		panelRaza.add(btnRegistrar);
 
-		btnEditar = new JButton(et.getString("guardarClase"));
+		btnEditar = new JButton(et.getString("guardar"));
 		btnEditar.setBounds(265, 260, 120, 20);
 		panelRaza.add(btnEditar);
 
-		btnEliminar = new JButton(et.getString("BorrarClase"));
+		btnEliminar = new JButton(et.getString("Eliminar"));
 		btnEliminar.setBounds(10, 260, 120, 20); // Ajusta la posición según necesites
 		panelRaza.add(btnEliminar);
-		
+
 		ManejadorBoton manejador = new ManejadorBoton();
-		// botonGuardarRaza.addActionListener(manejador);		
+		// botonGuardarRaza.addActionListener(manejador);
 
 		btnRegistrar.addActionListener(manejador);
 		btnEditar.addActionListener(manejador);
 		btnEliminar.addActionListener(manejador);
-		
-		seleccionarModo(IdRaza);
 
+		seleccionarModo(IdRaza);
 
 	}
 
-
 	/**
-	 * Metodo SeleccionarModo Habilita o desabilita los botones de registrar, editar y eliminar, dependiendo del id ingresado
-	 * Si el idSeleccionado es 0, es modo registrar, y se desabilitan editar y eliminar
-	 * En caso contrario se permitira editar y eliminar, pero no guardar registros nuevos
-	 * @param idSeleccionado 
+	 * Metodo SeleccionarModo Habilita o desabilita los botones de registrar, editar
+	 * y eliminar, dependiendo del id ingresado Si el idSeleccionado es 0, es modo
+	 * registrar, y se desabilitan editar y eliminar En caso contrario se permitira
+	 * editar y eliminar, pero no guardar registros nuevos
+	 * 
+	 * @param idSeleccionado
 	 */
 	private void seleccionarModo(int idSeleccionado) {
 		// TODO Auto-generated method stub
@@ -209,6 +208,9 @@ public class CrearRazas extends JDialog {
 	}
 
 	/**
+	 * Metodo cargarDatosRaza Carga los datos de la raza seleccionado Llena los
+	 * campos de los componentes correspondientes, con los datos de la raza
+	 * obtenidos de la base de datos
 	 * 
 	 * @param idRaza
 	 */
@@ -237,37 +239,142 @@ public class CrearRazas extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(btnRegistrar)) {
-				CrearRaza();
+				RegistrarRaza();
+			}
+			if (e.getSource().equals(btnEditar)) {
+				actualizarRaza();
+			}
+			if (e.getSource().equals(btnEliminar)) {
+				eliminarRaza();
 			}
 		}
 	}
 
+	/**
+	 * Obtiene los datos ingresados por el usuario y los ingresa a la Razas de la
+	 * base de datos No requiere parametros ni retorna valores de salida
+	 */
+	public void RegistrarRaza() {
+		if (!validarCampos()) {
+			return;
+		}
+		ORaza nuevaRaza = crearRaza();
+		new CRaza().registrarRaza(nuevaRaza);
+
+	}
 
 	/**
-	 * Metodo CrearRaza() Obtiene los datos de clase ingresados por el usuario y los
-	 * ingresa a la Razas de la base de datos No requiere parametros ni retorna
-	 * valores de salida
+	 * Metodo eliminarRaza Implemetado para eliminar de la base de datos la raza
+	 * seleccionada Implementa el metodo del mismo nombre en el controlador CRaza
 	 */
-	public void CrearRaza() {
+	private void eliminarRaza() {
 		try {
-			ORaza nuevaRaza = new ORaza();
-			nuevaRaza.setNombre(textNombre.getText());
-			nuevaRaza.setDescripcion(textDescripcion.getText());
-			nuevaRaza.setTamano((String) comboBoxTamano.getSelectedItem());
-			nuevaRaza.setVelocidad((Integer) spinnerVelocidad.getValue());
+			String nombre = textNombre.getText();
+			if (nombre == null) {
+				JOptionPane.showMessageDialog(this, "Seleccione una raza para borrar.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
-			nuevaRaza.setFuerza((Integer) spinnerFuerza.getValue());
-			nuevaRaza.setDestreza((Integer) spinnerDestreza.getValue());
-			nuevaRaza.setConstitucion((Integer) spinnerConstitucion.getValue());
-			nuevaRaza.setInteligencia((Integer) spinnerInteligencia.getValue());
-			nuevaRaza.setSabiduria((Integer) spinnerSabiduria.getValue());
-			nuevaRaza.setCarisma((Integer) spinnerCarisma.getValue());
-
-			new CRaza().registrarRaza(nuevaRaza);
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.exito.raza"));
+			int confirm = JOptionPane.showConfirmDialog(this,
+					"¿Está seguro de que desea borrar la raza " + nombre + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
+			if (confirm == JOptionPane.YES_OPTION) {
+				new CRaza().borrarRaza(nombre); // Llamamos al método del controlador
+			}
 		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Error al borrar la raza", "Error", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.error.raza"), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+	/**
+	 * Metodo actualizarRaza actualiza los datos de la raza seleccionada, dentro de
+	 * la base de datos
+	 */
+	private void actualizarRaza() {
+		// Obtener el nombre de la raza seleccionada
+		String nombre = textNombre.getText();
+		if (nombre == null)
+			return;
+
+		// Crear un objeto ORaza con los valores editados
+		ORaza raza = new CRaza().obtenerRazaPorNombre(nombre);
+		if (raza != null) {
+			// Actualizar los valores de la raza
+			raza.setDescripcion(textDescripcion.getText());
+			raza.setTamano(comboBoxTamano.getSelectedItem().toString());
+			raza.setVelocidad((int) spinnerVelocidad.getValue());
+
+			// Actualizar las estadísticas de la raza
+			raza.setFuerza((int) spinnerFuerza.getValue());
+			raza.setDestreza((int) spinnerDestreza.getValue());
+			raza.setConstitucion((int) spinnerConstitucion.getValue());
+			raza.setInteligencia((int) spinnerInteligencia.getValue());
+			raza.setSabiduria((int) spinnerSabiduria.getValue());
+			raza.setCarisma((int) spinnerCarisma.getValue());
+
+			// Llamar al método que ya tienes en CRaza para actualizar en la base de datos
+			new CRaza().actualizarRaza(raza);
+		}
+	}
+
+	
+	/**
+	 * Crea un objeto ORaza para guardar los datos de los componentes
+	 * 
+	 * @return Regresa el objeto ORaza con los datos guardados
+	 */
+	public ORaza crearRaza() {
+		ORaza nuevaRaza = new ORaza();
+		nuevaRaza.setNombre(textNombre.getText());
+		nuevaRaza.setDescripcion(textDescripcion.getText());
+		nuevaRaza.setTamano((String) comboBoxTamano.getSelectedItem());
+		nuevaRaza.setVelocidad((Integer) spinnerVelocidad.getValue());
+
+		nuevaRaza.setFuerza((Integer) spinnerFuerza.getValue());
+		nuevaRaza.setDestreza((Integer) spinnerDestreza.getValue());
+		nuevaRaza.setConstitucion((Integer) spinnerConstitucion.getValue());
+		nuevaRaza.setInteligencia((Integer) spinnerInteligencia.getValue());
+		nuevaRaza.setSabiduria((Integer) spinnerSabiduria.getValue());
+		nuevaRaza.setCarisma((Integer) spinnerCarisma.getValue());
+		return nuevaRaza;
+	}
+
+	/**
+	 * Metodo validarCampos Comprueba que todos los campos requeridos esten llenos.
+	 * Si algun campo esta vacio envia un mensaje e interrumpe la ejecucion
+	 * 
+	 * @return Si los campos estan llenos regresa true, en caso contrario regresa
+	 *         false
+	 */
+	public boolean validarCampos() {
+		boolean completo = true;
+		// Validación de campos vacíos
+		if (textNombre.getText().isEmpty() || textNombre.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El nombre de raza no puede estar vacío", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		if (textNombre.getText().length() > 20) {
+			JOptionPane.showMessageDialog(null, "El nombre de raza es demasiado largo. Maximo 30 caracteres", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+
+		if (textDescripcion.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La descripcion de raza no puede estar vacia", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		
+		/*
+		 * if (comboBoxTipo) { JOptionPane.showMessageDialog(null,
+		 * "El nombre del jugador no puede estar vacío", "Error",
+		 * JOptionPane.ERROR_MESSAGE); return false; // No continuar con la ejecución si
+		 * el campo está vacío }
+		 */
+		return true;
+
+	}
+
 }

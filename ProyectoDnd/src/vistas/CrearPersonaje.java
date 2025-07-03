@@ -915,6 +915,12 @@ public class CrearPersonaje extends JDialog {
 
 	}
 	
+	
+	/**
+	 * Metodo validarCampos Comprueba que todos los campos requeridos esten llenos. Si algun campo esta vacio envia un mensaje e interrumpe la ejecucion
+	 * 
+	 * @return Si los campos estan llenos regresa true, en caso contrario regresa false
+	 */
 	public boolean validarCampos() {
 		boolean completo = true;
 		// Validación de campos vacíos

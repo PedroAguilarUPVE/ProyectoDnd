@@ -58,7 +58,7 @@ public class CrearSubclases extends JDialog {
 		setTitle(et.getString("crearClases"));
 
 		System.out.println(IdSubclase);
-		
+
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
 		panelContenido = new JPanel();
@@ -72,7 +72,7 @@ public class CrearSubclases extends JDialog {
 		panelContenido.add(panelClase);
 		panelClase.setLayout(null);
 
-		JLabel etiquetaNombre = new JLabel(et.getString("nombreClase"));
+		JLabel etiquetaNombre = new JLabel(et.getString("nombreSubclase"));
 		etiquetaNombre.setBounds(10, 19, 140, 16);
 		panelClase.add(etiquetaNombre);
 
@@ -88,23 +88,23 @@ public class CrearSubclases extends JDialog {
 		textDescripcion.setBounds(170, 50, 231, 35);
 		panelClase.add(textDescripcion);
 
-		JLabel etiquetaTipoClase = new JLabel(et.getString("tipoClase"));
-		etiquetaTipoClase.setBounds(10, 105, 116, 16);
-		panelClase.add(etiquetaTipoClase);
+		JLabel etiquetaClase = new JLabel(et.getString("Clase"));
+		etiquetaClase.setBounds(10, 105, 116, 16);
+		panelClase.add(etiquetaClase);
 
 		comboBoxClase = new JComboBox();
 		comboBoxClase.setBounds(170, 103, 231, 21);
 		panelClase.add(comboBoxClase);
 
-		btnRegistrar = new JButton(et.getString("guardarClase"));
+		btnRegistrar = new JButton(et.getString("guardar"));
 		btnRegistrar.setBounds(135, 180, 120, 20);
 		panelClase.add(btnRegistrar);
 
-		btnEditar = new JButton(et.getString("guardarClase"));
+		btnEditar = new JButton(et.getString("guardar"));
 		btnEditar.setBounds(265, 180, 120, 20);
 		panelClase.add(btnEditar);
 
-		btnEliminar = new JButton(et.getString("BorrarClase"));
+		btnEliminar = new JButton(et.getString("Eliminar"));
 		btnEliminar.setBounds(10, 180, 120, 20); // Ajusta la posición según necesites
 		panelClase.add(btnEliminar);
 
@@ -149,20 +149,18 @@ public class CrearSubclases extends JDialog {
 	 * valores de salida
 	 */
 	public void RegistrarSubclase() {
-		try {
-			OSubclase nuevaSublase = new OSubclase();
-			nuevaSublase.setNombre(textNombre.getText());
-			nuevaSublase.setDescripcion(textDescripcion.getText());
-			String nombreClase = comboBoxClase.getSelectedItem().toString();
-			nuevaSublase.setId_Clase(CClase.obtenerIdClasePorNombre(nombreClase));
-
-			new CSubclase().registrarSubclase(nuevaSublase);
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.exito.clase"));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.error.clase"), "Error",
-					JOptionPane.ERROR_MESSAGE);
+		if (!validarCampos()) {
+			return;
 		}
+
+		OSubclase nuevaSublase = new OSubclase();
+		nuevaSublase.setNombre(textNombre.getText());
+		nuevaSublase.setDescripcion(textDescripcion.getText());
+		String nombreClase = comboBoxClase.getSelectedItem().toString();
+		nuevaSublase.setId_Clase(CClase.obtenerIdClasePorNombre(nombreClase));
+
+		new CSubclase().registrarSubclase(nuevaSublase);
+
 	}
 
 	/**
@@ -182,7 +180,8 @@ public class CrearSubclases extends JDialog {
 					"¿Está seguro de que desea borrar la subclase " + nombre + "?", "Confirmar",
 					JOptionPane.YES_NO_OPTION);
 			if (confirm == JOptionPane.YES_OPTION) {
-				new CSubclase().borrarSubclase(CSubclase.obtenerIdSubclasePorNombre(nombre)); // Llamamos al método del controlador
+				new CSubclase().borrarSubclase(CSubclase.obtenerIdSubclasePorNombre(nombre)); // Llamamos al método del
+																								// controlador
 
 			}
 		} catch (Exception ex) {
@@ -207,7 +206,7 @@ public class CrearSubclases extends JDialog {
 			if (subclase != null) {
 				// Establecer los nuevos valores
 				subclase.setDescripcion(textDescripcion.getText());
-				subclase.setId_Clase (CClase.obtenerIdClasePorNombre(comboBoxClase.getSelectedItem().toString()) );
+				subclase.setId_Clase(CClase.obtenerIdClasePorNombre(comboBoxClase.getSelectedItem().toString()));
 
 				// Actualizar la clase en la base de datos
 				CSubclase.actualizarSubclase(subclase);
@@ -222,12 +221,47 @@ public class CrearSubclases extends JDialog {
 		}
 	}
 
+	/**
+	 * Metodo validarCampos Comprueba que todos los campos requeridos esten llenos.
+	 * Si algun campo esta vacio envia un mensaje e interrumpe la ejecucion
+	 * 
+	 * @return Si los campos estan llenos regresa true, en caso contrario regresa
+	 *         false
+	 */
+	public boolean validarCampos() {
+		boolean completo = true;
+		// Validación de campos vacíos
+		if (textNombre.getText().isEmpty() || textNombre.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El nombre de subclase no puede estar vacío", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		if (textNombre.getText().length() > 20) {
+			JOptionPane.showMessageDialog(null, "El nombre de subclase es demasiado largo. Maximo 30 caracteres",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+
+		if (textDescripcion.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La descripcion de subclase no puede estar vacia", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		if (comboBoxClase.getSelectedIndex() <= 0) {
+			JOptionPane.showMessageDialog(null, "Debe seleccionar una clase", "Error", JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		return true;
+
+	}
 
 	/**
-	 * Metodo SeleccionarModo Habilita o desabilita los botones de registrar, editar y eliminar, dependiendo del id ingresado
-	 * Si el idSeleccionado es 0, es modo registrar, y se desabilitan editar y eliminar
-	 * En caso contrario se permitira editar y eliminar, pero no guardar registros nuevos
-	 * @param idSeleccionado 
+	 * Metodo SeleccionarModo Habilita o desabilita los botones de registrar, editar
+	 * y eliminar, dependiendo del id ingresado Si el idSeleccionado es 0, es modo
+	 * registrar, y se desabilitan editar y eliminar En caso contrario se permitira
+	 * editar y eliminar, pero no guardar registros nuevos
+	 * 
+	 * @param idSeleccionado
 	 */
 	private void seleccionarModo(int idSeleccionado) {
 		// TODO Auto-generated method stub
@@ -258,7 +292,7 @@ public class CrearSubclases extends JDialog {
 			comboBoxClase.setSelectedItem(new CClase().obtenerNombreClasePorId(subclase.getId_Clase()));
 		}
 	}
-	
+
 	/**
 	 * Metodo cargarClasesEnComboBox Carga los nombres de la tabla Clases de la base
 	 * de datos, y los enlista en un comboBox
@@ -269,7 +303,7 @@ public class CrearSubclases extends JDialog {
 
 		try {
 			comboBoxClase.removeAllItems();
-			comboBoxClase.addItem("Clase"); 
+			comboBoxClase.addItem("Clase");
 			while (rs.next()) {
 				comboBoxClase.addItem(rs.getString("Nombre"));
 			}
@@ -280,5 +314,5 @@ public class CrearSubclases extends JDialog {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 }

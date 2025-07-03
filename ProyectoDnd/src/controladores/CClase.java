@@ -32,10 +32,13 @@ public class CClase {
             ps.setString(3, clase.getTipo());
             ps.setInt(4, clase.getDadoDano());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al insertar clase", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+
+			JOptionPane.showMessageDialog(null, "Clase registrada exitosamente");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al registrar clase", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
     }
 
     /**

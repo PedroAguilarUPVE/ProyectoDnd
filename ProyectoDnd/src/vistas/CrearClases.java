@@ -20,9 +20,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
 import controladores.CClase;
-import controladores.CRaza;
 import modelos.OClase;
-import modelos.ORaza;
 
 /**
  * Clase crear clases. Maneja la creacion de clases y razas y su insercion en la
@@ -139,7 +137,7 @@ public class CrearClases extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(btnRegistrar)) {
-				CrearClase();
+				RegistrarClase();
 			}
 			// Si el origen del evento es btnBorrarClase, se ejecuta borrarClase
 			if (e.getSource() == btnEliminar) {
@@ -155,12 +153,14 @@ public class CrearClases extends JDialog {
 	}
 
 	/**
-	 * Metodo CrearClase() Obtiene los datos de clase ingresados por el usuario y
+	 * Metodo RegistarClase Obtiene los datos de clase ingresados por el usuario y
 	 * los ingresa a la Clases de la base de datos No requiere parametros ni retorna
 	 * valores de salida
 	 */
-	public void CrearClase() {
-		try {
+	public void RegistrarClase() {
+		if (!validarCampos()) {
+			return;
+		}
 			OClase nuevaClase = new OClase();
 			nuevaClase.setNombre(textNombre.getText());
 			nuevaClase.setDescripcion(textDescripcion.getText());
@@ -168,12 +168,7 @@ public class CrearClases extends JDialog {
 			nuevaClase.setDadoDano((Integer) spinnerDano.getValue());
 
 			new CClase().registrarClase(nuevaClase);
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.exito.clase"));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, et.getString("mensaje.error.clase"), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
+		
 	}
 
 	/**
@@ -256,12 +251,49 @@ public class CrearClases extends JDialog {
 			cargarDatosClase(idSeleccionado);
 		}
 	}
+	
+	/**
+	 * Metodo validarCampos Comprueba que todos los campos requeridos esten llenos. Si algun campo esta vacio envia un mensaje e interrumpe la ejecucion
+	 * 
+	 * @return Si los campos estan llenos regresa true, en caso contrario regresa false
+	 */
+	public boolean validarCampos() {
+		boolean completo = true;
+		// Validación de campos vacíos
+		if (textNombre.getText().isEmpty() || textNombre.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "El nombre de clase no puede estar vacío", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		if (textNombre.getText().length() > 20) {
+			JOptionPane.showMessageDialog(null, "El nombre de clase es demasiado largo. Maximo 30 caracteres", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+
+		if ( textDescripcion.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "La descripcion de clase no puede estar vacia", "Error", JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío
+		}
+		/*
+		if (comboBoxTipo) {
+			JOptionPane.showMessageDialog(null, "El nombre del jugador no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+			return false; // No continuar con la ejecución si el campo está vacío		
+		}
+		*/
+		return true;
+
+	}
+	
 
 	/**
-	 * Metodo cargarClaseSeleccionada Carga los datos de la clase seleccionado Llena
+	 * Metodo cargarDatosClase Carga los datos de la clase seleccionado Llena
 	 * los campos de los componentes correspondientes, con los datos de clase
 	 * obtenidos de la base de datos
+	 *
+	 * @param idClase
 	 */
+	
 	private void cargarDatosClase(int idClase) {
 		OClase clase = CClase.obtenerClasePorId(idClase);
 		if (clase != null) {

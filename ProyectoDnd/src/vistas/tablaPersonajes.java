@@ -52,9 +52,10 @@ public class tablaPersonajes extends JDialog {
 //	}
 
 	/**
-	 * Create the dialog.
 	 * 
-	 * @param personaje1
+	 * 
+	 * @param parent 
+	 * @paran modal
 	 */
 	public tablaPersonajes(JDialog parent, boolean modal) {
 		super(parent, true);// se inicializa el constructor super

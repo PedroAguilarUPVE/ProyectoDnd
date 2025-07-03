@@ -96,6 +96,7 @@ public class CRaza {
 		}
 		return raza;
 	}
+
 	/**
 	 * Elimina una raza y sus estadísticas asociadas de la base de datos.
 	 * 
@@ -186,7 +187,6 @@ public class CRaza {
 		return idRaza;
 	}
 
-	
 	/**
 	 * Busca una raza y sus estadísticas asociadas a partir del nombre.
 	 * 
@@ -260,10 +260,12 @@ public class CRaza {
 				psEstadisticas.setInt(7, raza.getId_Raza());
 				psEstadisticas.executeUpdate();
 			}
+			// Mostrar un mensaje de éxito
+			JOptionPane.showMessageDialog(null, "Raza y estadísticas actualizadas correctamente.");
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "Error al actualizar raza", "Error", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
 		}
 	}
 
@@ -310,12 +312,11 @@ public class CRaza {
 		}
 		return nombreRaza;
 	}
-	
 
-    public static ORaza obtenerRazaPorId(int idRaza) {
-    	ORaza Raza = obtenerRazaPorNombre(obtenerNombreRazaPorId(idRaza));
-    	return Raza;
-    }
+	public static ORaza obtenerRazaPorId(int idRaza) {
+		ORaza Raza = obtenerRazaPorNombre(obtenerNombreRazaPorId(idRaza));
+		return Raza;
+	}
 
 	public void buscarRazasConTableModel(DefaultTableModel model, int pagina, int registrosPorPagina) {
 
@@ -327,7 +328,7 @@ public class CRaza {
 		try {
 
 			int C = 5;
-			
+
 			pst = conexion.prepareStatement(sql);
 			pst.setInt(1, (pagina - 1) * registrosPorPagina);
 			pst.setInt(2, registrosPorPagina);
@@ -375,5 +376,5 @@ public class CRaza {
 		System.out.println(paginas);
 		return paginas;
 	}
-	
+
 }
