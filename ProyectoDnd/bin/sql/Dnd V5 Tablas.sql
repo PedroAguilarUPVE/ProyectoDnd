@@ -13,7 +13,7 @@ Create Table Clases (
     Id_Clase INT PRIMARY KEY Identity,
     Nombre VARCHAR(20) NOT NULL UNIQUE,
 	Descripcion Text,
-	Tipo Varchar(10) Check (TipoClase in ('Marcial','Magica','Mixta')) Default 'Marcial',
+	Tipo Varchar(10) Check (Tipo in ('Marcial','Magica','Mixta')) Default 'Marcial',
 	DadoDano int NOT NULL,
 );
 
@@ -22,7 +22,7 @@ Create Table Subclases (
 	Id_Subclase INT PRIMARY KEY Identity,
 	Id_Clase Int NOT NULL,
 	Nombre NVARCHAR(50) NOT NULL UNIQUE,
-	Descripcion Text,
+	Descripcion Text
 )
 
 Create Table Razas (

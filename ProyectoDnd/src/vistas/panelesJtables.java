@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -19,6 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import conexion.ConexionBDSQLServer;
 import controladores.CClase;
 import controladores.CPersonaje;
 import controladores.CRaza;
@@ -26,6 +28,12 @@ import controladores.CSubclase;
 import modelos.OClase;
 import modelos.ORaza;
 import modelos.OSubclase;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class panelesJtables extends JDialog {
 
@@ -36,16 +44,20 @@ public class panelesJtables extends JDialog {
 	private JTable tablePersonajes;
 	private JTable tableClases;
 	private JTable tableRazas;
+	private JTable tableSubclases;
 	private JScrollPane scrollClases;
 	private JScrollPane scrollRaza;
+	private JScrollPane scrollSubclases;
 	private JScrollPane miBarra;
 
 	private JPanel panelRazas;
 	private JPanel panelPersonajes;
+	private JPanel panelSubclases;
 
-	private JButton btnPriPerson, btnAntPerson, btnSigPerson, btnUltPerson;
-	private JButton btnUltRazas, btnSigRazas, btnAntRazas, btnPriRazas;
-	private JButton btnPriClases, btnAntClases, btnSigClases, btnUltClases;
+	private JButton btnPriPerson, btnAntPerson, btnSigPerson, btnUltPerson, btnEdiPerson, btnCrearPerson;
+	private JButton btnPriRazas, btnAntRazas, btnSigRazas, btnUltRazas, btnEdiRazas, btnCrearRaza;
+	private JButton btnPriClases, btnAntClases, btnSigClases, btnUltClases, btnEdiClases, btnCrearClase;
+	private JButton btnPriSubclases, btnAntSubclases, btnSigSubclases, btnUltSubclases, btnEdiSubclases, btnCrearSubclase;
 
 	private int paginaActualClases = 1;
 	private int paginaActualSubclases = 1;
@@ -53,32 +65,16 @@ public class panelesJtables extends JDialog {
 	private int paginaActualPersonajes = 1;
 
 	private final int registrosPorPagina = 10;
-	private JPanel panelSubclases;
-	private JScrollPane scrollSubclases;
-	private JButton btnPriSubclases;
-	private JButton btnAntSubclases;
-	private JButton btnSigSubclases;
-	private JButton btnUltSubclases;
-	private JTable tableSubclases;
 	private Locale Idioma;
-	private JButton btnEdiPerson;
-	private JButton btnEdiClases;
-	private JButton btnEdiSubclases;
-	private JButton btnEdiRazas;
-	public panelesJtables tablas;
+	private int idPersonaje = -1, idClase = -1, idRaza = -1, idSubclase = -1;
 
-	private int idPersonaje = -1; 
-	private int idClase= -1; 
-	private int idRaza = -1; 
-	private int idSubclase = -1; 
-	
 	private OClase claseSeleccionada;
 	private OSubclase subclaseSeleccionada;
 	private ORaza razaSeleccionada;
+	private JButton btnReportePerson;
 
 	public panelesJtables(Frame parent, boolean modal, Locale idioma) {
 		super(parent, modal);
-
 		Idioma = idioma;
 		et = ResourceBundle.getBundle("properties/dic", idioma);
 		setTitle(et.getString("crearClases"));
@@ -92,128 +88,145 @@ public class panelesJtables extends JDialog {
 
 		JTabbedPane panelTabs = new JTabbedPane(JTabbedPane.TOP);
 		panelTabs.setBackground(new Color(128, 128, 128));
-		panelTabs.setBounds(10, 11, 811, 392);
+		panelTabs.setBounds(10, 11, 840, 360);
 		panelContenido.add(panelTabs);
 
-		// --- Panel Clases ---
+		// Panel Clases
 		tableClases = new JTable();
 		scrollClases = new JScrollPane(tableClases);
 		JPanel panelClases = new JPanel(null);
-		scrollClases.setBounds(10, 11, 786, 185);
+		scrollClases.setBounds(10, 11, 800, 185);
 		panelClases.add(scrollClases);
-		panelTabs.addTab("Clases", panelClases);
+		panelTabs.addTab(et.getString("Clases"), panelClases);
 
-		btnPriClases = new JButton("Primero");
-		btnPriClases.setBounds(101, 255, 89, 23);
+		btnPriClases = new JButton(et.getString("Primero"));
+		btnPriClases.setBounds(20, 255, 120, 20);
 		panelClases.add(btnPriClases);
 
-		btnAntClases = new JButton("Anterior");
-		btnAntClases.setBounds(228, 255, 89, 23);
+		btnAntClases = new JButton(et.getString("Anterior"));
+		btnAntClases.setBounds(150, 255, 120, 20);
 		panelClases.add(btnAntClases);
 
-		btnSigClases = new JButton("Siguiente");
-		btnSigClases.setBounds(360, 255, 89, 23);
+		btnSigClases = new JButton(et.getString("Siguiente"));
+		btnSigClases.setBounds(280, 255, 120, 20);
 		panelClases.add(btnSigClases);
 
-		btnUltClases = new JButton("Ultimo");
-		btnUltClases.setBounds(487, 255, 89, 23);
+		btnUltClases = new JButton(et.getString("Ultimo"));
+		btnUltClases.setBounds(410, 255, 120, 20);
 		panelClases.add(btnUltClases);
 
-		btnEdiClases = new JButton("Editar");
-		btnEdiClases.setBounds(609, 255, 89, 23);
+		btnEdiClases = new JButton(et.getString("Editar"));
+		btnEdiClases.setBounds(540, 255, 120, 20);
 		panelClases.add(btnEdiClases);
 
-		buscarClasesConTableModel();
+		btnCrearClase = new JButton(et.getString("Crear"));
+		btnCrearClase.setBounds(670, 255, 120, 20);
+		panelClases.add(btnCrearClase);
 
+		// Panel Subclases
 		tableSubclases = new JTable();
 		scrollSubclases = new JScrollPane(tableSubclases);
 		panelSubclases = new JPanel(null);
-		scrollSubclases.setBounds(10, 11, 786, 185);
+		scrollSubclases.setBounds(10, 11, 800, 185);
 		panelSubclases.add(scrollSubclases);
-		panelTabs.addTab("Subclases", panelSubclases);
+		panelTabs.addTab(et.getString("Subclases"), panelSubclases);
 
-		btnPriSubclases = new JButton("Primero");
-		btnPriSubclases.setBounds(109, 252, 89, 23);
+		btnPriSubclases = new JButton(et.getString("Primero"));
+		btnPriSubclases.setBounds(20, 255, 120, 20);
 		panelSubclases.add(btnPriSubclases);
 
-		btnAntSubclases = new JButton("Anterior");
-		btnAntSubclases.setBounds(236, 252, 89, 23);
+		btnAntSubclases = new JButton(et.getString("Anterior"));
+		btnAntSubclases.setBounds(150, 255, 120, 20);
 		panelSubclases.add(btnAntSubclases);
 
-		btnSigSubclases = new JButton("Siguiente");
-		btnSigSubclases.setBounds(368, 252, 89, 23);
+		btnSigSubclases = new JButton(et.getString("Siguiente"));
+		btnSigSubclases.setBounds(280, 255, 120, 20);
 		panelSubclases.add(btnSigSubclases);
 
-		btnUltSubclases = new JButton("Ultimo");
-		btnUltSubclases.setBounds(495, 252, 89, 23);
+		btnUltSubclases = new JButton(et.getString("Ultimo"));
+		btnUltSubclases.setBounds(410, 255, 120, 20);
 		panelSubclases.add(btnUltSubclases);
 
-		btnEdiSubclases = new JButton("Editar");
-		btnEdiSubclases.setBounds(623, 252, 89, 23);
+		btnEdiSubclases = new JButton(et.getString("Editar"));
+		btnEdiSubclases.setBounds(540, 255, 120, 20);
 		panelSubclases.add(btnEdiSubclases);
 
-		buscarSubclasesConTableModel();
+		btnCrearSubclase = new JButton(et.getString("Crear"));
+		btnCrearSubclase.setBounds(670, 255, 120, 20);
+		panelSubclases.add(btnCrearSubclase);
 
-		// --- Panel Razas ---
+		// Panel Razas
 		tableRazas = new JTable();
 		scrollRaza = new JScrollPane(tableRazas);
 		panelRazas = new JPanel(null);
-		scrollRaza.setBounds(10, 11, 786, 185);
+		scrollRaza.setBounds(10, 11, 800, 185);
 		panelRazas.add(scrollRaza);
-		panelTabs.addTab("Razas", panelRazas);
+		panelTabs.addTab(et.getString("Razas"), panelRazas);
 
-		btnPriRazas = new JButton("Primero");
-		btnPriRazas.setBounds(108, 251, 89, 23);
+		btnPriRazas = new JButton(et.getString("Primero"));
+		btnPriRazas.setBounds(20, 255, 120, 20);
 		panelRazas.add(btnPriRazas);
 
-		btnAntRazas = new JButton("Anterior");
-		btnAntRazas.setBounds(235, 251, 89, 23);
+		btnAntRazas = new JButton(et.getString("Anterior"));
+		btnAntRazas.setBounds(150, 255, 120, 20);
 		panelRazas.add(btnAntRazas);
 
-		btnSigRazas = new JButton("Siguiente");
-		btnSigRazas.setBounds(367, 251, 89, 23);
+		btnSigRazas = new JButton(et.getString("Siguiente"));
+		btnSigRazas.setBounds(280, 255, 120, 20);
 		panelRazas.add(btnSigRazas);
 
-		btnUltRazas = new JButton("Ultimo");
-		btnUltRazas.setBounds(494, 251, 89, 23);
+		btnUltRazas = new JButton(et.getString("Ultimo"));
+		btnUltRazas.setBounds(410, 255, 120, 20);
 		panelRazas.add(btnUltRazas);
 
-		btnEdiRazas = new JButton("Editar");
-		btnEdiRazas.setBounds(620, 251, 89, 23);
+		btnEdiRazas = new JButton(et.getString("Editar"));
+		btnEdiRazas.setBounds(540, 255, 120, 20);
 		panelRazas.add(btnEdiRazas);
 
-		buscarRazasConTableModel();
+		btnCrearRaza = new JButton(et.getString("Crear"));
+		btnCrearRaza.setBounds(670, 255, 120, 20);
+		panelRazas.add(btnCrearRaza);
 
-		// --- Panel Personajes ---
+		// Panel Personajes
 		panelPersonajes = new JPanel(null);
-		panelTabs.addTab("Personajes", panelPersonajes);
+		panelTabs.addTab(et.getString("Personajes"), panelPersonajes);
 		tablePersonajes = new JTable();
-		// panelPersonajes.add(tablePersonajes);
-
 		miBarra = new JScrollPane();
-		miBarra.setBounds(10, 11, 786, 185);
+		miBarra.setBounds(10, 11, 800, 185);
 		panelPersonajes.add(miBarra);
 
-		btnPriPerson = new JButton("Primero");
-		btnPriPerson.setBounds(77, 249, 89, 23);
+		btnPriPerson = new JButton(et.getString("Primero"));
+		btnPriPerson.setBounds(20, 255, 120, 20);
 		panelPersonajes.add(btnPriPerson);
 
-		btnAntPerson = new JButton("Anterior");
-		btnAntPerson.setBounds(204, 249, 89, 23);
+		btnAntPerson = new JButton(et.getString("Anterior"));
+		btnAntPerson.setBounds(150, 255, 120, 20);
 		panelPersonajes.add(btnAntPerson);
 
-		btnSigPerson = new JButton("Siguiente");
-		btnSigPerson.setBounds(336, 249, 89, 23);
+		btnSigPerson = new JButton(et.getString("Siguiente"));
+		btnSigPerson.setBounds(280, 255, 120, 20);
 		panelPersonajes.add(btnSigPerson);
 
-		btnUltPerson = new JButton("Ultimo");
-		btnUltPerson.setBounds(463, 249, 89, 23);
+		btnUltPerson = new JButton(et.getString("Ultimo"));
+		btnUltPerson.setBounds(410, 255, 120, 20);
 		panelPersonajes.add(btnUltPerson);
 
-		btnEdiPerson = new JButton("Editar");
-		btnEdiPerson.setBounds(589, 249, 89, 23);
+		btnEdiPerson = new JButton(et.getString("Editar"));
+		btnEdiPerson.setBounds(540, 255, 120, 20);
 		panelPersonajes.add(btnEdiPerson);
 
+		btnCrearPerson = new JButton(et.getString("Crear"));
+		btnCrearPerson.setBounds(670, 255, 120, 20);
+		panelPersonajes.add(btnCrearPerson);
+		
+		btnReportePerson = new JButton("Reporte");
+		btnReportePerson.setBounds(20, 285, 120, 20);
+		panelPersonajes.add(btnReportePerson);
+		
+		
+		buscarClasesConTableModel();
+		buscarRazasConTableModel();
+		buscarSubclasesConTableModel();
 		buscarPersonajesConTableModel();
 
 		// --- Escuchadores ---
@@ -238,6 +251,7 @@ public class panelesJtables extends JDialog {
 		btnEdiRazas.addActionListener(Escuchador);
 		btnEdiClases.addActionListener(Escuchador);
 		btnEdiSubclases.addActionListener(Escuchador);
+		btnReportePerson.addActionListener(Escuchador);
 
 		ManejadorTabla ControladorTabla = new ManejadorTabla();
 		tablePersonajes.getSelectionModel().addListSelectionListener(ControladorTabla);
@@ -338,6 +352,24 @@ public class panelesJtables extends JDialog {
 			}
 			if (e.getSource() == btnEdiRazas) {
 				editarRazaSeleccionada();
+			}
+			if (e.getSource() == btnReportePerson ) {
+				JasperReport Reporte;
+				
+				Connection ConexionBd = null;
+				// Conecta con la base de datos
+				ConexionBd = ConexionBDSQLServer.GetConexion();
+
+				try {
+					//Reporte = JasperCompileManager.compileReport("src/reportes/ReporteVentast.jrxml");
+					Reporte = JasperCompileManager.compileReport("src/reportes/ReportePErsonajes.jrxml");
+					JasperPrint JP = JasperFillManager.fillReport(Reporte, null, ConexionBd);
+					JasperViewer.viewReport(JP,true);
+
+				} catch (JRException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 		}

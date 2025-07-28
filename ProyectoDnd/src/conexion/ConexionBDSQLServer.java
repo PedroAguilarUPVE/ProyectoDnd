@@ -36,7 +36,7 @@ public class ConexionBDSQLServer {
 
 		try {// Se inicializa la FileReader pasndo como parametro
 				// la ruta fisica del archivo propiertie
-			RutaFisica = new FileReader("src\\properties\\configSqlServer.properties");				
+			RutaFisica = new FileReader("src/properties/configSqlServer.properties");				
 
 		} catch (FileNotFoundException eRuta) {
 			// TODO Auto-generated catch block

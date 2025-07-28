@@ -18,6 +18,7 @@ INSERT INTO Clases ( Nombre, Descripcion, Tipo, DadoDano) VALUES
 ( 'Picaro', 'Un especialista en sigilo y precision.', 'Marcial', 8),
 ( 'Artifice', 'Un inventor y creador de magia.', 'Mixta', 8);
 
+/*
 INSERT INTO AtributosClase (Id_Clase, NombreAtributo, Descripcion, Nivel) VALUES  
 -- Barbaro  
 (1, 'Furia', 'Puedes entrar en un estado de rabia en combate para aumentar el dano.', 1),  
@@ -81,7 +82,7 @@ INSERT INTO AtributosClase (Id_Clase, NombreAtributo, Descripcion, Nivel) VALUES
 (13, 'Herrero Magico', 'Puedes crear y mejorar equipo con propiedades magicas.', 2),  
 (13, 'Creador de Prodigios', 'Disenas artilugios magicos y herramientas.', 3),  
 (13, 'Mejora Experimental', 'Otorgas a un objeto propiedades magicas especiales.', 5);  
-
+*/
 --	Subclases:
 
 INSERT INTO Subclases ( Id_Clase, Nombre, Descripcion) VALUES
@@ -126,7 +127,7 @@ INSERT INTO Subclases ( Id_Clase, Nombre, Descripcion) VALUES
 ( 13, 'Alquimista', 'Un artifice que usa la ciencia y la magia para crear pociones y elixires con propiedades extraordinarias.'),
 ( 13, 'Artifice de guerra', 'Un artifice enfocado en el uso de la ingenieria y la magia para construir poderosas maquinas de guerra.');
 
-
+/*
 -- Atributos Subclases
 -- Barbaro
 INSERT INTO AtributosSubclase (Id_Subclase, NombreAtributo, Descripcion, Nivel) VALUES
@@ -169,6 +170,7 @@ INSERT INTO AtributosSubclase (Id_Subclase, NombreAtributo, Descripcion, Nivel) 
 -- Artifice
 (26, 'Elixir Mejorado', 'El artifice puede crear elixires que aumentan las habilidades de sus aliados, otorgandoles bonificaciones temporales a la fuerza, agilidad o resistencia.', 3),
 (27, 'Artilugio de Guerra', 'El artifice puede construir dispositivos magicos y mecanicos que le permiten aumentar su capacidad en combate, proporcionando armas o herramientas avanzadas.', 3);
+*/
 
 --	Razas
 INSERT INTO Razas ( NombreRaza, DescripcionRaza, TamanoRaza, VelocidadRaza) VALUES
@@ -193,6 +195,7 @@ INSERT INTO EstadisticasRaza (Id_Raza, Fuerza, Destreza, Constitucion, Inteligen
 (8, 0, 0, 0, 1, 0, 2), -- Tieflings: +1 Inteligencia, +2 Carisma
 (9, 0, 2, 0, 0, 1, 0) -- Semielfos: +1 Destreza, +1 Sabiduria, +1 Inteligencia
 
+/*
 -- Insertar Atributos de Raza con la nueva estructura  
 INSERT INTO AtributosRaza (Id_Raza, NombreAtributo, Descripcion, Nivel) VALUES  
 -- Humanos  
@@ -233,7 +236,7 @@ INSERT INTO AtributosRaza (Id_Raza, NombreAtributo, Descripcion, Nivel) VALUES
 (8, 'Vision en la Oscuridad', 'Puedes ver en la oscuridad en un rango de 60 pies.', 1),  
 (8, 'Resistencia Infernal', 'Tienes resistencia al dano de fuego.', 1),  
 (8, 'Legado Infernal', 'Conoces el truco *Taumaturgia* y obtienes mas conjuros a niveles superiores.', 1);  
-
+*/
 
 --Competencias
 INSERT INTO Competencias (NombreCompetencia, TipoCompetencia, DescripcionCompetencia) VALUES
@@ -265,6 +268,7 @@ INSERT INTO Competencias (NombreCompetencia, TipoCompetencia, DescripcionCompete
 ('Kit de Disfraz', 'Herramienta', 'Conjunto de maquillajes, vestimentas y accesorios para cambiar de apariencia e identidad.'),
 ('Kit de Medicina', 'Herramienta', 'Instrumentos y suministros medicos basicos para tratar heridas y enfermedades.');
 
+/*
 -- Insertar las relaciones entre competencias y clases
 INSERT INTO CompetenciasClase (Id_Competencia, Id_Clase) VALUES
 -- Barbaro
@@ -346,6 +350,7 @@ INSERT INTO CompetenciasClase (Id_Competencia, Id_Clase) VALUES
 (8, 13), -- Herramientas de Alquimista
 (9, 13); -- Herramientas de Tinker
 
+*/
 --Select * From Razas
 --Select * From Clases
 --Select * From Subclases Where Id_Clase = 13

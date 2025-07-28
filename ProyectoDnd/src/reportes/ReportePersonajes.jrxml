@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportePersonajes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7eebaa4-068b-407f-bf7a-d4c2e72a1292">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQL Server"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT "Personajes"."Id_Personaje",
+	"Personajes"."NombrePersonaje",
+	"Personajes"."Nivel",
+	"Clases"."Nombre",
+	"Razas"."NombreRaza",
+	"Subclases"."Nombre",
+	"Personajes"."BonusCompetencia"
+FROM "Personajes"
+	INNER JOIN "Clases" ON 
+	 "Clases"."Id_Clase" = "Personajes"."Id_Clase" 
+	INNER JOIN "Subclases" ON 
+	 "Subclases"."Id_Subclase" = "Personajes"."Id_Subclase" 
+	INNER JOIN "Razas" ON 
+	 "Razas"."Id_Raza" = "Personajes"."Id_Raza"]]>
+	</queryString>
+	<field name="Id_Personaje" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Id_Personaje"/>
+		<property name="com.jaspersoft.studio.field.label" value="Id_Personaje"/>
+	</field>
+	<field name="NombrePersonaje" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NombrePersonaje"/>
+		<property name="com.jaspersoft.studio.field.label" value="NombrePersonaje"/>
+	</field>
+	<field name="Nivel" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Nivel"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nivel"/>
+	</field>
+	<field name="Nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nombre"/>
+	</field>
+	<field name="NombreRaza" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NombreRaza"/>
+		<property name="com.jaspersoft.studio.field.label" value="NombreRaza"/>
+	</field>
+	<field name="COLUMN_6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nombre"/>
+	</field>
+	<field name="BonusCompetencia" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="BonusCompetencia"/>
+		<property name="com.jaspersoft.studio.field.label" value="BonusCompetencia"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="275" y="0" width="300" height="64" uuid="d7cb9de5-f1d6-4e9a-8441-72f5e2127742"/>
+				<imageExpression><![CDATA["src/imagenes/DndLogo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33" uuid="3eb8e1ab-7e38-4368-89db-62b6501a8c67"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Reporte De Personajes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="100" y="46" width="174" height="22" uuid="0b5308cc-82cf-49a0-8011-6f875d4c5e32"/>
+				<text><![CDATA[Leaf Green SubTitle]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="d69c6691-e92e-45c5-bf2d-c1dc15dabb91"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="79" height="15" uuid="f871cca5-4477-4b88-b43b-143b89fdbb29">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2011553e-9842-441f-a317-eec33bc83c1c"/>
+				</reportElement>
+				<text><![CDATA[Id_Personaje]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="79" y="19" width="79" height="15" uuid="010917d4-3fd3-4b00-aeb0-596a7bea5a3f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="70843de2-e336-4f91-8c36-32d40c43bc38"/>
+				</reportElement>
+				<text><![CDATA[Personaje]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="158" y="19" width="79" height="15" uuid="fcab7519-88d9-4730-b22f-f45001dddbc2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c476cef-ec86-46da-bb1f-d2333532afa5"/>
+				</reportElement>
+				<text><![CDATA[Nivel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="237" y="19" width="79" height="15" uuid="1ca64c0e-5a2a-4155-b06e-21cd25ef8d47">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a050bdb4-0ca8-4ee7-b427-28df63bad19a"/>
+				</reportElement>
+				<text><![CDATA[Clase]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="316" y="19" width="79" height="15" uuid="2e980204-74f1-4af2-8050-b52efc64ad4d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="991e3bdd-1994-4ea6-977d-9cb8f80016cb"/>
+				</reportElement>
+				<text><![CDATA[Raza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="395" y="19" width="79" height="15" uuid="1d342f17-dd76-40bd-bf3a-09a90ad14920">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6c2ba26-e436-4699-9d37-126ae30b15a4"/>
+				</reportElement>
+				<text><![CDATA[Subclase]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="474" y="19" width="79" height="15" uuid="aecadca8-60fe-4e4e-9c2c-e9d7c94ed0ed">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="10de3ffa-9baf-4e91-a868-7f10eebcc3cd"/>
+				</reportElement>
+				<text><![CDATA[BonusCompetencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="f367c019-9cb7-431c-8713-5a96f9b889aa"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="79" height="15" uuid="04d15c04-afc6-45e9-9784-b34158b662a1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2011553e-9842-441f-a317-eec33bc83c1c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Id_Personaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="79" y="0" width="79" height="15" uuid="1910e6c9-1f70-4237-b7d4-7ae7188814ca">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="70843de2-e336-4f91-8c36-32d40c43bc38"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{NombrePersonaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="158" y="0" width="79" height="15" uuid="a6dae07c-1f04-45d7-be63-dd6f2994c3d8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7c476cef-ec86-46da-bb1f-d2333532afa5"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Nivel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="237" y="0" width="79" height="15" uuid="59754609-a6e8-4df4-aa66-73d16cd43258">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a050bdb4-0ca8-4ee7-b427-28df63bad19a"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="316" y="0" width="79" height="15" uuid="b7fccef7-425a-44f4-8e6f-98280273a232">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="991e3bdd-1994-4ea6-977d-9cb8f80016cb"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{NombreRaza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="395" y="0" width="79" height="15" uuid="0c05857b-9b78-4c4b-b2e4-2990745bd1d2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6c2ba26-e436-4699-9d37-126ae30b15a4"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_6}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="474" y="0" width="79" height="15" uuid="14e98f1f-f46c-4c29-a888-01af3543e6de">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="10de3ffa-9baf-4e91-a868-7f10eebcc3cd"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{BonusCompetencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="02519f40-8679-4e40-a1f1-699bc025a206"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="6f13e17d-4b46-4ede-ab63-9d2685ec9c16"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="6857db7e-824a-4cda-b8dc-fe5c95aca145"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="ef9fc35f-c45f-4ec6-a5cc-ec2020109ea7"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

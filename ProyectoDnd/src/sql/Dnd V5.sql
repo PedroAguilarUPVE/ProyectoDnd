@@ -11,9 +11,9 @@ Go
 
 Create Table Clases (
     Id_Clase INT PRIMARY KEY Identity,
-    NombreClase VARCHAR(20) NOT NULL UNIQUE,
-	DescripcionClase Text,
-	TipoClase Varchar(10) Check (TipoClase in ('Marcial','Magica','Mixta')) Default 'Marcial',
+    Nombre NVARCHAR(20) NOT NULL UNIQUE,
+	Descripcion Text,
+	Tipo NVARCHAR(10) Check (Tipo in ('Marcial','Magica','Mixta')) Default 'Marcial',
 	DadoDano int NOT NULL,
 );
 
@@ -21,22 +21,22 @@ Create Table Clases (
 Create Table Subclases (
 	Id_Subclase INT PRIMARY KEY Identity,
 	Id_Clase Int NOT NULL,
-	NombreSubclase NVARCHAR(50) NOT NULL UNIQUE,
-	DescripcionSubclase Text,
+	Nombre NNVARCHAR(50) NOT NULL UNIQUE,
+	Descripcion Text
 )
 
 Create Table Razas (
 	Id_Raza INT PRIMARY KEY Identity,
-	NombreRaza NVARCHAR(50) NOT NULL UNIQUE,
-	--ZVariante Varchar(50) Null,
+	NombreRaza NNVARCHAR(50) NOT NULL UNIQUE,
+	--Variante NVARCHAR(50) Null,
 	DescripcionRaza Text,
-	TamanoRaza Varchar(10) Check (TamanoRaza in ('Pequeno','Mediano','Grande','Enorme')) Default 'Mediano',
+	TamanoRaza NVARCHAR(10) Check (TamanoRaza in ('Pequeno','Mediano','Grande','Enorme')) Default 'Mediano',
 	VelocidadRaza int Default (30) ,
 )
 
 Create Table EstadisticasRaza (
 	Id_EstadisticasRaza int Primary Key Identity,
-	--TipoEstadisticas Varchar(10) Check (TipoEstadisticas in ('Personaje','Raza','Clase')),
+	--TipoEstadisticas NVARCHAR(10) Check (TipoEstadisticas in ('Personaje','Raza','Clase')),
 	Id_Raza int Not Null Unique,
 	Fuerza Int,
 	Destreza int,
@@ -49,8 +49,8 @@ Create Table EstadisticasRaza (
 
 Create Table Competencias (
 	Id_Competencia INT PRIMARY KEY Identity,
-	NombreCompetencia Varchar(50) NOT NULL UNIQUE,
-	TipoCompetencia Varchar(20) Check (TipoCompetencia in ('Herramienta','Arma','Armadura','Instrumento','Otro')) Default 'Arma',
+	NombreCompetencia NVARCHAR(50) NOT NULL UNIQUE,
+	TipoCompetencia NVARCHAR(20) Check (TipoCompetencia in ('Herramienta','Arma','Armadura','Instrumento','Otro')) Default 'Arma',
 	DescripcionCompetencia Text,
 )
 
@@ -63,7 +63,7 @@ Create Table CompetenciasClase (
 CREATE TABLE AtributosClase (
     Id_AtributoClase INT PRIMARY KEY IDENTITY,
     Id_Clase INT,
-    NombreAtributo VARCHAR(50) NOT NULL,
+    NombreAtributo NVARCHAR(50) NOT NULL,
     Descripcion TEXT,
     Nivel INT
 );
@@ -71,7 +71,7 @@ CREATE TABLE AtributosClase (
 CREATE TABLE AtributosSubclase (
     Id_AtributoSubclase INT PRIMARY KEY IDENTITY,
     Id_Subclase INT,
-    NombreAtributo VARCHAR(50) NOT NULL,
+    NombreAtributo NVARCHAR(50) NOT NULL,
     Descripcion TEXT,
     Nivel INT
 );
@@ -79,14 +79,14 @@ CREATE TABLE AtributosSubclase (
 CREATE TABLE AtributosRaza (
     Id_AtributoRaza INT PRIMARY KEY IDENTITY,
     Id_Raza INT,
-    NombreAtributo VARCHAR(50) NOT NULL,
+    NombreAtributo NVARCHAR(50) NOT NULL,
     Descripcion TEXT,
     Nivel INT DEFAULT (1)
 );
 
 --Create Table Armas (
 --	Id_Arma INT PRIMARY KEY,
---	NombreArma VARCHAR (30),
+--	NombreArma NVARCHAR (30),
 --	Distancia INT,
 --	Dano INT,
 --	DadoDano INT,
@@ -101,10 +101,10 @@ CREATE TABLE AtributosRaza (
 
 Create Table Personajes (
 	Id_Personaje Int PRIMARY KEY Identity,
-	NombrePersonaje Varchar(30) Not Null UNIQUE,
+	NombrePersonaje NVARCHAR(30) Not Null UNIQUE,
 	Nivel Int Default(1) Not Null,
-	VidaTotal int not null check (VidaTotal > 0),
-	VidaActual int Default (VidaTotal) ,
+	--VidaTotal int not null check (VidaTotal > 0),
+	--VidaActual int Default (VidaTotal) ,
 	Id_Clase Int Default(8) Not Null,
 	Id_Subclase Int ,
 	Id_Raza int Default(1) Not Null,
@@ -114,7 +114,7 @@ Create Table Personajes (
 
 Create Table EstadisticasPersonaje (
 	Id_EstadisticasPersonaje int Primary Key Identity,
-	--TipoEstadisticas Varchar(10) Check (TipoEstadisticas in ('Personaje','Raza','Clase')),
+	--TipoEstadisticas NVARCHAR(10) Check (TipoEstadisticas in ('Personaje','Raza','Clase')),
 	Id_Personaje int,
 	Fuerza Int,
 	Destreza int,
@@ -126,7 +126,7 @@ Create Table EstadisticasPersonaje (
 
 Create Table Partidas (
 	Id_Partida int Primary KEY Identity,
-	Titulo Varchar(50),
+	Titulo NVARCHAR(50),
 	FechaInicio Date
 )
 
@@ -137,12 +137,19 @@ Create Table PersonajesPartida(
 
 Create Table Enemigos (
 	Id_Enemigo int Primary Key Identity,
-	Nombre Varchar(100) Not Null Unique,
-	Tipo Varchar(100),
-	Descripcion Varchar (200),
+	Nombre NVARCHAR(100) Not Null Unique,
+	Tipo NVARCHAR(100),
+	Descripcion NVARCHAR (200),
 	VidaMax int,
 	VidaAct int
 
+)
+
+CREATE TABLE Usuarios (
+	Id_Usuario int Primary Key Identity,
+	Nombre NVARCHAR(100) Not Null Unique,
+	Acceso NVARCHAR (100) NOT NULL CHECK (Acceso in ('admin','jugador')) DEFAULT 'jugador'
+	Clave 
 )
 
 
@@ -168,7 +175,6 @@ ALTER TABLE Personajes
 ADD CONSTRAINT FK_Raza_Personaje FOREIGN KEY (ID_Raza)
 REFERENCES Razas (Id_Raza);
 
-
 ALTER TABLE AtributosClase
 ADD CONSTRAINT FK_Clase_AtributoClase FOREIGN KEY (ID_Clase) 
 REFERENCES Clases(Id_Clase);
@@ -189,10 +195,16 @@ ALTER TABLE EstadisticasRaza
 ADD CONSTRAINT FK_Raza_Estadisticas FOREIGN KEY (ID_Raza) 
 REFERENCES Razas(Id_Raza);
 
---				Llenar Datos
+GO
+
+USE Dnd
+
+--	Llenar Datos
 --	Clases
 
-INSERT INTO Clases ( NombreClase, DescripcionClase, TipoClase, DadoDano) VALUES
+INSERT INTO Usuarios (Nombre, Acceso)
+
+INSERT INTO Clases ( Nombre, Descripcion, Tipo, DadoDano) VALUES
 ('Barbaro', 'Un guerrero feroz impulsado por la furia.', 'Marcial', 12),
 ('Bardo', 'Un musico y narrador con magia.', 'Mixta', 8),
 ('Brujo', 'Un mago que obtiene poder de un pacto oscuro.', 'Magica', 8),
@@ -207,6 +219,7 @@ INSERT INTO Clases ( NombreClase, DescripcionClase, TipoClase, DadoDano) VALUES
 ( 'Picaro', 'Un especialista en sigilo y precision.', 'Marcial', 8),
 ( 'Artifice', 'Un inventor y creador de magia.', 'Mixta', 8);
 
+/*
 INSERT INTO AtributosClase (Id_Clase, NombreAtributo, Descripcion, Nivel) VALUES  
 -- Barbaro  
 (1, 'Furia', 'Puedes entrar en un estado de rabia en combate para aumentar el dano.', 1),  
@@ -270,10 +283,10 @@ INSERT INTO AtributosClase (Id_Clase, NombreAtributo, Descripcion, Nivel) VALUES
 (13, 'Herrero Magico', 'Puedes crear y mejorar equipo con propiedades magicas.', 2),  
 (13, 'Creador de Prodigios', 'Disenas artilugios magicos y herramientas.', 3),  
 (13, 'Mejora Experimental', 'Otorgas a un objeto propiedades magicas especiales.', 5);  
-
+*/
 --	Subclases:
 
-INSERT INTO Subclases ( Id_Clase, NombreSubclase, DescripcionSubclase) VALUES
+INSERT INTO Subclases ( Id_Clase, Nombre, Descripcion) VALUES
 -- Barbaro
 ( 1, 'Berserker', 'Un guerrero impulsado por la furia, capaz de entrar en un estado de locura durante la batalla, ganando gran poder fisico.'),
 ( 1, 'Camino del Totem', 'Un guerrero que sigue el camino de un espiritu animal, obteniendo poderes especiales de su totem elegido.'),
@@ -315,7 +328,7 @@ INSERT INTO Subclases ( Id_Clase, NombreSubclase, DescripcionSubclase) VALUES
 ( 13, 'Alquimista', 'Un artifice que usa la ciencia y la magia para crear pociones y elixires con propiedades extraordinarias.'),
 ( 13, 'Artifice de guerra', 'Un artifice enfocado en el uso de la ingenieria y la magia para construir poderosas maquinas de guerra.');
 
-
+/*
 -- Atributos Subclases
 -- Barbaro
 INSERT INTO AtributosSubclase (Id_Subclase, NombreAtributo, Descripcion, Nivel) VALUES
@@ -358,6 +371,7 @@ INSERT INTO AtributosSubclase (Id_Subclase, NombreAtributo, Descripcion, Nivel) 
 -- Artifice
 (26, 'Elixir Mejorado', 'El artifice puede crear elixires que aumentan las habilidades de sus aliados, otorgandoles bonificaciones temporales a la fuerza, agilidad o resistencia.', 3),
 (27, 'Artilugio de Guerra', 'El artifice puede construir dispositivos magicos y mecanicos que le permiten aumentar su capacidad en combate, proporcionando armas o herramientas avanzadas.', 3);
+*/
 
 --	Razas
 INSERT INTO Razas ( NombreRaza, DescripcionRaza, TamanoRaza, VelocidadRaza) VALUES
@@ -382,6 +396,7 @@ INSERT INTO EstadisticasRaza (Id_Raza, Fuerza, Destreza, Constitucion, Inteligen
 (8, 0, 0, 0, 1, 0, 2), -- Tieflings: +1 Inteligencia, +2 Carisma
 (9, 0, 2, 0, 0, 1, 0) -- Semielfos: +1 Destreza, +1 Sabiduria, +1 Inteligencia
 
+/*
 -- Insertar Atributos de Raza con la nueva estructura  
 INSERT INTO AtributosRaza (Id_Raza, NombreAtributo, Descripcion, Nivel) VALUES  
 -- Humanos  
@@ -422,7 +437,7 @@ INSERT INTO AtributosRaza (Id_Raza, NombreAtributo, Descripcion, Nivel) VALUES
 (8, 'Vision en la Oscuridad', 'Puedes ver en la oscuridad en un rango de 60 pies.', 1),  
 (8, 'Resistencia Infernal', 'Tienes resistencia al dano de fuego.', 1),  
 (8, 'Legado Infernal', 'Conoces el truco *Taumaturgia* y obtienes mas conjuros a niveles superiores.', 1);  
-
+*/
 
 --Competencias
 INSERT INTO Competencias (NombreCompetencia, TipoCompetencia, DescripcionCompetencia) VALUES
@@ -454,6 +469,7 @@ INSERT INTO Competencias (NombreCompetencia, TipoCompetencia, DescripcionCompete
 ('Kit de Disfraz', 'Herramienta', 'Conjunto de maquillajes, vestimentas y accesorios para cambiar de apariencia e identidad.'),
 ('Kit de Medicina', 'Herramienta', 'Instrumentos y suministros medicos basicos para tratar heridas y enfermedades.');
 
+/*
 -- Insertar las relaciones entre competencias y clases
 INSERT INTO CompetenciasClase (Id_Competencia, Id_Clase) VALUES
 -- Barbaro
@@ -535,6 +551,7 @@ INSERT INTO CompetenciasClase (Id_Competencia, Id_Clase) VALUES
 (8, 13), -- Herramientas de Alquimista
 (9, 13); -- Herramientas de Tinker
 
+*/
 --Select * From Razas
 --Select * From Clases
 --Select * From Subclases Where Id_Clase = 13
@@ -590,6 +607,7 @@ INSERT INTO EstadisticasPersonaje (Id_Personaje, Fuerza, Destreza, Constitucion,
 
 Go
 
+/*
 SELECT * FROM Personajes;
 SELECT * FROM EstadisticasPersonaje;
 
@@ -598,3 +616,59 @@ From Personajes P
 INNER JOIN Clases C On C.Id_Clase=P.Id_Clase
 Inner Join Subclases SC On SC.Id_Subclase = P.Id_Subclase
 Inner Join Razas R On R.Id_Raza=P.Id_Raza 
+*/
+
+
+
+
+--Procesos Almacenados
+Create Procedure PA_ComprobarClases
+--Alter Procedure PA_ComprobarClases
+AS
+BEGIN
+	DECLARE @MensajeError NVARCHAR(50)
+	IF EXISTS (SELECT * FROM Clases)
+	BEGIN 
+		SELECT ('true')
+	END
+	ELSE
+	BEGIN
+		SET @MensajeError = 'Error: No existe ninguna clase todavia, cree una primero'
+		SELECT ('false')
+	END
+END
+EXEC PA_ComprobarClases
+GO
+
+Create Procedure PA_ComprobarRazas
+--Alter Procedure PA_ComprobarRazas
+AS
+BEGIN
+	DECLARE @MensajeError NVARCHAR(50)
+	IF EXISTS (SELECT * FROM Razas)
+	BEGIN 
+		SELECT ('true')
+	END
+	ELSE
+	BEGIN
+		SET @MensajeError = 'Error: No existe ninguna raza todavia, cree una primero'
+		SELECT ('false')
+	END
+END
+GO
+
+Create Procedure PA_ComprobarSubclases
+--Alter Procedure PA_ComprobarSubclases
+AS
+BEGIN
+	DECLARE @MensajeError NVARCHAR(50)
+	IF EXISTS (SELECT * FROM Subclases)
+	BEGIN 
+		SELECT ('true')
+	END
+	ELSE
+	BEGIN
+		SET @MensajeError = 'Error: No existe ninguna subclase todavia, cree una primero'
+		SELECT ('false')
+	END
+END

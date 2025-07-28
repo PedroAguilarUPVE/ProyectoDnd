@@ -187,7 +187,7 @@ public class Menu extends JFrame {
 		btnCrearPartida.setText(et.getString("CrearPartida"));
 		rdbtnEspanol.setText(et.getString("Espanol"));
 		rdbtnIngles.setText(et.getString("Ingles"));
-		lblIdioma.setText(et.getString("Idioma"));
+		lblIdioma.setText(et.getString("Idioma") );
 
 	}
 }

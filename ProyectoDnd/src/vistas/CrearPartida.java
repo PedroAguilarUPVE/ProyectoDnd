@@ -30,17 +30,11 @@ public class CrearPartida extends JDialog {
 	private PanelPersonaje panelPersonaje3;
 
 	/**
-	 * Launch the application.
-	public static void main(String[] args) {
-		try {
-			CrearPartida dialog = new CrearPartida(Menu.this, true, Idioma);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	 * Launch the application. public static void main(String[] args) { try {
+	 * CrearPartida dialog = new CrearPartida(Menu.this, true, Idioma);
+	 * dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	 * dialog.setVisible(true); } catch (Exception e) { e.printStackTrace(); } }
+	 * 
 	 */
 	/**
 	 * Create the dialog.
@@ -55,52 +49,55 @@ public class CrearPartida extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(180, 10, 120, 20);
-		contentPanel.add(lblNewLabel);
-		
+
+		JLabel lblPartida = new JLabel(et.getString("Partida"));
+		lblPartida.setBounds(180, 10, 120, 20);
+		contentPanel.add(lblPartida);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(500, 40, 500, 680);
 		contentPanel.add(scrollPane);
-		
+
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setText("");
-		
+
 		btnReporte = new JButton("Reporte");
 		btnReporte.setBounds(510, 730, 85, 21);
 		contentPanel.add(btnReporte);
-		
-		panelPersonaje1 = new PanelPersonaje(CrearPartida.this,true,Idioma,0);
+
+		panelPersonaje1 = new PanelPersonaje(CrearPartida.this, true, Idioma, 0);
 		panelPersonaje1.setBounds(10, 40, 460, 200);
 		contentPanel.add(panelPersonaje1);
 		panelPersonaje1.setVisible(true);
-		
-		panelPersonaje2 = new PanelPersonaje(CrearPartida.this,true,Idioma,0);
+
+		panelPersonaje2 = new PanelPersonaje(CrearPartida.this, true, Idioma, 0);
 		panelPersonaje2.setBounds(10, 260, 460, 200);
 		contentPanel.add(panelPersonaje2);
 		panelPersonaje2.setVisible(true);
-		
-		panelPersonaje3 = new PanelPersonaje(CrearPartida.this,true,Idioma,0);
+
+		panelPersonaje3 = new PanelPersonaje(CrearPartida.this, true, Idioma, 0);
 		panelPersonaje3.setBounds(10, 480, 460, 200);
 		contentPanel.add(panelPersonaje3);
 		panelPersonaje3.setVisible(true);
-		
-
 
 		///
-		//tablaPersonajes Ventana = new tablaPersonajes(CrearPartida.this, true);
-		//Ventana.setVisible(true);
-		//idPersonaje = Ventana.idSeleccionadoPersonaje;
-		
-		//System.out.println("valor de contador_________________________ "+idPersonaje);
-		
+		// tablaPersonajes Ventana = new tablaPersonajes(CrearPartida.this, true);
+		// Ventana.setVisible(true);
+		// idPersonaje = Ventana.idSeleccionadoPersonaje;
+
+		// System.out.println("valor de contador_________________________
+		// "+idPersonaje);
+
 		///
 	}
-	
+
+	/**
+	 * Agrega un mensaje al area de texto
+	 * 
+	 * @param Cadena
+	 */
 	public void AgregarMensaje(String Cadena) {
-		textArea.setText(textArea.getText()+Cadena+"\n");
+		textArea.setText(textArea.getText() + Cadena + "\n");
 	}
 }
